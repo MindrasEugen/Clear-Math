@@ -1216,6 +1216,7 @@
     };
 
     // ── REVIEW CENTER sfide rapide ──
+        // ── REVIEW CENTER sfide rapide ──
     const CHALLENGE_QUESTIONS = [
       { q: "25 × 4 = ?", a: "100" },
       { q: "125 + 75 = ?", a: "200" },
@@ -1226,18 +1227,39 @@
       { q: "1000 - 350 = ?", a: "650" },
       { q: "12 × 12 = ?", a: "144" }
     ];
+    
     let currentChallengeIndex = 0;
+    let challengeHistory = []; // MEMORIA: Qui salviamo gli indici delle domande già fatte
 
     function generateNewChallenge() {
-      currentChallengeIndex = Math.floor(Math.random() * CHALLENGE_QUESTIONS.length);
+      let newIndex;
+      
+      // LOGICA ANTI-RIPETIZIONE:
+      // Se abbiamo meno di 1000 domande totali, evitiamo di ripetere finché non le abbiamo usate tutte.
+      // Se ne avessi più di 1000, non si ripeterebbero prima del millesimo esercizio.
+      do {
+        newIndex = Math.floor(Math.random() * CHALLENGE_QUESTIONS.length);
+      } while (challengeHistory.includes(newIndex) && challengeHistory.length < CHALLENGE_QUESTIONS.length && challengeHistory.length < 1000);
+
+      currentChallengeIndex = newIndex;
+      
+      // Aggiungiamo alla memoria e teniamo solo gli ultimi 1000 record
+      challengeHistory.push(newIndex);
+      if (challengeHistory.length > 1000) {
+        challengeHistory.shift(); // Rimuove il più vecchio se superiamo i 1000
+      }
+
       const item = CHALLENGE_QUESTIONS[currentChallengeIndex];
       document.getElementById('challengeQuestion').textContent = item.q;
+      
       const input = document.getElementById('challengeAnswerInput');
       input.value = '';
       input.className = "w-full text-center border-2 border-outline-variant rounded-lg py-2.5 text-xl font-bold focus:border-primary outline-none";
+      
       const fb = document.getElementById('challengeFeedback');
       fb.classList.add('hidden');
     }
+
 
     function checkChallengeAnswer() {
       const input = document.getElementById('challengeAnswerInput');

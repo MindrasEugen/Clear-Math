@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html class="light" lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>ClearMath — Schede di Matematica Personalizzabili</title>
+  
+  <!-- CDN Links: Tailwind CSS, Google Fonts, FontAwesome, jsPDF -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD,opsz@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Tailwind Configuration for ClearMath Custom Light Theme -->
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary": "#004d5b",
+            "primary-fixed": "#a9edff",
+            "primary-container": "#006778",
+            "surface-container-high": "#e7e8e9",
+            "tertiary-container": "#86511d",
+            "on-error-container": "#93000a",
+            "error-container": "#ffdad6",
+            "surface-container-low": "#f3f4f5",
+            "tertiary-fixed-dim": "#ffb87a",
+            "surface-tint": "#026879",
+            "on-surface-variant": "#3f484b",
+            "on-error": "#ffffff",
+            "secondary-fixed": "#cbe7f5",
+            "on-tertiary-fixed": "#2e1500",
+            "background": "#f8f9fa",
+            "error": "#ba1a1a",
+            "secondary-fixed-dim": "#afcbd8",
+            "tertiary-fixed": "#ffdcc1",
+            "on-secondary-fixed-variant": "#304a55",
+            "tertiary": "#6a3a06",
+            "surface-variant": "#e1e3e4",
+            "on-primary": "#ffffff",
+            "secondary": "#48626e",
+            "inverse-surface": "#2e3132",
+            "on-secondary-fixed": "#021f29",
+            "inverse-primary": "#86d2e5",
+            "surface-container": "#edeeef",
+            "on-tertiary-container": "#ffcea6",
+            "on-primary-fixed-variant": "#004e5c",
+            "surface-container-highest": "#e1e3e4",
+            "surface-bright": "#f8f9fa",
+            "on-secondary-container": "#4e6874",
+            "on-primary-fixed": "#001f26",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-container": "#97e3f6",
+            "outline-variant": "#bec8cb",
+            "on-secondary": "#ffffff",
+            "primary-fixed-dim": "#86d2e5",
+            "outline": "#6f797c",
+            "on-surface": "#191c1d",
+            "inverse-on-surface": "#f0f1f2",
+            "on-background": "#191c1d",
+            "secondary-container": "#cbe7f5",
+            "surface-dim": "#d9dadb",
+            "surface": "#f8f9fa",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-fixed-variant": "#6b3b06"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.375rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "stack-md": "32px",
+            "container-padding": "40px",
+            "unit": "8px",
+            "stack-sm": "16px",
+            "stack-lg": "64px",
+            "gutter": "24px"
+          },
+          "fontFamily": {
+            "body-md": ["Lexend"],
+            "label-lg": ["Lexend"],
+            "math-display": ["Lexend"],
+            "body-xl": ["Lexend"],
+            "headline-lg-mobile": ["Quicksand"],
+            "headline-lg": ["Quicksand"],
+            "headline-md": ["Quicksand"],
+            "body-lg": ["Lexend"]
+          },
+          "fontSize": {
+            "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+            "label-lg": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+            "math-display": ["36px", {"lineHeight": "1.1", "fontWeight": "500"}],
+            "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+            "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+            "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+            "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+            "body-lg": ["18px", {"lineHeight": "1.5", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: #f4f6f8;
+      color: #191c1d;
+    }
+    h1, h2, h3, h4, .quicksand {
+      font-family: 'Quicksand', sans-serif;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .math-input-border {
+      border-bottom: 2px solid #bec8cb;
+      transition: all 0.2s ease;
+    }
+    .math-input-border:focus {
+      outline: none;
+      border-bottom: 2px solid #004d5b;
+      background-color: rgba(0, 77, 91, 0.03);
+    }
+    /* Hide scrollbars for neat desktop widgets */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen antialiased flex flex-col pt-20">
+
+  <!-- TopAppBar Header -->
+  <header class="bg-surface-container-lowest border-b border-outline-variant fixed top-0 left-0 right-0 z-50 h-20 flex items-center">
+    <div class="flex justify-between items-center w-full px-8 max-w-[1400px] mx-auto">
+      <!-- Brand Logo & Name -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('dashboard')">
+        <div class="h-10 w-10 rounded-lg bg-primary flex items-center justify-center text-on-primary">
+          <span class="material-symbols-outlined text-[24px]">calculate</span>
+        </div>
+        <div class="font-headline-md text-xl font-bold text-primary tracking-tight">ClearMath</div>
+      </div>
+
+      <!-- Navigation tabs -->
+      <nav class="hidden md:flex items-center gap-6">
+        <button id="nav-dashboard" class="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-sm transition-all" onclick="switchView('dashboard')">Dashboard</button>
+        <button id="nav-workspace" class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-sm transition-all" onclick="switchView('workspace')">Area di Lavoro</button>
+        <button id="nav-review" class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-sm transition-all" onclick="switchView('review')">Centro Ripasso</button>
+        <button id="nav-tutor" class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-sm transition-all" onclick="switchView('tutor')">Tutor AI</button>
+      </nav>
+
+      <div class="flex items-center gap-4">
+        <!-- Indicatore di Sincronizzazione Minimal -->
+        <div id="auth-box" class="flex items-center gap-3"></div>
+
+        <!-- Includi soluzioni checkbox minimal -->
+        <div class="hidden lg:flex items-center gap-2 border border-outline-variant rounded-lg px-3 py-1.5 bg-surface-container-low text-xs text-on-surface-variant">
+          <input type="checkbox" id="includeSolutionsCheck" class="rounded border-outline-variant text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer" checked>
+          <label for="includeSolutionsCheck" class="cursor-pointer font-semibold text-xs text-primary">Includi Correttore PDF</label>
+        </div>
+
+        <button id="topDownloadPdf" class="bg-primary text-on-primary px-5 py-2.5 font-bold rounded-lg hover:bg-primary-container text-xs transition-colors active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2" onclick="downloadPdf()" disabled>
+          <span class="material-symbols-outlined text-sm">download</span>
+          <span>Scarica PDF</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SideNavBar Fissa con layout ridotto e pulito -->
+  <aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant flex flex-col pt-24 z-40">
+    <div class="px-5 mb-3">
+      <h2 class="font-headline-md text-sm font-bold text-primary tracking-wide uppercase">La tua Classe</h2>
+      <div id="sidebarClassSelector" class="mt-2">
+        <select id="sidebarYearSelect" onchange="selectYear(this.value)" class="w-full bg-white border border-outline-variant rounded-lg py-1.5 px-3 text-xs text-on-surface font-semibold focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+          <!-- Popolato dinamicamente da JS -->
+        </select>
+      </div>
+    </div>
+
+    <div class="px-5 mt-2 mb-2">
+      <h2 class="font-headline-md text-xs font-bold text-on-surface-variant tracking-wider uppercase">Argomenti Scelti</h2>
+    </div>
+
+    <!-- Lista Capitoli e Temi in Sidebar (corrispondenti all'anno selezionato) -->
+    <nav class="flex-grow overflow-y-auto no-scrollbar flex flex-col gap-0.5 pb-4 px-2" id="sidebarChaptersList">
+      <!-- Generato dinamicamente in JavaScript -->
+    </nav>
+    
+    <div class="mt-auto border-t border-outline-variant p-4 bg-surface-container-low flex flex-col gap-2">
+      <div class="text-[11px] text-on-surface-variant text-center font-medium" id="sidebarSummaryText">
+        0 argomenti scelti
+      </div>
+      <button class="w-full bg-primary text-on-primary font-bold py-2.5 rounded-lg hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2 text-xs disabled:opacity-45 disabled:cursor-not-allowed" id="sidebarGenerateBtn" onclick="generateCustomWorksheet()" disabled>
+        <span class="material-symbols-outlined text-[16px]">rule</span>
+        <span>Genera Scheda</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Canvas -->
+  <main class="pl-64 flex-grow min-h-screen">
+    
+    <!-- 1. DASHBOARD VIEW -->
+    <div class="max-w-[960px] mx-auto px-8 py-8" id="dashboardView">
+      
+      <!-- Welcome Header -->
+      <section class="mb-6 text-left mt-2">
+        <h1 class="font-headline-lg text-2xl sm:text-3xl text-primary font-bold mb-1">
+          Configuratore Matematica
+        </h1>
+        <p class="text-sm text-on-surface-variant max-w-2xl leading-relaxed">
+          Scegli la classe scolastica di riferimento per sbloccare i rispettivi argomenti d'esame. Seleziona i capitoli desiderati e configura la tua scheda di esercizi.
+        </p>
+      </section>
+
+      <!-- Step 1: Selettore dell'Anno (Dashboard Grid) -->
+      <section class="mb-6 bg-surface-container-lowest border border-outline-variant p-5 rounded-xl">
+        <div class="flex flex-col sm:flex-row justify-between items-baseline mb-3 gap-2">
+          <h3 class="font-headline-md text-sm font-bold text-primary uppercase tracking-wider">1. Seleziona l'Anno Scolastico</h3>
+          <span class="text-xs text-primary font-bold uppercase bg-primary-fixed/35 px-2 py-0.5 rounded" id="selectionStatus">Nessun Anno</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2" id="yearsDashboardGrid">
+          <!-- Inserito da Javascript -->
+        </div>
+      </section>
+
+      <!-- Step 2: Griglia Capitoli del Programma Attivo -->
+      <section class="mb-12" id="chaptersSection">
+        <div class="flex justify-between items-baseline mb-3 border-b border-outline-variant pb-2">
+          <h2 class="font-quicksand font-bold text-sm text-primary uppercase tracking-wider">
+            2. Seleziona i Capitoli di Studio
+          </h2>
+          <button onclick="toggleSelectAllChapters()" class="text-xs text-primary hover:underline font-bold" id="selectAllChaptersBtn">Seleziona tutti</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="chaptersDashboardGrid">
+          <!-- Popolato dinamicamente -->
+        </div>
+
+        <!-- Range Slider per Conteggio Esercizi (Sottile e minimale) -->
+        <div class="mt-6 bg-surface-container-lowest border border-outline-variant p-5 rounded-xl flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div class="text-left w-full sm:w-2/3">
+            <h4 class="font-quicksand font-bold text-xs text-primary uppercase tracking-wider flex items-center gap-2">
+              <span class="material-symbols-outlined text-sm">playlist_add_check</span> Esercizi da Generare
+            </h4>
+            <p class="text-xs text-on-surface-variant mt-0.5">Scegli quanti esercizi inserire nella scheda finale.</p>
+          </div>
+          <div class="w-full sm:w-1/3 flex items-center justify-end gap-3">
+            <input type="range" id="exerciseCountRange" min="5" max="30" value="15" class="w-full accent-primary h-1 bg-surface-container-low rounded-lg appearance-none cursor-pointer">
+            <span id="exerciseCountVal" class="font-quicksand font-bold text-sm text-primary bg-primary-fixed/30 border border-primary/20 px-2.5 py-0.5 rounded w-10 text-center">15</span>
+          </div>
+        </div>
+
+        <!-- Bottom Dashboard Action -->
+        <div class="mt-8 flex justify-center pb-8">
+          <button onclick="generateCustomWorksheet()" class="bg-primary text-on-primary px-10 py-3 rounded-lg font-headline-md text-sm font-bold hover:scale-[1.01] active:scale-95 transition-all shadow-sm flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">task_alt</span>
+            <span>Genera scheda personalizzata</span>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- 2. WORKSHEET WORKSPACE VIEW -->
+    <div class="max-w-[960px] mx-auto px-8 py-8 hidden" id="workspaceView">
+      
+      <!-- Empty State -->
+      <div class="flex flex-col items-center justify-center min-h-[400px] bg-surface-container-lowest border border-dashed border-outline-variant rounded-xl p-10 text-center" id="workspaceEmptyState">
+        <div class="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+          <span class="material-symbols-outlined text-3xl">auto_stories</span>
+        </div>
+        <h3 class="font-headline-md text-base font-bold text-primary mb-1">Nessuna scheda generata</h3>
+        <p class="text-on-surface-variant max-w-xs mx-auto mb-4 text-xs leading-relaxed">
+          Seleziona la classe e gli argomenti desiderati, poi premi "Genera Scheda".
+        </p>
+        <button class="bg-primary text-on-primary px-5 py-2 rounded-lg font-bold hover:bg-primary-container transition-all active:scale-95 flex items-center gap-2 text-xs" onclick="switchView('dashboard')">
+          <span class="material-symbols-outlined text-sm">explore</span>
+          <span>Scegli argomenti</span>
+        </button>
+      </div>
+
+      <!-- Active Worksheet Content -->
+      <div class="hidden space-y-6" id="workspaceActiveContent">
+        <!-- Progress Line Indicator -->
+        <div class="w-full h-1 bg-surface-container-high relative overflow-hidden rounded-full">
+          <div class="absolute top-0 left-0 h-full bg-primary transition-all duration-500 rounded-full" id="worksheetProgressBar" style="width: 100%"></div>
+        </div>
+
+        <!-- Printable / Exportable Sheet Area -->
+        <div class="bg-surface-container-lowest border border-outline-variant p-6 sm:p-10 rounded-xl shadow-sm" id="printableSheet">
+          
+          <!-- Sheet Header (Design Minimal, flessibile che evita overflow) -->
+          <div class="flex flex-col md:flex-row justify-between items-start pb-4 border-b border-primary/50 gap-4 mb-6">
+            <div class="text-left max-w-full md:max-w-[60%]">
+              <h2 class="font-headline-md text-lg sm:text-xl font-bold text-primary leading-snug" id="sheetHeaderTitle">Esercitazione di Matematica</h2>
+              <p class="text-[11px] text-on-surface-variant font-semibold mt-0.5" id="sheetHeaderMeta">Classe Quarta Elementare</p>
+            </div>
+            <!-- Campi Studente, Data, Esito disposti in Griglia Flessibile minimalista -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full md:w-auto">
+              <div class="flex flex-col min-w-[120px]">
+                <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Studente</span>
+                <input id="studentNameInput" class="border-b border-outline-variant bg-transparent py-0.5 text-xs text-on-surface font-bold focus:outline-none focus:border-primary w-full" placeholder="Nome dell'alunno..." type="text">
+              </div>
+              <div class="flex flex-col min-w-[100px]">
+                <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Data</span>
+                <input id="studentDateInput" class="border-b border-outline-variant bg-transparent py-0.5 text-xs text-on-surface font-bold focus:outline-none focus:border-primary w-full" type="text">
+              </div>
+              <div class="flex flex-col min-w-[100px]">
+                <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Esito / Voto</span>
+                <input id="studentGradeInput" class="border-b border-outline-variant bg-transparent py-0.5 text-xs text-on-surface font-bold focus:outline-none focus:border-primary w-full" placeholder="Risultato..." type="text">
+              </div>
+            </div>
+          </div>
+
+          <!-- Exercises Stack Container -->
+          <div class="space-y-8" id="worksheetSectionsContainer">
+            <!-- Rendered dynamically in JavaScript -->
+          </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="mt-6 flex justify-center gap-3 pb-8">
+          <button class="bg-primary text-on-primary px-8 py-3 rounded-lg font-headline-md text-sm font-bold hover:scale-[1.01] active:scale-95 transition-all flex items-center gap-2 shadow-sm" onclick="downloadPdf()">
+            <span class="material-symbols-outlined text-lg">download_for_offline</span>
+            <span>Finalizza e Scarica PDF</span>
+          </button>
+          <button class="border border-primary text-primary hover:bg-primary/5 px-6 py-3 rounded-lg font-bold text-xs transition-all active:scale-95 flex items-center gap-1.5" onclick="switchView('dashboard')">
+            <span class="material-symbols-outlined text-sm">add_circle</span>
+            <span>Modifica Argomenti</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. REVIEW CENTER VIEW -->
+    <div class="max-w-[960px] mx-auto px-8 py-8 hidden" id="reviewView">
+      <section class="mb-6 text-center">
+        <h1 class="font-headline-lg text-xl sm:text-2xl text-primary mb-1 font-bold">Centro di Ripasso</h1>
+        <p class="text-xs text-on-surface-variant max-w-xl mx-auto leading-relaxed">
+          Allena la mente con sfide rapide. Il buffer previene la riproposizione delle stesse domande per 1000 cicli consecutivi.
+        </p>
+      </section>
+
+      <div class="grid grid-cols-12 gap-gutter">
+        
+        <!-- Interactive Daily Math Challenge (Left column) -->
+        <div class="col-span-12 lg:col-span-7 bg-surface-container-lowest border border-outline-variant p-6 rounded-xl flex flex-col justify-between min-h-[340px]">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="bg-primary-fixed text-on-primary-fixed-variant px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Sfida Rapida</span>
+              <span id="bufferCapacityIndicator" class="text-[10px] text-on-surface-variant font-semibold">Buffer: 0/1000</span>
+            </div>
+            <h3 class="font-headline-md text-base font-bold text-primary mb-2">Quesito Istantaneo</h3>
+            <p class="text-xs text-on-surface-variant mb-4 leading-relaxed">Risolvi a mente la sfida e inserisci la risposta. Premi "Verifica" per controllare.</p>
+            
+            <div class="bg-surface-container-low rounded-lg p-5 flex flex-col items-center justify-center min-h-[120px] border border-outline-variant">
+              <div class="text-xl font-bold text-primary mb-3 font-quicksand" id="challengeQuestion">Caricamento...</div>
+              <div class="flex items-center gap-2 w-full max-w-xs">
+                <input class="w-full text-center border border-outline-variant bg-surface-container-lowest rounded-lg py-1.5 text-lg font-bold focus:border-primary outline-none text-primary" id="challengeAnswerInput" placeholder="..." type="text" onkeydown="if(event.key === 'Enter') checkChallengeAnswer()">
+                <button class="bg-primary text-on-primary font-bold px-4 py-2 rounded-lg text-xs hover:bg-primary-container transition-all active:scale-95" id="challengeCheckBtn" onclick="checkChallengeAnswer()">Verifica</button>
+              </div>
+              <div class="text-xs font-bold mt-3 hidden" id="challengeFeedback"></div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mt-4 pt-3 border-t border-outline-variant/60">
+            <button onclick="resetChallengeHistory()" class="text-[11px] text-red-600 hover:underline flex items-center gap-1 font-semibold">
+              <span class="material-symbols-outlined text-xs">restart_alt</span> Azzera Buffer
+            </button>
+            <button class="text-xs text-primary font-bold flex items-center gap-1 hover:underline" onclick="generateNewChallenge()">
+              <span>Prossima sfida</span>
+              <span class="material-symbols-outlined text-xs">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Student Stats / Study Tips (Right column) -->
+        <div class="col-span-12 lg:col-span-5 flex flex-col gap-4">
+          
+          <!-- Study Stats Widget -->
+          <div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl">
+            <h4 class="font-headline-md text-xs font-bold text-primary mb-3 flex items-center gap-1.5 uppercase tracking-wider">
+              <span class="material-symbols-outlined text-sm">insights</span>
+              <span>I tuoi progressi</span>
+            </h4>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-background rounded-lg p-3 text-center border border-outline-variant">
+                <div class="text-xl font-bold text-primary" id="statsTotalGenerated">0</div>
+                <div class="text-[9px] text-on-surface-variant opacity-75 font-semibold uppercase tracking-wider">Schede create</div>
+              </div>
+              <div class="bg-background rounded-lg p-3 text-center border border-outline-variant">
+                <div class="text-xl font-bold text-primary" id="statsCorrectAnswers">0</div>
+                <div class="text-[9px] text-on-surface-variant opacity-75 font-semibold uppercase tracking-wider">Sfide vinte</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Study Tips Widget -->
+          <div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl flex-grow">
+            <h4 class="font-headline-md text-xs font-bold text-primary mb-3 flex items-center gap-1.5 uppercase tracking-wider">
+              <span class="material-symbols-outlined text-sm">workspace_premium</span>
+              <span>I Tuoi Badge</span>
+            </h4>
+            <div class="space-y-2 text-xs" id="badgesContainer">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4. TUTOR CHAT ADATTIVO -->
+    <div class="max-w-[1024px] mx-auto px-container-padding py-stack-md hidden" id="tutorView">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-240px)] min-h-[460px]">
+        
+        <!-- Chat Area -->
+        <div class="lg:col-span-8 bg-surface-container-lowest rounded-xl border border-outline-variant flex flex-col overflow-hidden">
+          <div class="bg-surface-container-low px-5 py-3 border-b border-outline-variant flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-base">
+                <i class="fa-solid fa-graduation-cap text-xs"></i>
+              </div>
+              <div class="text-left">
+                <h3 class="font-headline-md text-xs font-bold text-primary">Tutor AI</h3>
+                <span class="text-[9px] text-on-surface-variant font-semibold uppercase tracking-wider">Supporto Cognitivo</span>
+              </div>
+            </div>
+            <button onclick="clearChat()" class="text-[10px] text-on-surface-variant hover:text-primary flex items-center gap-1 font-bold">
+              <span class="material-symbols-outlined text-xs">delete_sweep</span> Svuota Chat
+            </button>
+          </div>
+
+          <div id="chatHistory" class="flex-grow overflow-y-auto p-4 space-y-3 no-scrollbar bg-surface-container-lowest/50 text-xs">
+            <div class="flex items-start gap-3 max-w-[85%]">
+              <div class="h-7 w-7 rounded-full bg-primary flex items-center justify-center text-on-primary flex-shrink-0 text-xs">
+                <i class="fa-solid fa-robot text-[10px]"></i>
+              </div>
+              <div class="bg-surface-container border border-outline-variant rounded-xl rounded-tl-sm px-3.5 py-2 text-xs text-on-surface leading-relaxed text-left">
+                Ciao! Sono il tuo tutor matematico. Se trovi un esercizio difficile nella scheda, premi l'icona <span class="text-primary font-bold">"Tutor AI"</span> accanto ad esso per portarlo qui e analizzarlo passo-passo. Puoi anche chiedermi di **inventare un problema specifico** per te!
+              </div>
+            </div>
+          </div>
+
+          <!-- Step Progression Bar -->
+          <div id="stepProgressIndicator" class="hidden px-5 py-1.5 bg-primary/5 border-t border-outline-variant flex justify-between items-center text-[10px] text-on-surface-variant">
+            <span class="flex items-center gap-1 text-primary"><span class="h-1 w-1 rounded-full bg-primary animate-ping"></span> Risoluzione guidata...</span>
+            <span id="revealedStepTracker">Passo 0 di 0</span>
+          </div>
+
+          <!-- Tastiera Input Chat -->
+          <div class="p-3 bg-surface-container-low border-t border-outline-variant flex gap-2">
+            <input type="text" id="chatInput" placeholder="Chiedi spiegazioni o scrivi 'Generami un esercizio'..." class="flex-grow bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-xs text-on-surface placeholder-on-surface-variant focus:border-primary focus:ring-0 focus:outline-none" onkeydown="if(event.key === 'Enter') sendChatMessage()">
+            <button onclick="sendChatMessage()" class="bg-primary hover:bg-primary-container text-on-primary font-bold h-9 w-9 rounded-lg flex items-center justify-center transition-all active:scale-95">
+              <span class="material-symbols-outlined text-base">send</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sidebar Sandbox tastiera -->
+        <div class="lg:col-span-4 flex flex-col gap-4 text-left">
+          <div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant">
+            <h4 class="font-headline-md text-xs text-primary uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-xs">keyboard_alt</span> Simboli Rapidi
+            </h4>
+            <div class="grid grid-cols-4 gap-1.5">
+              <button onclick="insertFormula('√()')" class="bg-surface hover:bg-surface-variant text-xs py-1.5 rounded text-primary font-mono font-bold">√</button>
+              <button onclick="insertFormula('²/³')" class="bg-surface hover:bg-surface-variant text-xs py-1.5 rounded text-primary font-mono font-bold">x/y</button>
+              <button onclick="insertFormula('π')" class="bg-surface hover:bg-surface-variant text-xs py-1.5 rounded text-primary font-mono font-bold">π</button>
+              <button onclick="insertFormula('Δ')" class="bg-surface hover:bg-surface-variant text-xs py-1.5 rounded text-primary font-mono font-bold">Δ</button>
+              <button onclick="insertFormula('+')" class="bg-surface hover:bg-surface-variant text-xs py-1.5 rounded text-primary font-mono font-bold">+</button>
+              <button onclick="insertFormula('-')" class="bg-surface hover:bg-surface-variant text-xs py-1.5 rounded text-primary font-mono font-bold">-</button>
+              <button onclick="insertFormula('×')" class="bg-surface hover:bg-surface-variant text-xs py-1.5 rounded text-primary font-mono font-bold">×</button>
+              <button onclick="insertFormula('÷')" class="bg-surface hover:bg-surface-variant text-xs py-1.5 rounded text-primary font-mono font-bold">÷</button>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant flex-grow">
+            <h4 class="font-headline-md text-xs text-primary mb-1.5 uppercase tracking-wider font-semibold">Tutor AI Attivo</h4>
+            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+              Il chatbot traduce istantaneamente i quesiti matematici in schemi didattici ordinati, svelando un'operazione alla volta per facilitare la comprensione.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Motivational Footer -->
+    <footer class="max-w-[1024px] mx-auto px-container-padding py-8 border-t border-outline-variant flex flex-col sm:flex-row justify-between items-center text-on-surface-variant opacity-60 text-xs mt-12 gap-3 pb-12">
+      <div class="font-semibold tracking-wide">ClearMath © 2026 · Apprendimento Efficace</div>
+      <div class="italic">"La matematica è il gioco più bello del mondo!"</div>
+    </footer>
+  </main>
+
+  <!-- App Core Engine Script -->
+  <script>
+    // ── DATA MATRIX: PROGRAMMI ADATTIVI E CLASSI (Modularità dei Dati) ──
+    const YEAR_MATRIX = [
+      { id: '1elem', name: '1ª Elementare', desc: 'Conteggi semplici, addizioni elementari e geometrica spaziale base.', chapters: [
+        { id: '1el_num20', name: 'Numeri fino a 20', desc: 'Valore posizionale, raggruppamento e confronto.' },
+        { id: '1el_add', name: 'Addizioni Semplici', desc: 'Somma grafica e numerica entro la prima decina.' },
+        { id: '1el_sub', name: 'Sottrazioni Elementari', desc: 'Differenze calcolate con riferimenti visivi.' },
+        { id: '1el_geom', name: 'Le Forme Geometriche', desc: 'Riconoscimento di triangolo, cerchio e quadrato.' }
+      ]},
+      { id: '2elem', name: '2ª Elementare', desc: 'Unità e decine, introduzione alle tabelline e problemi a 1 fase.', chapters: [
+        { id: '2el_num100', name: 'Numeri fino a 100', desc: 'Costruzione della centinaia tramite raggruppamento da 10.' },
+        { id: '2el_tab', name: 'Le Tabelline', desc: 'Imparare le moltiplicazioni a memoria da 1 a 10.' },
+        { id: '2el_prob', name: 'Semplici Problemi', desc: 'Sviluppo di testi e problemi con una sola operazione.' },
+        { id: '2el_geom', name: 'Confini e Regioni', desc: 'Analisi spaziale di linee aperte, chiuse e poligoni base.' }
+      ]},
+      { id: '3elem', name: '3ª Elementare', desc: 'Centinaia, frazioni semplici e prime divisioni in riga/colonna.', chapters: [
+        { id: '3el_num1000', name: 'Numeri fino a 1000', desc: 'Calcolo posizionale e calcoli a mente complessi.' },
+        { id: '3el_molt', name: 'Moltiplicazioni a 2 cifre', desc: 'Algoritmo in colonna con i cambi di decina.' },
+        { id: '3el_div', name: 'Divisioni in colonna', desc: 'Algoritmo classico con e senza resto.' },
+        { id: '3el_frac', name: 'Frazioni in Grafica', desc: 'Comprendere numeratore, denominatore e frazione complementare.' }
+      ]},
+      { id: '4elem', name: '4ª Elementare', desc: 'Numeri decimali, equivalenze geometriche e calcolo di aree/perimetri.', chapters: [
+        { id: '4el_dec', name: 'Numeri Decimali', desc: 'La virgola, decimi, centesimi.' },
+        { id: '4el_op', name: 'Operazioni in Colonna', desc: 'Esecuzione di calcoli avanzati con cifre decimali.' },
+        { id: '4el_mis', name: 'Misure ed Equivalenze', desc: 'Spostamenti di virgola tra mm, cm, m, g, kg e L.' },
+        { id: '4el_geom', name: 'Aree e Perimetri', desc: 'Misure del rettangolo e del quadrato.' }
+      ]},
+      { id: '5elem', name: '5ª Elementare', desc: 'Medie aritmetiche, percentuali, solidi geometrici e piano cartesiano.', chapters: [
+        { id: '5el_frac', name: 'Frazioni e Percentuali', desc: 'Calcolare lo sconto ed estrarre la percentuale.' },
+        { id: '5el_med', name: 'Medie e Statistica', desc: 'Estrazione della media matematica da insiemi di numeri.' },
+        { id: '5el_sol', name: 'I Solidi Geometrici', desc: 'Facce, vertici e spigoli di poliedri classici.' },
+        { id: '5el_cart', name: 'Il Piano Cartesiano', desc: 'Coordinate (X, Y) e rette ortonormali.' }
+      ]}
+    ];
+
+    // ── STATE VARIABLES ──
+    let selectedYear = '4elem'; // Default di partenza: classe 4a
+    let selectedChapters = new Set();
+    let currentWorksheet = null;
+    let globalDifficulty = 'low';
+    let chapterDifficulties = {};
+    let activeView = 'dashboard';
+    
+    // History buffer & statistica (Anti-ripetizione)
+    let challengeHistory = []; // Memorizzerà gli hash/ID delle domande per evitare ripetizioni
+    let localProgress = {
+      totalGenerated: 0,
+      correctChallenges: 0,
+      unlockedBadges: []
+    };
+
+    // ── RANDOM NUMBERS ENGINE (Seed basato su LCG per evitare cicli prevedibili) ──
+    let _seed = 42;
+    function randomInt(min, max) {
+      _seed = (_seed * 1664525 + 1013904223) >>> 0;
+      return min + (_seed % (max - min + 1));
+    }
+    function resetRandomSeed() {
+      _seed = Math.floor(Date.now() + Math.random() * 100000);
+    }
+
+    // ── EXERCISE GENERATION MODEL LOGIC ──
+    const EX_GENERATOR = {
+      '1el_num20': (diff, idx) => {
+        const n = randomInt(5, 19);
+        const types = [
+          { q: `Quale numero viene subito prima di <b>${n}</b>?`, a: `${n-1}` },
+          { q: `Quale numero viene subito dopo di <b>${n}</b>?`, a: `${n+1}` },
+          { q: `Scomponi il numero: <b>${n}</b> = 10 + ___`, a: `${n-10}` }
+        ];
+        return types[idx % types.length];
+      },
+      '1el_add': (diff, idx) => {
+        const limit = diff === 'low' ? 9 : 19;
+        const a = randomInt(1, limit - 2);
+        const b = randomInt(1, limit - a);
+        return { q: `Risolvi: <b>${a} + ${b}</b> = ___`, a: `${a+b}` };
+      },
+      '1el_sub': (diff, idx) => {
+        const a = randomInt(5, 19);
+        const b = randomInt(1, a);
+        return { q: `Risolvi: <b>${a} - ${b}</b> = ___`, a: `${a-b}` };
+      },
+      '1el_geom': (diff, idx) => {
+        const shapes = [
+          { n: 'triangolo', v: '3' },
+          { n: 'quadrato', v: '4' },
+          { n: 'cerchio', v: '0' }
+        ];
+        const s = shapes[idx % shapes.length];
+        return { q: `Quanti angoli (punte) ha un <b>${s.n}</b>? ___`, a: s.v };
+      },
+
+      '2el_num100': (diff, idx) => {
+        const n = randomInt(21, 99);
+        const dec = Math.floor(n / 10);
+        const uni = n % 10;
+        return { q: `Scomponi il numero <b>${n}</b> in decine (da) e unità (u): ___ da + ___ u`, a: `${dec} da e ${uni} u` };
+      },
+      '2el_tab': (diff, idx) => {
+        const a = randomInt(2, 9);
+        const b = randomInt(1, 10);
+        return { q: `Quanto fa la tabellina: <b>${a} × ${b}</b>? = ___`, a: `${a*b}` };
+      },
+      '2el_prob': (diff, idx) => {
+        const a = randomInt(3, 8);
+        const b = randomInt(2, 6);
+        return { q: `Marta compra <b>${a}</b> quaderni. Ciascuno costa <b>€${b}</b>. Quanto spende in tutto?`, a: `€${a*b}` };
+      },
+      '2el_geom': (diff, idx) => {
+        return { q: `Un rettangolo ha 4 lati. Ha anche tutti i lati uguali tra loro? (Sì o No)`, a: `No` };
+      },
+
+      '3el_num1000': (diff, idx) => {
+        const n = randomInt(105, 995);
+        const h = Math.floor(n / 100);
+        const da = Math.floor((n % 100) / 10);
+        const u = n % 10;
+        return { q: `Scomponi in centinaia (h), decine (da) e unità (u) il numero <b>${n}</b>`, a: `${h}h + ${da}da + ${u}u` };
+      },
+      '3el_molt': (diff, idx) => {
+        const a = diff === 'low' ? randomInt(12, 45) : randomInt(46, 120);
+        const b = randomInt(3, 9);
+        return { q: `Calcola in colonna: <b>${a} × ${b}</b> = ___`, a: `${a*b}` };
+      },
+      '3el_div': (diff, idx) => {
+        const div = randomInt(2, 9);
+        const quoti = randomInt(11, 35);
+        const dividend = div * quoti;
+        return { q: `Calcola in colonna: <b>${dividend} ÷ ${div}</b> = ___`, a: `${quoti}` };
+      },
+      '3el_frac': (diff, idx) => {
+        const d = randomInt(4, 10);
+        const n = randomInt(1, d - 1);
+        return { q: `Scrivi la frazione complementare di <b>${n}/${d}</b> = ___/___`, a: `${d-n}/${d}` };
+      },
+
+      '4el_dec': (diff, idx) => {
+        const a = (randomInt(10, 99) / 10).toFixed(1);
+        const b = (randomInt(10, 99) / 10).toFixed(1);
+        return { q: `Confronta usando &lt; o &gt; : <b>${a}</b> ⬜ <b>${b}</b>`, a: parseFloat(a) > parseFloat(b) ? '>' : '<' };
+      },
+      '4el_op': (diff, idx) => {
+        const a = (randomInt(150, 990) / 10).toFixed(1);
+        const b = (randomInt(100, 800) / 10).toFixed(1);
+        const isSum = idx % 2 === 0;
+        const res = isSum ? parseFloat(a) + parseFloat(b) : parseFloat(a) - parseFloat(b);
+        return { q: `Esegui: <b>${a} ${isSum ? '+' : '-'} ${b}</b> = ___`, a: res.toFixed(1) };
+      },
+      '4el_mis': (diff, idx) => {
+        const units = [
+          { f: 'm', t: 'cm', m: 100 },
+          { f: 'km', t: 'm', m: 1000 },
+          { f: 'kg', t: 'g', m: 1000 },
+          { f: 'L', t: 'cl', m: 100 }
+        ];
+        const u = units[idx % units.length];
+        const val = randomInt(2, 15);
+        return { q: `Esegui l'equivalenza: <b>${val} ${u.f}</b> = ___ <b>${u.t}</b>`, a: `${val * u.m}` };
+      },
+      '4el_geom': (diff, idx) => {
+        const base = randomInt(6, 15);
+        const alt = randomInt(3, 9);
+        return { q: `Calcola l'area di un rettangolo avente base = <b>${base} cm</b> e altezza = <b>${alt} cm</b>. Area = ___ cm²`, a: `${base*alt}` };
+      },
+
+      '5el_frac': (diff, idx) => {
+        const tot = [100, 200, 500, 800, 1000][idx % 5];
+        const perc = [10, 20, 25, 50][idx % 4];
+        return { q: `Calcola il <b>${perc}%</b> di <b>${tot}</b> = ___`, a: `${(tot*perc)/100}` };
+      },
+      '5el_med': (diff, idx) => {
+        const a = randomInt(10, 40);
+        const b = randomInt(10, 40);
+        const c = randomInt(10, 40);
+        const media = ((a + b + c) / 3).toFixed(1);
+        return { q: `Calcola la media aritmetica dei seguenti voti: <b>${a}</b>, <b>${b}</b>, <b>${c}</b> = ___`, a: media };
+      },
+      '5el_sol': (diff, idx) => {
+        const solids = [
+          { name: 'Cubo', f: '6' },
+          { name: 'Prisma triangolare', f: '5' },
+          { name: 'Piramide quadrata', f: '5' }
+        ];
+        const s = solids[idx % solids.length];
+        return { q: `Quante facce piane ha un <b>${s.name}</b>? ___`, a: s.f };
+      },
+      '5el_cart': (diff, idx) => {
+        const x = randomInt(1, 9);
+        const y = randomInt(1, 9);
+        return { q: `Scrivi come coppia ordinata il punto P con coordinata X = <b>${x}</b> e Y = <b>${y}</b>. P⬜`, a: `(${x}, ${y})` };
+      }
+    };
+
+    // ── INITIALIZATION ──
+    window.onload = function() {
+      loadProgressAndBuffer();
+      renderDashboardYears();
+      renderSidebarClassSelect();
+      renderChaptersGrid();
+      updateSidebarMeta();
+      generateNewChallenge();
+      setupAuthUI();
+    };
+
+    // ── LOCALSTORAGE PERSISTENCE ──
+    function loadProgressAndBuffer() {
+      const savedProgress = localStorage.getItem('clearmath_progress');
+      if (savedProgress) {
+        localProgress = JSON.parse(savedProgress);
+      } else {
+        saveProgressToLocal();
+      }
+
+      const savedBuffer = localStorage.getItem('clearmath_history_buffer');
+      if (savedBuffer) {
+        challengeHistory = JSON.parse(savedBuffer);
+      }
+
+      const savedYear = localStorage.getItem('clearmath_selected_year');
+      if (savedYear) {
+        selectedYear = savedYear;
+      }
+
+      const savedChapters = localStorage.getItem('clearmath_selected_chapters');
+      if (savedChapters) {
+        selectedChapters = new Set(JSON.parse(savedChapters));
+      }
+
+      const savedDiff = localStorage.getItem('clearmath_global_difficulty');
+      if (savedDiff) {
+        globalDifficulty = savedDiff;
+        setGlobalDiff(globalDifficulty);
+      }
+
+      updateUIFromStats();
+    }
+
+    // save progress
+    function saveProgressToLocal() {
+      localStorage.setItem('clearmath_progress', JSON.stringify(localProgress));
+    }
+
+    function saveHistoryBufferToLocal() {
+      localStorage.setItem('clearmath_history_buffer', JSON.stringify(challengeHistory));
+    }
+
+    function saveSelectionsToLocal() {
+      localStorage.setItem('clearmath_selected_year', selectedYear);
+      localStorage.setItem('clearmath_selected_chapters', JSON.stringify(Array.from(selectedChapters)));
+    }
+
+    function updateUIFromStats() {
+      document.getElementById('statsTotalGenerated').textContent = localProgress.totalGenerated;
+      document.getElementById('statsCorrectAnswers').textContent = localProgress.correctChallenges;
+      updateBadgesDisplay();
+    }
+
+    function updateBadgesDisplay() {
+      const container = document.getElementById('badgesContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const badges = [
+        { id: 'novice', name: 'Esploratore Aritmetico', desc: 'Genera la tua prima scheda.', req: localProgress.totalGenerated >= 1 },
+        { id: 'math_mind', name: 'Mente Attiva', desc: 'Risolvi correttamente 3 sfide veloci.', req: localProgress.correctChallenges >= 3 },
+        { id: 'pro', name: 'Campione ClearMath', desc: 'Risolvi correttamente 10 sfide veloci.', req: localProgress.correctChallenges >= 10 }
+      ];
+
+      badges.forEach(b => {
+        if (b.req) {
+          container.innerHTML += `
+            <div class="flex items-center gap-2 p-2 rounded-lg bg-primary-fixed/40 border border-primary/20 animate-fade-in text-xs font-semibold text-primary">
+              <span class="material-symbols-outlined text-primary text-base shrink-0">workspace_premium</span>
+              <div class="truncate">
+                <h5 class="font-bold text-xs truncate">${b.name}</h5>
+                <p class="text-[9px] text-on-surface-variant font-medium truncate">${b.desc}</p>
+              </div>
+            </div>
+          `;
+        } else {
+          container.innerHTML += `
+            <div class="flex items-center gap-2 p-2 rounded-lg bg-surface-container border border-outline-variant opacity-40 text-xs font-semibold text-outline">
+              <span class="material-symbols-outlined text-outline text-base shrink-0">lock</span>
+              <div class="truncate">
+                <h5 class="font-bold text-xs truncate">${b.name}</h5>
+                <p class="text-[9px] text-outline truncate">${b.desc}</p>
+              </div>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // ── ANNO SCOLASTICO CONTROLS ──
+    function renderDashboardYears() {
+      const grid = document.getElementById('yearsDashboardGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      YEAR_MATRIX.forEach(yr => {
+        const isSelected = selectedYear === yr.id;
+        const card = document.createElement('div');
+        card.className = `bg-surface-container-lowest p-3 rounded-xl cursor-pointer transition-all border text-left flex flex-col justify-between h-24 hover:border-primary/45 ${
+          isSelected ? 'border-primary ring-2 ring-primary/20 bg-primary-fixed/20' : 'border-outline-variant'
+        }`;
+        card.onclick = () => selectYear(yr.id);
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <span class="text-[8px] tracking-wider uppercase text-on-surface-variant font-bold">Livello</span>
+            <div class="h-3.5 w-3.5 rounded-full border border-outline-variant flex items-center justify-center ${isSelected ? 'bg-primary border-primary text-white' : ''}">
+              ${isSelected ? '<span class="material-symbols-outlined text-[8px] font-bold">check</span>' : ''}
+            </div>
+          </div>
+          <h3 class="font-quicksand font-bold text-xs sm:text-xs text-primary truncate">${yr.name}</h3>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Sidebar class selector drop-down to be minimal and not overflow
+    function renderSidebarClassSelect() {
+      const select = document.getElementById('sidebarYearSelect');
+      if (!select) return;
+      select.innerHTML = '';
+      YEAR_MATRIX.forEach(yr => {
+        const option = document.createElement('option');
+        option.value = yr.id;
+        option.textContent = yr.name;
+        if (yr.id === selectedYear) option.selected = true;
+        select.appendChild(option);
+      });
+    }
+
+    function selectYear(yrId) {
+      selectedYear = yrId;
+      selectedChapters.clear(); // Resetta i capitoli per non mischiare classi diverse
+
+      saveSelectionsToLocal();
+      renderDashboardYears();
+      renderSidebarClassSelect();
+      renderChaptersGrid();
+      updateSelectionCounters();
+    }
+
+    function updateSelectionCounters() {
+      const statusBadge = document.getElementById('selectionStatus');
+      const yrObj = YEAR_MATRIX.find(y => y.id === selectedYear);
+      if (statusBadge) statusBadge.textContent = yrObj ? yrObj.name : "Nessun Anno";
+
+      const chapSection = document.getElementById('chaptersSection');
+      if (chapSection) {
+        if (selectedYear) {
+          chapSection.classList.remove('hidden');
+        } else {
+          chapSection.classList.add('hidden');
+        }
+      }
+      updateSidebarMeta();
+    }
+
+    function renderChaptersGrid() {
+      const grid = document.getElementById('chaptersDashboardGrid');
+      const sidebarChapters = document.getElementById('sidebarChaptersList');
+      if (!grid || !sidebarChapters) return;
+      
+      grid.innerHTML = '';
+      sidebarChapters.innerHTML = '';
+
+      const yrObj = YEAR_MATRIX.find(y => y.id === selectedYear);
+      if (!yrObj) return;
+
+      yrObj.chapters.forEach(chap => {
+        const isSelected = selectedChapters.has(chap.id);
+        if (!chapterDifficulties[chap.id]) chapterDifficulties[chap.id] = globalDifficulty;
+        const diff = chapterDifficulties[chap.id];
+
+        // 1. Render Dashboard Chapters (Grande Griglia Bento pulita senza icona menu_book)
+        const card = document.createElement('div');
+        card.className = `bg-surface-container-lowest p-4 rounded-xl border text-left flex flex-col justify-between transition-all hover:border-primary/45 ${
+          isSelected ? 'border-primary/50 ring-1 ring-primary/15 bg-primary-fixed/15' : 'border-outline-variant'
+        }`;
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start gap-2 mb-1.5 cursor-pointer" onclick="toggleChapter('${chap.id}')">
+            <div class="flex items-center gap-1 overflow-hidden">
+              <div class="overflow-hidden">
+                <h4 class="font-quicksand font-bold text-xs text-primary truncate">${chap.name}</h4>
+                <p class="text-[8px] text-on-surface-variant uppercase tracking-widest mt-0.5 truncate">${yrObj.name}</p>
+              </div>
+            </div>
+            <div class="h-4.5 w-4.5 rounded-full border border-outline-variant flex items-center justify-center shrink-0 ${isSelected ? 'bg-primary border-primary text-white' : ''}">
+              ${isSelected ? '<span class="material-symbols-outlined text-[8px] font-bold">check</span>' : ''}
+            </div>
+          </div>
+          
+          <p class="text-[10px] text-on-surface-variant leading-normal mb-3 font-medium line-clamp-2">${chap.desc}</p>
+          
+          <div class="border-t border-outline-variant/60 pt-2.5 mt-1 flex justify-between items-center" onclick="event.stopPropagation()">
+            <span class="text-[9px] text-on-surface-variant uppercase tracking-wider font-bold">DIFFICOLTÀ:</span>
+            <div class="flex gap-1 bg-surface-container border border-outline-variant rounded p-0.5 scale-90 origin-right">
+              <button onclick="setChapterDifficulty('${chap.id}', 'low')" class="px-1.5 py-0.5 text-[8px] font-bold rounded ${diff === 'low' ? 'bg-primary text-white' : 'text-on-surface-variant hover:text-primary'}">Basso</button>
+              <button onclick="setChapterDifficulty('${chap.id}', 'mid')" class="px-1.5 py-0.5 text-[8px] font-bold rounded ${diff === 'mid' ? 'bg-primary text-white' : 'text-on-surface-variant hover:text-primary'}">Medio</button>
+              <button onclick="setChapterDifficulty('${chap.id}', 'high')" class="px-1.5 py-0.5 text-[8px] font-bold rounded ${diff === 'high' ? 'bg-primary text-white' : 'text-on-surface-variant hover:text-primary'}">Alto</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+
+        // 2. Render Sidebar Navigation Items (Lista Argomenti Minimal senza icona label, pulitissima)
+        const sidebarItem = document.createElement('div');
+        sidebarItem.className = 'w-full px-1';
+        sidebarItem.innerHTML = `
+          <div class="flex items-center justify-between rounded-lg cursor-pointer transition-all pr-2 ${
+            isSelected 
+              ? 'text-primary font-bold bg-primary-fixed/25 border-l-4 border-primary pl-2.5 py-1.5' 
+              : 'text-on-surface-variant hover:bg-surface-variant/40 pl-3 py-1.5'
+          }" onclick="toggleChapter('${chap.id}')">
+            <div class="flex items-center gap-1 overflow-hidden shrink min-w-0">
+              <span class="text-[11px] tracking-tight truncate max-w-[170px] font-medium text-on-surface-variant">${chap.name}</span>
+            </div>
+            ${isSelected ? `<span class="text-[8px] font-extrabold px-1.5 py-0.25 rounded bg-primary text-on-primary shrink-0 uppercase">${diff.charAt(0)}</span>` : ''}
+          </div>
+        `;
+        sidebarChapters.appendChild(sidebarItem);
+      });
+      updateSelectionCounters();
+    }
+
+    function toggleChapter(chapId) {
+      if (selectedChapters.has(chapId)) {
+        selectedChapters.delete(chapId);
+      } else {
+        selectedChapters.add(chapId);
+      }
+      saveSelectionsToLocal();
+      renderChaptersGrid();
+    }
+
+    function toggleSelectAllChapters() {
+      const yrObj = YEAR_MATRIX.find(y => y.id === selectedYear);
+      if (!yrObj) return;
+
+      const allActiveChapterIds = yrObj.chapters.map(c => c.id);
+      const allSelected = allActiveChapterIds.every(id => selectedChapters.has(id));
+
+      if (allSelected) {
+        allActiveChapterIds.forEach(id => selectedChapters.delete(id));
+      } else {
+        allActiveChapterIds.forEach(id => selectedChapters.add(id));
+      }
+      saveSelectionsToLocal();
+      renderChaptersGrid();
+    }
+
+    function setChapterDifficulty(chapId, diff) {
+      chapterDifficulties[chapId] = diff;
+      renderChaptersGrid();
+    }
+
+    function setGlobalDiff(diff) {
+      globalDifficulty = diff;
+      localStorage.setItem('clearmath_global_difficulty', diff);
+
+      ['low', 'mid', 'high'].forEach(d => {
+        const btn = document.getElementById(`global-diff-${d}`);
+        if (btn) {
+          if (d === diff) {
+            btn.className = "text-[10px] font-bold py-2 rounded-md transition-colors bg-primary text-white";
+          } else {
+            btn.className = "text-[10px] font-bold py-2 rounded-md transition-colors text-on-surface-variant hover:text-primary";
+          }
+        }
+      });
+    }
+
+    function applyGlobalDifficulty() {
+      selectedChapters.forEach(chapId => {
+        chapterDifficulties[chapId] = globalDifficulty;
+      });
+      renderChaptersGrid();
+    }
+
+    // sidebar metadata
+    function updateSidebarMeta() {
+      const summaryText = document.getElementById('sidebarSummaryText');
+      const sideGenBtn = document.getElementById('sidebarGenerateBtn');
+      const n = selectedChapters.size;
+      if (summaryText) summaryText.textContent = `${n} argomenti scelti`;
+
+      if (sideGenBtn) {
+        if (n > 0) {
+          sideGenBtn.disabled = false;
+          sideGenBtn.classList.remove('opacity-45');
+        } else {
+          sideGenBtn.disabled = true;
+          sideGenBtn.classList.add('opacity-45');
+        }
+      }
+    }
+
+    // Slider Listeners
+    const rangeInput = document.getElementById('exerciseCountRange');
+    if (rangeInput) {
+      rangeInput.addEventListener('input', function(e) {
+        const valSpan = document.getElementById('exerciseCountVal');
+        if (valSpan) valSpan.textContent = e.target.value;
+      });
+    }
+
+    // ── SPA VIEW SWITCHER ──
+    function switchView(viewName) {
+      activeView = viewName;
+      ['dashboard', 'workspace', 'review', 'tutor'].forEach(v => {
+        const pane = document.getElementById(`${v}View`);
+        const nav = document.getElementById(`nav-${v}`);
+        
+        if (pane) {
+          if (v === viewName) {
+            pane.classList.remove('hidden');
+            if (nav) nav.className = "text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-sm transition-all";
+          } else {
+            pane.classList.add('hidden');
+            if (nav) nav.className = "text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-sm transition-all";
+          }
+        }
+      });
+
+      if (viewName === 'workspace') {
+        const emptyState = document.getElementById('workspaceEmptyState');
+        const activeContent = document.getElementById('workspaceActiveContent');
+        if (emptyState && activeContent) {
+          if (currentWorksheet) {
+            emptyState.classList.add('hidden');
+            activeContent.classList.remove('hidden');
+          } else {
+            emptyState.classList.remove('hidden');
+            activeContent.classList.add('hidden');
+          }
+        }
+      }
+    }
+
+    function setupAuthUI() {
+      const box = document.getElementById('auth-box');
+      if (box) {
+        box.innerHTML = `
+          <span class="text-xs text-on-surface-variant font-semibold italic flex items-center gap-1 shrink-0">
+            <span class="h-1.5 w-1.5 rounded-full bg-green-500"></span> Sincronizzato
+          </span>
+        `;
+      }
+    }
+
+    // ── MATHS EQUATIONS FORMATTER RENDERER ──
+    function formatExerciseText(text) {
+      if (!text) return '';
+      let result = text;
+      
+      // 1. Sostituisce ___/___ con form input verticali per le frazioni
+      result = result.replace(/___\/___/g, `
+        <div class="inline-flex flex-col items-center justify-center align-middle mx-2">
+          <input class="w-8 math-input-border text-center bg-transparent focus:outline-none text-xs font-bold pb-0.5 text-primary" placeholder="?" type="text">
+          <div class="w-6 h-[1.5px] bg-primary my-0.5"></div>
+          <input class="w-8 math-input-border text-center bg-transparent focus:outline-none text-xs font-bold pt-0.5 text-primary" placeholder="?" type="text">
+        </div>
+      `);
+      
+      // 2. Sostituisce frazioni semplici n/d (es: 3/4) con rendering verticale HTML
+      result = result.replace(/\b(\d+)\/(\d+)\b/g, (match, num, den) => {
+        return `
+          <div class="inline-flex flex-col items-center justify-center align-middle mx-1.5 text-xs font-bold">
+            <span class="leading-none text-primary text-[10px]">${num}</span>
+            <div class="w-4 h-[1px] bg-primary/70 my-0.5"></div>
+            <span class="leading-none text-primary text-[10px]">${den}</span>
+          </div>
+        `;
+      });
+
+      // 3. Sostituisce ⬜ con un input box interattivo per simboli come >, < o =
+      result = result.replace(/⬜/g, `
+        <input class="w-8 h-8 mx-1 text-center border border-primary/30 bg-surface rounded-lg text-xs font-bold focus:border-primary outline-none inline-block align-middle focus:ring-1 focus:ring-primary text-primary" placeholder="?" type="text">
+      `);
+
+      // 4. Sostituisce ___ generici con un campo sottolineato
+      result = result.replace(/___+/g, `
+        <input class="math-input-border text-center bg-transparent w-16 mx-1 focus:outline-none text-xs font-bold text-primary" placeholder="?" type="text">
+      `);
+      
+      return result;
+    }
+
+    // ── CALCOLO E GENERAZIONE SCHEDA ADATTIVA ──
+    function generateCustomWorksheet() {
+      resetRandomSeed();
+      const countRangeVal = parseInt(document.getElementById('exerciseCountRange').value);
+      
+      if (selectedChapters.size === 0) {
+        alert("Seleziona almeno un argomento nella barra laterale o nella dashboard.");
+        return;
+      }
+
+      const chapList = Array.from(selectedChapters);
+      const basePerChap = Math.floor(countRangeVal / chapList.length);
+      let remainder = countRangeVal % chapList.length;
+
+      const exercises = [];
+      let globalExId = 1;
+
+      chapList.forEach(cId => {
+        const difficulty = chapterDifficulties[cId] || globalDifficulty;
+        const countForThisChap = basePerChap + (remainder > 0 ? 1 : 0);
+        remainder--;
+
+        const chapMeta = findChapterMeta(cId);
+
+        for (let i = 0; i < countForThisChap; i++) {
+          const localEngine = EX_GENERATOR[cId];
+          let exerciseObj = { q: `Calcolo generico per ${cId}`, a: `?` };
+          if (localEngine) {
+            exerciseObj = localEngine(difficulty, i);
+          }
+          
+          exercises.push({
+            id: globalExId++,
+            chapterId: cId,
+            chapterName: chapMeta.chapName,
+            yearName: chapMeta.yearName,
+            difficulty: difficulty,
+            text: exerciseObj.q,
+            correctAnswer: exerciseObj.a,
+            userAnswer: '',
+            isProblem: cId.includes('prob') || cId.includes('geom')
+          });
+        }
+      });
+
+      currentWorksheet = {
+        id: 'ws_' + Date.now(),
+        title: `Scheda di Matematica - ${YEAR_MATRIX.find(obj => obj.id === selectedYear).name}`,
+        date: new Date().toLocaleDateString('it-IT'),
+        exercises: exercises
+      };
+
+      // Aggiorna progressi nel localStorage
+      localProgress.totalGenerated += 1;
+      saveProgressToLocal();
+      updateUIFromStats();
+
+      renderActiveWorksheet();
+      switchView('workspace');
+      document.getElementById('topDownloadPdf').disabled = false;
+    }
+
+    function findChapterMeta(chapId) {
+      let chapName = '';
+      let yearName = '';
+      YEAR_MATRIX.forEach(yr => {
+        const found = yr.chapters.find(c => c.id === chapId);
+        if (found) {
+          chapName = found.name;
+          yearName = yr.name;
+        }
+      });
+      return { chapName, yearName };
+    }
+
+    function renderActiveWorksheet() {
+      if (!currentWorksheet) return;
+
+      document.getElementById('sheetHeaderTitle').textContent = currentWorksheet.title;
+      document.getElementById('sheetHeaderMeta').innerHTML = `Elaborata il ${currentWorksheet.date} &nbsp;·&nbsp; <b>${currentWorksheet.exercises.length}</b> quesiti d'esame`;
+
+      const container = document.getElementById('worksheetSectionsContainer');
+      container.innerHTML = '';
+
+      const grouped = {};
+      currentWorksheet.exercises.forEach(ex => {
+        if (!grouped[ex.chapterId]) grouped[ex.chapterId] = [];
+        grouped[ex.chapterId].push(ex);
+      });
+
+      Object.keys(grouped).forEach(chapId => {
+        const firstEx = grouped[chapId][0];
+        const section = document.createElement('section');
+        section.className = "border-t border-outline-variant pt-5 text-left animate-fade-in";
+        
+        let exHtml = '';
+        grouped[chapId].forEach((ex, index) => {
+          exHtml += `
+            <div class="bg-surface border border-outline-variant p-4 rounded-xl transition-all flex flex-col justify-between gap-3">
+              <div class="flex justify-between items-start gap-2.5">
+                <div class="flex items-start gap-2 text-xs sm:text-sm leading-relaxed max-w-[85%]">
+                  <span class="font-bold text-primary mr-1 font-quicksand text-xs sm:text-sm">${index + 1}.</span>
+                  <div class="text-on-background font-medium text-xs sm:text-sm leading-snug">${formatExerciseText(ex.text)}</div>
+                </div>
+                
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                  <button onclick="regenerateSingleExercise(${ex.id})" title="Rigenera" class="text-on-surface-variant hover:text-primary transition-colors h-6 w-6 rounded flex items-center justify-center bg-surface-container border border-outline-variant">
+                    <span class="material-symbols-outlined text-xs">refresh</span>
+                  </button>
+                  <button onclick="launchTutorForEx(${ex.id})" title="Tutor cognitivo AI" class="text-primary hover:text-primary-container transition-all h-6 w-6 rounded flex items-center justify-center bg-primary-fixed border border-primary/30">
+                    <span class="material-symbols-outlined text-xs">forum</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex items-baseline gap-2 mt-1 border-t border-outline-variant/40 pt-2.5">
+                <span class="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Risposta:</span>
+                <input type="text" value="${ex.userAnswer}" onchange="updateUserAnswer(${ex.id}, this.value)" placeholder="Inserisci soluzione..." class="flex-grow bg-transparent border-b border-outline-variant text-xs text-on-background px-2 focus:outline-none focus:border-primary py-0.5 font-bold">
+              </div>
+            </div>
+          `;
+        });
+
+        section.innerHTML = `
+          <div class="flex justify-between items-center mb-3">
+            <div class="overflow-hidden mr-3">
+              <h3 class="font-quicksand font-bold text-xs sm:text-sm text-primary flex items-center gap-2 truncate">
+                ${firstEx.chapterName}
+                <span class="text-[8px] bg-primary-fixed text-primary px-1.5 py-0.5 rounded font-bold shrink-0">${firstEx.yearName}</span>
+              </h3>
+            </div>
+            <button onclick="regenerateChapter('${chapId}')" class="text-[11px] text-primary hover:underline flex items-center gap-1 font-bold shrink-0">
+              <span class="material-symbols-outlined text-xs">cached</span> Rigenera capitolo
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            ${exHtml}
+          </div>
+        `;
+        container.appendChild(section);
+      });
+    }
+
+    function updateUserAnswer(exId, value) {
+      if (!currentWorksheet) return;
+      const ex = currentWorksheet.exercises.find(e => e.id === exId);
+      if (ex) {
+        ex.userAnswer = value;
+      }
+    }
+
+    function regenerateChapter(chapId) {
+      if (!currentWorksheet) return;
+      resetRandomSeed();
+      const localEngine = EX_GENERATOR[chapId];
+      if (!localEngine) return;
+
+      currentWorksheet.exercises.forEach((ex, idx) => {
+        if (ex.chapterId === chapId) {
+          const res = localEngine(ex.difficulty, idx);
+          ex.text = res.q;
+          ex.correctAnswer = res.a;
+          ex.userAnswer = '';
+        }
+      });
+      renderActiveWorksheet();
+    }
+
+    function regenerateSingleExercise(exId) {
+      if (!currentWorksheet) return;
+      resetRandomSeed();
+      const ex = currentWorksheet.exercises.find(e => e.id === exId);
+      if (ex) {
+        const localEngine = EX_GENERATOR[ex.chapterId];
+        if (localEngine) {
+          const res = localEngine(ex.difficulty, randomInt(1, 100));
+          ex.text = res.q;
+          ex.correctAnswer = res.a;
+          ex.userAnswer = '';
+          renderActiveWorksheet();
+        }
+      }
+    }
+
+    // ── SFIDA RAPIDA CENTRO RIPASSO CON HISTORY BUFFER ──
+    const CHALLENGE_POOL = [
+      { id: "ch_1", q: "25 × 4 = ?", a: "100" },
+      { id: "ch_2", q: "125 + 75 = ?", a: "200" },
+      { id: "ch_3", q: "360 ÷ 6 = ?", a: "60" },
+      { id: "ch_4", q: "La frazione complementare di 3/5 è ?", a: "2/5" },
+      { id: "ch_5", q: "Quanti centimetri ci sono in 2.5 metri ?", a: "250" },
+      { id: "ch_6", q: "Il perimetro di un quadrato di lato 8 cm misura ?", a: "32" },
+      { id: "ch_7", q: "1000 - 350 = ?", a: "650" },
+      { id: "ch_8", q: "12 × 12 = ?", a: "144" },
+      { id: "ch_9", q: "La frazione complementare di 1/4 è ?", a: "3/4" },
+      { id: "ch_10", q: "Quanti grammi ci sono in 1.5 kg ?", a: "1500" },
+      { id: "ch_11", q: "Il perimetro di un rettangolo con lati 5 cm e 10 cm misura ?", a: "30" },
+      { id: "ch_12", q: "150 × 3 = ?", a: "450" },
+      { id: "ch_13", q: "720 ÷ 9 = ?", a: "80" },
+      { id: "ch_14", q: "L'area di un quadrato di lato 5 cm misura ?", a: "25" },
+      { id: "ch_15", q: "500 - 125 = ?", a: "375" }
+    ];
+
+    let currentChallengeIndex = 0;
+
+    function generateNewChallenge() {
+      let filteredPool = CHALLENGE_POOL.filter(item => !challengeHistory.includes(item.id));
+      
+      if (filteredPool.length === 0) {
+        challengeHistory = [];
+        filteredPool = CHALLENGE_POOL;
+      }
+
+      const rIdx = Math.floor(Math.random() * filteredPool.length);
+      const chosenItem = filteredPool[rIdx];
+      
+      currentChallengeIndex = CHALLENGE_POOL.findIndex(item => item.id === chosenItem.id);
+
+      challengeHistory.push(chosenItem.id);
+      if (challengeHistory.length > 1000) {
+        challengeHistory.shift();
+      }
+
+      saveHistoryBufferToLocal();
+
+      document.getElementById('challengeQuestion').innerHTML = chosenItem.q;
+      const input = document.getElementById('challengeAnswerInput');
+      input.value = '';
+      input.className = "w-full text-center border border-outline-variant bg-surface rounded-lg py-1.5 text-base font-bold focus:border-primary outline-none text-on-background";
+      
+      document.getElementById('challengeFeedback').classList.add('hidden');
+      document.getElementById('bufferCapacityIndicator').textContent = `Buffer: ${challengeHistory.length}/1000`;
+    }
+
+    function checkChallengeAnswer() {
+      const input = document.getElementById('challengeAnswerInput');
+      const val = input.value.trim().toLowerCase();
+      const correctVal = CHALLENGE_POOL[currentChallengeIndex].a.toLowerCase();
+      const fb = document.getElementById('challengeFeedback');
+      
+      fb.classList.remove('hidden');
+      if (val === correctVal) {
+        input.className = "w-full text-center border-2 border-green-500 bg-green-50 rounded-lg py-1.5 text-base font-bold text-green-700 outline-none";
+        fb.innerHTML = "Corretto! Ottimo lavoro! 🎉";
+        fb.className = "text-xs font-bold mt-2 text-green-600 animate-bounce";
+
+        localProgress.correctChallenges += 1;
+        saveProgressToLocal();
+        updateUIFromStats();
+      } else {
+        input.className = "w-full text-center border-2 border-red-500 bg-red-50 rounded-lg py-1.5 text-base font-bold text-red-700 outline-none";
+        fb.innerHTML = `Ops! Prova ancora. La risposta corretta era: ${CHALLENGE_POOL[currentChallengeIndex].a}`;
+        fb.className = "text-xs font-bold mt-2 text-red-600";
+      }
+    }
+
+    function resetChallengeHistory() {
+      challengeHistory = [];
+      saveHistoryBufferToLocal();
+      generateNewChallenge();
+    }
+
+    // ── INTEGRATED COGNITIVE TUTOR (GEMINI 2.5 FLASH API) ──
+    let activeChatExId = null;
+    let chatSteps = [];
+    let currentStepIndex = 0;
+    let chatExerciseStepsStore = {};
+
+    function cleanAndParseJSON(rawText) {
+      let cleanText = rawText.trim();
+      if (cleanText.startsWith("```json")) {
+        cleanText = cleanText.substring(7);
+      } else if (cleanText.startsWith("```")) {
+        cleanText = cleanText.substring(3);
+      }
+      if (cleanText.endsWith("```")) {
+        cleanText = cleanText.substring(0, cleanText.length - 3);
+      }
+      return JSON.parse(cleanText.trim());
+    }
+
+    function clearChat() {
+      const history = document.getElementById('chatHistory');
+      history.innerHTML = `
+        <div class="flex items-start gap-3 max-w-[85%] animate-fade-in">
+          <div class="h-7 w-7 rounded-full bg-primary flex items-center justify-center text-on-primary flex-shrink-0 text-sm">
+            <i class="fa-solid fa-robot text-[10px]"></i>
+          </div>
+          <div class="bg-surface-container border border-outline-variant rounded-xl rounded-tl-sm px-3.5 py-2 text-xs text-on-surface leading-relaxed text-left">
+            Chat svuotata! Di quale problema vogliamo occuparci ora? Opure scrivimi "Generami un quiz" e lo progetterò per te.
+          </div>
+        </div>
+      `;
+      document.getElementById('stepProgressIndicator').classList.add('hidden');
+      activeChatExId = null;
+    }
+
+    function insertFormula(symbol) {
+      const input = document.getElementById('chatInput');
+      input.value += symbol;
+      input.focus();
+    }
+
+    function launchTutorForEx(exId) {
+      if (!currentWorksheet) return;
+      const ex = currentWorksheet.exercises.find(e => e.id === exId);
+      if (!ex) return;
+
+      activeChatExId = exId;
+      switchView('tutor');
+
+      const history = document.getElementById('chatHistory');
+      const promptDiv = document.createElement('div');
+      promptDiv.className = "flex justify-end items-start gap-3 max-w-[85%] ml-auto mt-4";
+      promptDiv.innerHTML = `
+        <div class="bg-primary-fixed text-primary border border-primary/30 rounded-xl rounded-tr-sm px-3.5 py-2 text-xs leading-relaxed text-left font-semibold">
+          Ho bisogno di aiuto per questo esercizio: <br>
+          <code class="text-primary font-mono block mt-1.5 p-1.5 bg-surface-container rounded">${ex.text}</code>
+        </div>
+        <div class="h-7 w-7 rounded-full bg-primary flex items-center justify-center text-on-primary flex-shrink-0 text-xs font-bold font-quicksand">
+          Tu
+        </div>
+      `;
+      history.appendChild(promptDiv);
+      history.scrollTop = history.scrollHeight;
+
+      triggerTutorAI(ex.text, ex.chapterName);
+    }
+
+    async function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      const history = document.getElementById('chatHistory');
+
+      const userDiv = document.createElement('div');
+      userDiv.className = "flex justify-end items-start gap-3 max-w-[85%] ml-auto mt-4 animate-fade-in";
+      userDiv.innerHTML = `
+        <div class="bg-primary-fixed text-primary border border-primary/30 rounded-xl rounded-tr-sm px-3.5 py-2 text-xs leading-relaxed text-left font-semibold">
+          ${text}
+        </div>
+        <div class="h-7 w-7 rounded-full bg-primary flex items-center justify-center text-on-primary flex-shrink-0 text-xs font-bold font-quicksand">
+          Tu
+        </div>
+      `;
+      history.appendChild(userDiv);
+      history.scrollTop = history.scrollHeight;
+
+      const lowerText = text.toLowerCase();
+      if (lowerText.includes('genera') || lowerText.includes('crea') || lowerText.includes('esercizio') || lowerText.includes('inventa')) {
+        generateTutorExerciseInChat(text);
+      } else {
+        triggerTutorAI(text);
+      }
+    }
+
+    async function generateTutorExerciseInChat(userRequest) {
+      const indicator = document.getElementById('stepProgressIndicator');
+      indicator.classList.remove('hidden');
+      document.getElementById('revealedStepTracker').textContent = "Generazione...";
+
+      const systemInstruction = `Sei un tutor didattico di ClearMath. Crea un esercizio specifico basato sulla richiesta dello studente.
+Rispondi esclusivamente in formato JSON strutturato in italiano.
+
+Formato JSON atteso:
+{
+  "exerciseText": "Testo chiaro dell'esercizio formulato (es: 'Calcola l\\'area di un rettangolo con b=5cm e h=10cm')",
+  "correctAnswer": "Solo il risultato pulito (es: '50')",
+  "steps": [
+    {
+      "explanation": "Breve spiegazione amichevole del primo passo...",
+      "formula": "Formula matematica del passo"
+    }
+  ]
+}`;
+
+      const apiKey = ""; 
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: `Crea un esercizio basato su: "${userRequest}".` }] }],
+            systemInstruction: { parts: [{ text: systemInstruction }] },
+            generationConfig: {
+              responseMimeType: "application/json",
+              responseSchema: {
+                type: "OBJECT",
+                properties: {
+                  exerciseText: { type: "STRING" },
+                  correctAnswer: { type: "STRING" },
+                  steps: {
+                    type: "ARRAY",
+                    items: {
+                      type: "OBJECT",
+                      properties: {
+                        explanation: { type: "STRING" },
+                        formula: { type: "STRING" }
+                      },
+                      required: ["explanation", "formula"]
+                    }
+                  }
+                },
+                required: ["exerciseText", "correctAnswer", "steps"]
+              }
+            }
+          })
+        });
+
+        indicator.classList.add('hidden');
+
+        if (response.ok) {
+          const data = await response.json();
+          const parsed = cleanAndParseJSON(data.candidates?.[0]?.content?.parts?.[0]?.text);
+          renderChatExerciseCard(parsed);
+        } else {
+          showFallbackChatExercise();
+        }
+      } catch (err) {
+        indicator.classList.add('hidden');
+        showFallbackChatExercise();
+      }
+    }
+
+    function renderChatExerciseCard(exData) {
+      const history = document.getElementById('chatHistory');
+      const uniqueId = 'chatex_' + Date.now();
+      
+      chatExerciseStepsStore[uniqueId] = exData.steps;
+
+      const cardDiv = document.createElement('div');
+      cardDiv.className = "flex items-start gap-3 max-w-[85%] mt-4 animate-fade-in";
+      cardDiv.innerHTML = `
+        <div class="h-7 w-7 rounded-full bg-primary flex items-center justify-center text-on-primary flex-shrink-0 text-sm">
+          <i class="fa-solid fa-robot text-[10px]"></i>
+        </div>
+        <div class="bg-surface border border-outline-variant rounded-xl rounded-tl-sm px-3.5 py-2 text-xs text-on-surface leading-relaxed text-left flex flex-col gap-2 w-full">
+          <div>
+            <span class="text-[8px] bg-primary-fixed text-primary px-1.5 py-0.5 rounded font-bold uppercase tracking-wider font-quicksand">Sfida Personalizzata</span>
+            <p class="text-primary mt-1.5 font-semibold text-xs">${formatExerciseText(exData.exerciseText)}</p>
+          </div>
+          
+          <div class="flex items-center gap-2 mt-1 border-t border-outline-variant/60 pt-2.5">
+            <input type="text" id="input_${uniqueId}" placeholder="Tua soluzione..." class="bg-surface border border-outline-variant rounded-lg px-2.5 py-1.5 text-xs text-on-background focus:border-primary focus:ring-0 flex-grow">
+            <button onclick="checkChatExerciseAnswer('${uniqueId}', '${exData.correctAnswer}')" class="bg-primary text-on-primary font-bold px-3 py-1.5 rounded-lg text-xs transition-colors">
+              Invia
+            </button>
+          </div>
+          <div id="feedback_${uniqueId}" class="text-xs font-bold hidden"></div>
+
+          <button onclick="triggerTutorWalkthrough('${uniqueId}')" class="text-xs text-on-surface-variant hover:text-primary flex items-center gap-1 mt-0.5 font-bold">
+            <span class="material-symbols-outlined text-sm">psychology</span> Spiegami i passaggi
+          </button>
+        </div>
+      `;
+      history.appendChild(cardDiv);
+      history.scrollTop = history.scrollHeight;
+    }
+
+    window.checkChatExerciseAnswer = function(id, correctAns) {
+      const input = document.getElementById(`input_${id}`);
+      const feedback = document.getElementById(`feedback_${id}`);
+      const val = input.value.trim().toLowerCase();
+      const ans = correctAns.trim().toLowerCase();
+
+      feedback.classList.remove('hidden');
+      if (val === ans) {
+        feedback.className = "text-xs font-bold text-green-600 mt-1 animate-bounce";
+        feedback.innerHTML = "🎉 Bravissimo! Soluzione esatta!";
+        input.className = "bg-green-50 border border-green-300 rounded-lg px-2.5 py-1.5 text-xs text-green-700 focus:ring-0 flex-grow";
+      } else {
+        feedback.className = "text-xs font-bold text-red-600 mt-1";
+        feedback.innerHTML = `Ops! Riprovaci. (Risposta: ${correctAns})`;
+        input.className = "bg-red-50 border border-red-300 rounded-lg px-2.5 py-1.5 text-xs text-red-700 focus:ring-0 flex-grow";
+      }
+    };
+
+    window.triggerTutorWalkthrough = function(id) {
+      chatSteps = chatExerciseStepsStore[id] || [];
+      currentStepIndex = 0;
+      revealNextTutorStep();
+    };
+
+    function showFallbackChatExercise() {
+      const fallback = {
+        exerciseText: "Trova la x nell'equazione: 3x - 5 = 10",
+        correctAnswer: "5",
+        steps: [
+          { explanation: "Sposta il -5 a destra cambiandolo di segno: 3x = 10 + 5", formula: "3x = 15" },
+          { explanation: "Dividi per 3 entrambi i membri dell'equazione", formula: "x = 5" }
+        ]
+      };
+      renderChatExerciseCard(fallback);
+    }
+
+    async function triggerTutorAI(problemText, context = "") {
+      const indicator = document.getElementById('stepProgressIndicator');
+      const tracker = document.getElementById('revealedStepTracker');
+      
+      if (indicator) indicator.classList.remove('hidden');
+      if (tracker) tracker.textContent = "Analisi quesito...";
+
+      const systemInstruction = `Sei un tutor di matematica delle scuole dell'obbligo. Risolvi il quesito dello studente dividendo la spiegazione in passaggi logici sequenziali chiarissimi.
+Rispondi in formato JSON in lingua italiana.
+
+Struttura JSON richiesta:
+{
+  "steps": [
+    {
+      "explanation": "Spiegazione testuale del singolo passaggio...",
+      "formula": "Equazione o formula corrispondente"
+    }
+  ]
+}`;
+
+      const userQuery = `Risolvi e segmenta a piccoli passi: "${problemText}". (Categoria scolastica di riferimento: ${context})`;
+      const apiKey = ""; 
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+      let retryDelay = 1000;
+      let success = false;
+      let data = null;
+
+      for (let attempt = 1; attempt <= 5; attempt++) {
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: userQuery }] }],
+              systemInstruction: { parts: [{ text: systemInstruction }] },
+              generationConfig: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                  type: "OBJECT",
+                  properties: {
+                    steps: {
+                      type: "ARRAY",
+                      items: {
+                        type: "OBJECT",
+                        properties: {
+                          explanation: { type: "STRING" },
+                          formula: { type: "STRING" }
+                        },
+                        required: ["explanation", "formula"]
+                      }
+                    }
+                  },
+                  required: ["steps"]
+                }
+              }
+            })
+          });
+
+          if (response.ok) {
+            data = await response.json();
+            success = true;
+            break;
+          }
+        } catch (err) {
+          // Fallback
+        }
+        await new Promise(resolve => setTimeout(resolve, retryDelay));
+        retryDelay *= 2;
+      }
+
+      if (indicator) indicator.classList.add('hidden');
+
+      if (!success || !data) {
+        showTutorFallbackResponse(problemText);
+        return;
+      }
+
+      try {
+        const textPayload = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        const parsed = cleanAndParseJSON(textPayload);
+        chatSteps = parsed.steps || [];
+        currentStepIndex = 0;
+        
+        if (chatSteps.length > 0) {
+          revealNextTutorStep();
+        } else {
+          showTutorFallbackResponse(problemText);
+        }
+      } catch (e) {
+        showTutorFallbackResponse(problemText);
+      }
+    }
+
+    function revealNextTutorStep() {
+      if (currentStepIndex >= chatSteps.length) return;
+
+      const history = document.getElementById('chatHistory');
+      if (!history) return;
+      
+      const step = chatSteps[currentStepIndex];
+      const stepDiv = document.createElement('div');
+      stepDiv.className = "flex items-start gap-3 max-w-[85%] mt-4 animate-fade-in";
+      
+      const isLast = (currentStepIndex === chatSteps.length - 1);
+
+      stepDiv.innerHTML = `
+        <div class="h-7 w-7 rounded-full bg-primary flex items-center justify-center text-on-primary flex-shrink-0 text-sm">
+          <i class="fa-solid fa-graduation-cap text-[11px]"></i>
+        </div>
+        <div class="bg-surface border border-outline-variant rounded-xl rounded-tl-sm px-3.5 py-2 text-xs text-on-surface leading-relaxed text-left flex flex-col gap-2">
+          <div>
+            <span class="text-[8px] bg-primary-fixed text-primary px-1.5 py-0.5 rounded font-bold font-quicksand">PASSO ${currentStepIndex + 1} DI ${chatSteps.length}</span>
+            <p class="text-[11px] text-on-surface-variant mt-1.5 font-semibold">${step.explanation}</p>
+          </div>
+          ${step.formula ? `
+            <div class="p-2.5 bg-surface-container rounded-lg border border-outline-variant flex items-center justify-center">
+              <code class="text-primary font-mono text-[11px] font-semibold text-center">${step.formula}</code>
+            </div>
+          ` : ''}
+          
+          ${!isLast ? `
+            <button onclick="revealNextTutorStep()" class="self-center bg-primary text-on-primary font-bold py-1.5 px-4 rounded-lg text-[10px] mt-1 transition-all flex items-center gap-1 active:scale-95">
+              <span>Continua</span>
+              <span class="material-symbols-outlined text-[13px]">arrow_forward</span>
+            </button>
+          ` : `
+            <span class="text-[9px] text-green-600 font-bold self-end flex items-center gap-1 mt-1">
+              <span class="material-symbols-outlined text-xs">check_circle</span> Risolto!
+            </span>
+          `}
+        </div>
+      `;
+
+      const prevButtons = history.querySelectorAll('button');
+      prevButtons.forEach(btn => {
+        if (btn.textContent.includes("Continua")) btn.remove();
+      });
+
+      history.appendChild(stepDiv);
+      history.scrollTop = history.scrollHeight;
+
+      const indicator = document.getElementById('stepProgressIndicator');
+      const tracker = document.getElementById('revealedStepTracker');
+      if (indicator) indicator.classList.remove('hidden');
+      if (tracker) tracker.textContent = `Passo ${currentStepIndex + 1} di ${chatSteps.length}`;
+
+      currentStepIndex++;
+      if (currentStepIndex >= chatSteps.length) {
+        if (indicator) indicator.classList.add('hidden');
+      }
+    }
+
+    function showTutorFallbackResponse(problemText) {
+      const history = document.getElementById('chatHistory');
+      if (!history) return;
+      const stepDiv = document.createElement('div');
+      stepDiv.className = "flex items-start gap-3 max-w-[85%] mt-4";
+      stepDiv.innerHTML = `
+        <div class="h-7 w-7 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0 text-sm">
+          <i class="fa-solid fa-triangle-exclamation text-[10px]"></i>
+        </div>
+        <div class="bg-surface border border-outline-variant rounded-xl rounded-tl-sm px-3.5 py-2 text-xs text-on-surface leading-relaxed text-left flex flex-col gap-2">
+          <p class="text-xs text-on-surface-variant font-semibold">Tutor temporaneamente offline. Soluzione logica:</p>
+          <div class="p-2 bg-surface-container rounded-lg border border-outline-variant font-mono text-[11px] text-primary">
+            Quesito: ${problemText} <br>
+            Metodo: Estrai dati numerici e applica la formula inversa.
+          </div>
+        </div>
+      `;
+      history.appendChild(stepDiv);
+      history.scrollTop = history.scrollHeight;
+    }
+
+    // ── ESPORTAZIONE PDF AD ALTA FIDELTÀ ──
+    function downloadPdf() {
+      if (!currentWorksheet) return;
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const pageWidth = 210, pageHeight = 297, margin = 15;
+      const printableWidth = pageWidth - (margin * 2);
+      
+      let cursorY = margin;
+      const lineHeight = 6.2;
+
+      function checkPageBreak(spaceRequired) {
+        if (cursorY + spaceRequired > pageHeight - margin) {
+          doc.addPage();
+          cursorY = margin;
+        }
+      }
+
+      // Testata PDF
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.setTextColor(0, 77, 91); 
+      doc.text('Scheda d\'esame — ClearMath Pro', margin, cursorY);
+      cursorY += 7;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(110);
+      const now = new Date();
+      doc.text(`Data compilazione: ${now.toLocaleDateString('it-IT')}`, margin, cursorY);
+      
+      const nameFieldVal = document.getElementById('studentNameInput').value || '________________________';
+      const gradeFieldVal = document.getElementById('studentGradeInput').value || '________________________';
+
+      doc.text(`Alunno: ${nameFieldVal}`, pageWidth / 2 - 20, cursorY);
+      cursorY += 5;
+      doc.text(`Esito: ${gradeFieldVal}`, pageWidth / 2 - 20, cursorY);
+      
+      doc.setTextColor(0);
+      cursorY += 5;
+      doc.setDrawColor(0, 77, 91);
+      doc.setLineWidth(0.6);
+      doc.line(margin, cursorY, pageWidth - margin, cursorY);
+      cursorY += 8;
+
+      const grouped = {};
+      currentWorksheet.exercises.forEach(ex => {
+        if (!grouped[ex.chapterId]) grouped[ex.chapterId] = [];
+        grouped[ex.chapterId].push(ex);
+      });
+
+      Object.keys(grouped).forEach(chapId => {
+        const exercises = grouped[chapId];
+        const firstEx = exercises[0];
+
+        checkPageBreak(22);
+        doc.setFillColor(240, 245, 245); 
+        doc.rect(margin, cursorY - 4, printableWidth, 8, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.setTextColor(30);
+        doc.text(`${firstEx.chapterName.toUpperCase()} — ${firstEx.yearName.toUpperCase()}  (${exercises.length} quesiti)`, margin + 3, cursorY + 1);
+        cursorY += 10;
+
+        exercises.forEach((ex, idx) => {
+          const isProblem = ex.isProblem;
+          checkPageBreak(isProblem ? 25 : 12);
+
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(9.5);
+          doc.setTextColor(60);
+          doc.text(`${idx + 1}.`, margin + 2, cursorY);
+
+          const rawText = ex.text.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(/⬜/g, ' [___] ').replace(/___/g, '_________');
+          const textLines = doc.splitTextToSize(rawText, printableWidth - 12);
+          doc.setFont('courier', 'normal');
+          doc.setFontSize(9);
+          doc.setTextColor(20);
+
+          textLines.forEach((line, lIdx) => {
+            doc.text(line, margin + 8, cursorY + (lIdx * lineHeight));
+          });
+          cursorY += textLines.length * lineHeight;
+
+          doc.setDrawColor(220);
+          doc.setLineWidth(0.3);
+          if (isProblem) {
+            doc.line(margin + 8, cursorY + 2, pageWidth - margin, cursorY + 2);
+            doc.line(margin + 8, cursorY + 9, pageWidth - margin, cursorY + 9);
+            cursorY += 14;
+          } else {
+            doc.line(pageWidth - margin - 50, cursorY + 1, pageWidth - margin, cursorY + 1);
+            cursorY += 7;
+          }
+        });
+        cursorY += 4; 
+      });
+
+      // Foglio Soluzioni se flag spuntato
+      const includeSolutions = document.getElementById('includeSolutionsCheck').checked;
+      if (includeSolutions) {
+        doc.addPage();
+        cursorY = margin;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.setTextColor(120, 30, 30); 
+        doc.text('Correttore delle Soluzioni Ufficiali', margin, cursorY);
+        cursorY += 5;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8.5);
+        doc.setTextColor(100);
+        doc.text(`Set di risposte per: ${currentWorksheet.title}`, margin, cursorY);
+        cursorY += 4;
+        
+        doc.setDrawColor(120, 30, 30);
+        doc.setLineWidth(0.5);
+        doc.line(margin, cursorY, pageWidth - margin, cursorY);
+        cursorY += 8;
+
+        Object.keys(grouped).forEach(chapId => {
+          const exercises = grouped[chapId];
+          const firstEx = exercises[0];
+
+          checkPageBreak(20);
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(9.5);
+          doc.setTextColor(40);
+          doc.text(`SOLUZIONI DI: ${firstEx.chapterName.toUpperCase()}`, margin, cursorY);
+          cursorY += 6;
+
+          exercises.forEach((ex, idx) => {
+            checkPageBreak(12);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.setTextColor(70);
+            doc.text(`Quesito ${idx + 1}:`, margin + 2, cursorY);
+
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(0, 110, 30); 
+            doc.text(`[ Soluzione:  ${ex.correctAnswer.replace(/<[^>]*>/g, '')} ]`, margin + 30, cursorY);
+
+            if (ex.userAnswer) {
+              doc.setFont('helvetica', 'normal');
+              doc.setFontSize(8);
+              doc.setTextColor(100);
+              doc.text(`Risposta data: "${ex.userAnswer}"`, margin + 110, cursorY);
+            }
+            cursorY += 6;
+          });
+          cursorY += 4;
+        });
+      }
+
+      const totalPages = doc.getNumberOfPages();
+      for (let p = 1; p <= totalPages; p++) {
+        doc.setPage(p);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(150);
+        doc.text(`Pagina ${p} di ${totalPages}  ·  ClearMath Adaptive Pro`, pageWidth / 2, pageHeight - 6, { align: 'center' });
+      }
+
+      doc.save(`clearmath_${currentWorksheet.id}.pdf`);
+    }
+  </script>
+</body>
+</html>

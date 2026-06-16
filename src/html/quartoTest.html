@@ -1,0 +1,402 @@
+import { useState, useEffect, useRef } from 'react';
+import { supabase } from './lib/supabase';
+import type { User } from '@supabase/supabase-js';
+import type { Difficulty, Worksheet } from './types';
+import { GRADES } from './data/curriculum';
+import { generateExercises, DIFFICULTY_LABELS } from './lib/exerciseEngine';
+import Auth from './components/Auth';
+import Header from './components/Header';
+import GradeSelector from './components/GradeSelector';
+import TopicSelector from './components/TopicSelector';
+import WorksheetView from './components/WorksheetView';
+import ReviewCenter from './components/ReviewCenter';
+import ChatbotTutor from './components/ChatbotTutor';
+
+type ViewType = 'generator' | 'worksheet' | 'archive' | 'review' | 'chatbot';
+
+export default function App() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [currentView, setCurrentView] = useState<ViewType>('generator');
+  const [selectedGrades, setSelectedGrades] = useState<string[]>([]);
+  const [globalDifficulty, setGlobalDifficulty] = useState<Difficulty>('medio');
+  const [topicDifficulties, setTopicDifficulties] = useState<Record<string, Difficulty>>({});
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [currentWorksheet, setCurrentWorksheet] = useState<Worksheet | null>(null);
+  const [savedWorksheets, setSavedWorksheets] = useState<Worksheet[]>([]);
+  const [stats, setStats] = useState({ worksheetsCreated: 0, exercisesGenerated: 0 });
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      loadSavedWorksheets();
+      loadStats();
+    }
+  }, [user]);
+
+  const loadSavedWorksheets = async () => {
+    if (!user) return;
+    const { data, error } = await supabase
+      .from('worksheets')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+    if (!error && data) {
+      setSavedWorksheets(data as Worksheet[]);
+    }
+  };
+
+  const loadStats = async () => {
+    if (!user) return;
+    const { count } = await supabase
+      .from('worksheets')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id);
+
+    const { data } = await supabase
+      .from('worksheets')
+      .select('exercises')
+      .eq('user_id', user.id);
+
+    const totalExercises = data?.reduce((sum, w) => sum + (w.exercises as any[]).length, 0) || 0;
+
+    setStats({
+      worksheetsCreated: count || 0,
+      exercisesGenerated: totalExercises
+    });
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setCurrentView('generator');
+  };
+
+  const toggleGrade = (gradeId: string) => {
+    setSelectedGrades(prev =>
+      prev.includes(gradeId)
+        ? prev.filter(id => id !== gradeId)
+        : prev.length < 2
+          ? [...prev, gradeId]
+          : prev
+    );
+  };
+
+  const toggleTopic = (topicId: string) => {
+    setSelectedTopics(prev =>
+      prev.includes(topicId)
+        ? prev.filter(id => id !== topicId)
+        : [...prev, topicId]
+    );
+  };
+
+  const setTopicDifficulty = (topicId: string, difficulty: Difficulty) => {
+    setTopicDifficulties(prev => ({ ...prev, [topicId]: difficulty }));
+  };
+
+  const handleGenerateWorksheet = async () => {
+    if (selectedTopics.length === 0) {
+      alert('Seleziona almeno un argomento per generare la scheda.');
+      return;
+    }
+
+    const topicSelections = selectedTopics.map(topicId => ({
+      topicId,
+      topicLabel: '',
+      difficulty: topicDifficulties[topicId] || globalDifficulty,
+    }));
+
+    const exercises = generateExercises(topicSelections);
+    const solutions = [...exercises];
+
+    const newWorksheet: Worksheet = {
+      id: 'temp-' + Date.now(),
+      user_id: user?.id || '',
+      title: `Scheda di Matematica`,
+      grades: selectedGrades,
+      topics: topicSelections.map(t => ({
+        ...t,
+        topicLabel: getTopicLabel(t.topicId),
+      })),
+      difficulty: globalDifficulty,
+      exercises,
+      solutions,
+      created_at: new Date().toISOString(),
+    };
+
+    setCurrentWorksheet(newWorksheet);
+    setCurrentView('worksheet');
+  };
+
+  const getTopicLabel = (topicId: string): string => {
+    for (const grade of GRADES) {
+      const topic = grade.topics.find(t => t.id === topicId);
+      if (topic) return topic.label;
+    }
+    return topicId;
+  };
+
+  const handleSaveWorksheet = async (worksheet: Worksheet) => {
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from('worksheets')
+      .insert({
+        user_id: user.id,
+        title: worksheet.title,
+        grades: worksheet.grades,
+        topics: worksheet.topics,
+        difficulty: worksheet.difficulty,
+        exercises: worksheet.exercises,
+        solutions: worksheet.solutions,
+      })
+      .select()
+      .single();
+
+    if (!error && data) {
+      setCurrentWorksheet(data as Worksheet);
+      loadSavedWorksheets();
+      loadStats();
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-50">
+        <div className="text-center">
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200"></div>
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600 absolute top-0 left-0"></div>
+          </div>
+          <p className="mt-6 text-gray-600 font-medium">Caricamento in corso...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Auth />;
+  }
+
+  const userEmail = user.email || 'Utente';
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+      <Header
+        user={user}
+        currentView={currentView}
+        onViewChange={setCurrentView}
+        onLogout={handleLogout}
+      />
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {currentView === 'generator' && (
+          <div className="space-y-6">
+            {/* Welcome Card */}
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl shadow-xl p-8 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-3xl font-bold mb-2">Ciao, {userEmail.split('@')[0]}!</h1>
+                  <p className="text-blue-100 text-lg">
+                    Benvenuto nel generatore di schede di matematica.
+                  </p>
+                </div>
+                <div className="hidden md:flex gap-6">
+                  <div className="text-center">
+                    <div className="text-4xl font-bold">{stats.worksheetsCreated}</div>
+                    <div className="text-blue-200 text-sm">Schede Create</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold">{stats.exercisesGenerated}</div>
+                    <div className="text-blue-200 text-sm">Esercizi Generati</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Grade Selection */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <span className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600">1</span>
+                Seleziona gli Anni Scolastici
+                <span className="text-sm text-gray-400 font-normal">(max 2)</span>
+              </h2>
+              <GradeSelector
+                selectedGrades={selectedGrades}
+                onToggleGrade={toggleGrade}
+              />
+            </div>
+
+            {selectedGrades.length > 0 && (
+              <>
+                {/* Global Difficulty */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center text-green-600">2</span>
+                    Difficoltà Globale
+                  </h2>
+                  <div className="flex gap-3">
+                    {(['basso', 'medio', 'avanzato'] as Difficulty[]).map(d => (
+                      <button
+                        key={d}
+                        onClick={() => setGlobalDifficulty(d)}
+                        className={`flex-1 px-6 py-3 rounded-xl font-medium transition-all ${
+                          globalDifficulty === d
+                            ? d === 'basso'
+                              ? 'bg-green-500 text-white shadow-lg shadow-green-200'
+                              : d === 'medio'
+                                ? 'bg-yellow-500 text-white shadow-lg shadow-yellow-200'
+                                : 'bg-red-500 text-white shadow-lg shadow-red-200'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                      >
+                        {DIFFICULTY_LABELS[d]}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Topic Selection */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                      <span className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600">3</span>
+                      Seleziona gli Argomenti
+                    </h2>
+                    <span className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-medium">
+                      {selectedTopics.length} selezionati
+                    </span>
+                  </div>
+                  <TopicSelector
+                    selectedGrades={selectedGrades}
+                    selectedTopics={selectedTopics}
+                    topicDifficulties={topicDifficulties}
+                    onToggleTopic={toggleTopic}
+                    onSetTopicDifficulty={setTopicDifficulty}
+                  />
+                </div>
+
+                {/* Generate Button */}
+                <button
+                  onClick={handleGenerateWorksheet}
+                  disabled={selectedTopics.length === 0}
+                  className={`w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all ${
+                    selectedTopics.length > 0
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg shadow-blue-200 hover:shadow-xl'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  {selectedTopics.length > 0
+                    ? `Genera Scheda (min 20, max 30 esercizi)`
+                    : 'Seleziona almeno un argomento'}
+                </button>
+              </>
+            )}
+          </div>
+        )}
+
+        {currentView === 'worksheet' && (
+          <WorksheetView
+            worksheet={currentWorksheet}
+            onSave={() => currentWorksheet && handleSaveWorksheet(currentWorksheet)}
+            onClose={() => setCurrentView('generator')}
+          />
+        )}
+
+        {currentView === 'archive' && (
+          <div className="space-y-6">
+            <h1 className="text-2xl font-bold text-gray-900">Le Tue Schede Salvate</h1>
+            {savedWorksheets.length === 0 ? (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+                <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <p className="text-gray-500 text-lg">Non hai ancora salvato nessuna scheda.</p>
+                <button
+                  onClick={() => setCurrentView('generator')}
+                  className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors"
+                >
+                  Crea la tua prima scheda
+                </button>
+              </div>
+            ) : (
+              <div className="grid gap-4">
+                {savedWorksheets.map(ws => {
+                  const gradeLabels = ws.grades.map(g => {
+                    const gradeMap: Record<string, string> = {
+                      'grade_1': '1ª El.', 'grade_2': '2ª El.', 'grade_3': '3ª El.',
+                      'grade_4': '4ª El.', 'grade_5': '5ª El.', 'grade_6': '1ª Media',
+                      'grade_7': '2ª Media', 'grade_8': '3ª Media', 'grade_9': '1ª Sup.',
+                      'grade_10': '2ª Sup.', 'grade_11': '3ª Sup.', 'grade_12': '4ª-5ª Sup.'
+                    };
+                    return gradeMap[g] || g;
+                  }).join(', ');
+
+                  return (
+                    <div
+                      key={ws.id}
+                      onClick={() => {
+                        setCurrentWorksheet(ws);
+                        setCurrentView('worksheet');
+                      }}
+                      className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md hover:border-blue-200 cursor-pointer transition-all"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="font-semibold text-gray-900 text-lg">{ws.title}</h3>
+                            <span className={`px-3 py-1 text-xs rounded-full font-medium ${
+                              ws.difficulty === 'basso'
+                                ? 'bg-green-100 text-green-700'
+                                : ws.difficulty === 'medio'
+                                  ? 'bg-yellow-100 text-yellow-700'
+                                  : 'bg-red-100 text-red-700'
+                            }`}>
+                              {DIFFICULTY_LABELS[ws.difficulty]}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-4 text-sm text-gray-500">
+                            <span>{gradeLabels}</span>
+                            <span>•</span>
+                            <span>{ws.exercises.length} esercizi</span>
+                            <span>•</span>
+                            <span>{new Date(ws.created_at).toLocaleDateString('it-IT')}</span>
+                          </div>
+                        </div>
+                        <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {currentView === 'review' && (
+          <ReviewCenter user={user} />
+        )}
+
+        {currentView === 'chatbot' && (
+          <ChatbotTutor />
+        )}
+      </main>
+    </div>
+  );
+}

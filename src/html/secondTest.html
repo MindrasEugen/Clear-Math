@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html class="light" lang="it">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ClearMath — Schede di Matematica Quarta Elementare</title>
+<!-- CDN Links: Tailwind CSS, Google Fonts, Material Icons, Remix Icons -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Tailwind Configuration for ClearMath Custom Theme -->
+<script id="tailwind-config">
+tailwind.config = {
+darkMode: "class",
+theme: {
+extend: {
+"colors": {
+"primary": "#004d5b",
+"primary-fixed": "#a9edff",
+"primary-container": "#006778",
+"surface-container-high": "#e7e8e9",
+"tertiary-container": "#86511d",
+"on-error-container": "#93000a",
+"error-container": "#ffdad6",
+"surface-container-low": "#f3f4f5",
+"tertiary-fixed-dim": "#ffb87a",
+"surface-tint": "#026879",
+"on-surface-variant": "#3f484b",
+"on-error": "#ffffff",
+"secondary-fixed": "#cbe7f5",
+"on-tertiary-fixed": "#2e1500",
+"background": "#f8f9fa",
+"error": "#ba1a1a",
+"secondary-fixed-dim": "#afcbd8",
+"tertiary-fixed": "#ffdcc1",
+"on-secondary-fixed-variant": "#304a55",
+"tertiary": "#6a3a06",
+"surface-variant": "#e1e3e4",
+"on-primary": "#ffffff",
+"secondary": "#48626e",
+"inverse-surface": "#2e3132",
+"on-secondary-fixed": "#021f29",
+"inverse-primary": "#86d2e5",
+"surface-container": "#edeeef",
+"on-tertiary-container": "#ffcea6",
+"on-primary-fixed-variant": "#004e5c",
+"surface-container-highest": "#e1e3e4",
+"surface-bright": "#f8f9fa",
+"on-secondary-container": "#4e6874",
+"on-primary-fixed": "#001f26",
+"surface-container-lowest": "#ffffff",
+"on-primary-container": "#97e3f6",
+"outline-variant": "#bec8cb",
+"on-secondary": "#ffffff",
+"primary-fixed-dim": "#86d2e5",
+"outline": "#6f797c",
+"on-surface": "#191c1d",
+"inverse-on-surface": "#f0f1f2",
+"on-background": "#191c1d",
+"secondary-container": "#cbe7f5",
+"surface-dim": "#d9dadb",
+"surface": "#f8f9fa",
+"on-tertiary": "#ffffff",
+"on-tertiary-fixed-variant": "#6b3b06"
+},
+"borderRadius": {
+"DEFAULT": "0.25rem",
+"lg": "0.5rem",
+"xl": "0.75rem",
+"full": "9999px"
+},
+"spacing": {
+"stack-md": "32px",
+"container-padding": "40px",
+"unit": "8px",
+"stack-sm": "16px",
+"stack-lg": "64px",
+"gutter": "24px"
+},
+"fontFamily": {
+"body-md": ["Lexend"],
+"label-lg": ["Lexend"],
+"math-display": ["Lexend"],
+"body-xl": ["Lexend"],
+"headline-lg-mobile": ["Quicksand"],
+"headline-lg": ["Quicksand"],
+"headline-md": ["Quicksand"],
+"body-lg": ["Lexend"]
+},
+"fontSize": {
+"body-md": ["18px", {"lineHeight": "1.5", "fontWeight": "400"}],
+"label-lg": ["16px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+"math-display": ["48px", {"lineHeight": "1.1", "fontWeight": "500"}],
+"body-xl": ["24px", {"lineHeight": "1.6", "fontWeight": "400"}],
+"headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+"headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+"headline-md": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+"body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}]
+}
+},
+},
+}
+</script>
+<style>
+body { font-family: 'Lexend', sans-serif; background-color: #f8f9fa; color: #191c1d; }
+h1, h2, h3, h4, .quicksand { font-family: 'Quicksand', sans-serif; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.math-input-border { border-bottom: 2px solid #bec8cb; transition: all 0.2s ease; }
+.math-input-border:focus { outline: none; border-bottom: 2px solid #004d5b; background-color: rgba(0, 77, 91, 0.03); }
+/* Hide scrollbars for neat desktop widgets */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.chat-bubble { animation: slideIn 0.25s ease-out; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.typing-dot { animation: typing 1.4s infinite ease-in-out both; }
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+@keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+.chat-progress-btn { background: #004d5b; color: #ffffff; font-weight: 600; border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,77,91,0.25); }
+.chat-progress-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,77,91,0.35); }
+.chat-progress-btn:active { transform: translateY(0); }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen antialiased flex">
+<!-- TopAppBar -->
+<header class="bg-surface-container-lowest border-b-2 border-outline-variant fixed top-0 left-0 right-0 z-50">
+<div class="flex justify-between items-center w-full px-container-padding h-20 max-w-[1280px] mx-auto">
+<div class="flex items-center gap-3 cursor-pointer" onclick="switchView('dashboard')">
+<div class="h-10 w-10 rounded-lg bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[26px]">calculate</span>
+</div>
+<div class="font-headline-md text-headline-md font-bold text-primary tracking-tight">ClearMath</div>
+</div>
+<nav class="hidden md:flex items-center gap-gutter">
+<button id="nav-dashboard" class="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg active:scale-95 transition-all" onclick="switchView('dashboard')">Dashboard</button>
+<button id="nav-workspace" class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-label-lg active:scale-95 transition-all" onclick="switchView('workspace')">Area di Lavoro</button>
+<button id="nav-review" class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-label-lg active:scale-95 transition-all" onclick="switchView('review')">Centro Ripasso</button>
+<button id="nav-chatbot" class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-label-lg active:scale-95 transition-all" onclick="switchView('chatbot')">Tutor AI</button>
+</nav>
+<button id="topPdfBtn" class="bg-primary text-on-primary px-6 py-3 font-bold rounded-lg hover:bg-primary-container transition-colors active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2" onclick="downloadPdf()" disabled>
+<span class="material-symbols-outlined">download</span>
+<span>Scarica PDF</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant flex flex-col pt-24 z-40">
+<div class="px-6 mb-4">
+<h2 class="font-headline-md text-lg font-bold text-primary">Argomenti</h2>
+<p class="text-xs text-on-surface-variant opacity-70 mt-0.5">Seleziona per creare la scheda</p>
+</div>
+<div class="px-6 mb-2 flex justify-between">
+<button class="text-xs text-primary font-bold hover:underline" id="sidebarSelectAllBtn" onclick="toggleSelectAll()">Seleziona tutti</button>
+</div>
+<nav class="flex-grow overflow-y-auto no-scrollbar flex flex-col gap-1 pb-4" id="sidebarNavList"></nav>
+<div class="mt-auto border-t border-outline-variant p-4 bg-surface-container-low flex flex-col gap-3">
+<div class="text-[12px] text-on-surface-variant text-center" id="sidebarCounterBadge">Nessun argomento selezionato</div>
+<button class="w-full bg-primary text-on-primary font-bold py-3 rounded-lg hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2 text-sm" id="sidebarGenerateBtn" onclick="generateWorksheet()">
+<span class="material-symbols-outlined text-[18px]">rule</span>
+<span>Genera Scheda</span>
+</button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="pl-64 pt-20 flex-grow min-h-screen">
+<!-- 1. DASHBOARD VIEW -->
+<div class="max-w-[1024px] mx-auto px-container-padding py-stack-md" id="dashboardView">
+<section class="mb-8 text-center mt-4">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-2">Ciao, Studente!</h1>
+<p class="font-body-xl text-[18px] text-on-surface-variant max-w-xl mx-auto leading-relaxed">Benvenuto nel generatore di schede di matematica. Scegli gli argomenti che preferisci e personalizza la tua esercitazione.</p>
+</section>
+<section class="mb-10 bg-surface-container-lowest border border-outline-variant p-6 rounded-xl">
+<div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+<div class="text-left">
+<h3 class="font-headline-md text-lg font-bold text-primary">Difficoltà globale predefinita</h3>
+<p class="text-xs text-on-surface-variant opacity-70">Applica un livello standard a tutte le schede con un clic</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex border border-outline-variant rounded-lg overflow-hidden bg-background">
+<button class="px-4 py-2 text-sm font-semibold border-r border-outline-variant hover:bg-surface-container-high transition-colors bg-primary text-on-primary font-bold" id="global-diff-low" onclick="setGlobalDiff('low')">Basso</button>
+<button class="px-4 py-2 text-sm font-semibold border-r border-outline-variant hover:bg-surface-container-high transition-colors text-on-surface-variant" id="global-diff-mid" onclick="setGlobalDiff('mid')">Medio</button>
+<button class="px-4 py-2 text-sm font-semibold hover:bg-surface-container-high transition-colors text-on-surface-variant" id="global-diff-high" onclick="setGlobalDiff('high')">Avanzato</button>
+</div>
+<button class="bg-primary text-on-primary text-xs font-bold py-2.5 px-4 rounded-lg hover:bg-primary-container transition-all active:scale-95" onclick="applyGlobalDiffToAll()">Applica</button>
+</div>
+</div>
+</section>
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-quicksand font-bold text-xl text-primary">Tutti i Capitoli di Studio</h2>
+<span class="text-xs text-on-surface-variant font-bold uppercase tracking-wider" id="gridSelectionCounter">0 selezionati</span>
+</div>
+<div class="grid grid-cols-12 gap-gutter" id="topicsBentoGrid"></div>
+</section>
+<section class="mt-12 flex justify-center pb-8">
+<button class="bg-primary text-on-primary px-12 py-4 rounded-lg font-headline-md text-lg font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-md flex items-center gap-3" onclick="generateWorksheet()">
+<span class="material-symbols-outlined text-[24px]">task_alt</span>
+<span>Genera scheda personalizzata</span>
+</button>
+</section>
+</div>
+<!-- 2. WORKSHEET WORKSPACE VIEW -->
+<div class="max-w-[1024px] mx-auto px-container-padding py-stack-md hidden" id="workspaceView">
+<div class="flex flex-col items-center justify-center min-h-[500px] bg-surface-container-lowest border border-dashed border-outline-variant rounded-xl p-12 text-center" id="workspaceEmptyState">
+<div class="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6 animate-pulse">
+<span class="material-symbols-outlined text-[48px]">auto_stories</span>
+</div>
+<h3 class="font-headline-md text-xl font-bold text-primary mb-2">Nessuna scheda generata</h3>
+<p class="text-on-surface-variant max-w-sm mx-auto mb-6 text-sm leading-relaxed">Seleziona gli argomenti nella barra laterale o nella dashboard principale e clicca su "Genera scheda" per iniziare.</p>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg font-bold hover:bg-primary-container transition-all active:scale-95 flex items-center gap-2 text-sm" onclick="switchView('dashboard')">
+<span class="material-symbols-outlined text-[18px]">explore</span>
+<span>Scegli argomenti</span>
+</button>
+</div>
+<div class="hidden" id="workspaceActiveContent">
+<div class="w-full h-1.5 bg-surface-container-high mb-8 relative overflow-hidden rounded-full">
+<div class="absolute top-0 left-0 h-full bg-primary transition-all duration-500 rounded-full" id="worksheetProgressBar" style="width: 0%"></div>
+</div>
+<div class="bg-surface-container-lowest border-2 border-primary/20 p-8 sm:p-12 rounded-2xl" id="printableSheet">
+<div class="flex flex-col md:flex-row justify-between items-start pb-6 border-b-2 border-primary gap-6 mb-8">
+<div class="text-left">
+<h2 class="font-headline-lg text-headline-md font-bold text-primary leading-tight">Scheda Esercitazioni di Matematica</h2>
+<p class="text-xs text-on-surface-variant opacity-70 font-semibold mt-1" id="worksheetMetaSubtitle">Classe Quarta Elementare</p>
+</div>
+<div class="flex flex-col gap-2 w-full md:w-auto">
+<div class="flex items-center gap-2 text-xs font-semibold text-on-surface-variant"><span class="w-14 text-right">Studente:</span><input class="border-b border-outline-variant bg-transparent px-2 py-0.5 text-xs text-on-surface font-bold focus:outline-none focus:border-primary w-44" placeholder="Nome dello studente..." type="text"></div>
+<div class="flex items-center gap-2 text-xs font-semibold text-on-surface-variant"><span class="w-14 text-right">Data:</span><input class="border-b border-outline-variant bg-transparent px-2 py-0.5 text-xs text-on-surface font-bold focus:outline-none focus:border-primary w-44" id="worksheetDateInput" type="text"></div>
+<div class="flex items-center gap-2 text-xs font-semibold text-on-surface-variant"><span class="w-14 text-right">Valutazione:</span><input class="border-b border-outline-variant bg-transparent px-2 py-0.5 text-xs text-on-surface font-bold focus:outline-none focus:border-primary w-44" placeholder="Voto o giudizio..." type="text"></div>
+</div>
+</div>
+<div class="space-y-10" id="worksheetSectionsContainer"></div>
+</div>
+<div class="mt-8 flex justify-center gap-4 pb-8">
+<button class="bg-primary text-on-primary px-10 py-4 rounded-lg font-headline-md text-lg font-bold hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-3 shadow-md" onclick="downloadPdf()">
+<span class="material-symbols-outlined text-[24px]">download_for_offline</span>
+<span>Finalizza e Scarica PDF</span>
+</button>
+<button class="border-2 border-primary text-primary hover:bg-primary/5 px-8 py-4 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-2" onclick="switchView('dashboard')">
+<span class="material-symbols-outlined">add_circle</span>
+<span>Aggiungi Capitoli</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 3. REVIEW CENTER VIEW -->
+<div class="max-w-[1024px] mx-auto px-container-padding py-stack-md hidden" id="reviewView">
+<section class="mb-8 text-center mt-4">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-2">Centro di Ripasso</h1>
+<p class="font-body-xl text-[18px] text-on-surface-variant max-w-xl mx-auto leading-relaxed">Allena la mente con sfide rapide e scopri utili consigli per lo studio quotidiano.</p>
+</section>
+<div class="grid grid-cols-12 gap-gutter">
+<div class="col-span-12 lg:col-span-7 bg-surface-container-lowest border border-outline-variant p-8 rounded-xl flex flex-col justify-between min-h-[350px]">
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Sfida Rapida</span>
+<span class="text-xs text-on-surface-variant">Risolvi a mente</span>
+</div>
+<h3 class="font-headline-md text-xl font-bold text-primary mb-4">La Sfida del Giorno</h3>
+<p class="text-sm text-on-surface-variant mb-6">Metti alla prova le tue abilità aritmetiche inserendo la risposta corretta. Clicca su "Verifica" per controllare.</p>
+<div class="bg-surface-container-low rounded-lg p-6 flex flex-col items-center justify-center min-h-[140px] border border-outline-variant">
+<div class="text-2xl font-bold text-primary mb-4" id="challengeQuestion">--</div>
+<div class="flex items-center gap-3 w-full max-w-xs">
+<input class="w-full text-center border-2 border-outline-variant rounded-lg py-2.5 text-xl font-bold focus:border-primary outline-none" id="challengeAnswerInput" placeholder="Tua risposta..." type="text">
+<button class="bg-primary text-on-primary font-bold px-6 py-2.5 rounded-lg hover:bg-primary-container transition-all active:scale-95" id="challengeCheckBtn" onclick="checkChallengeAnswer()">Verifica</button>
+</div>
+<div class="text-sm font-bold mt-4 hidden" id="challengeFeedback"></div>
+</div>
+</div>
+<div class="flex justify-end mt-4">
+<button class="text-sm text-primary font-bold flex items-center gap-1 hover:underline" onclick="generateNewChallenge()">
+<span>Prossima sfida</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-5 flex flex-col gap-6">
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl">
+<h4 class="font-headline-md text-base font-bold text-primary mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-lg">insights</span><span>I Tuoi Progressi</span></h4>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-background rounded-lg p-4 text-center border border-outline-variant"><div class="text-2xl font-bold text-primary" id="statsSelectedCount">0</div><div class="text-[11px] text-on-surface-variant opacity-75 mt-1 font-semibold uppercase">Capitoli Scelti</div></div>
+<div class="bg-background rounded-lg p-4 text-center border border-outline-variant"><div class="text-2xl font-bold text-primary" id="statsTotalExercises">0</div><div class="text-[11px] text-on-surface-variant opacity-75 mt-1 font-semibold uppercase">Esercizi Generati</div></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl flex-grow">
+<h4 class="font-headline-md text-base font-bold text-primary mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-lg">lightbulb</span><span>Consigli di Studio</span></h4>
+<ul class="text-xs text-on-surface-variant space-y-3 font-medium leading-relaxed">
+<li class="flex gap-2"><span class="text-primary font-bold">•</span><span><b>Esegui i calcoli con calma:</b> La precisione è molto più importante della velocità quando risolvi problemi complessi.</span></li>
+<li class="flex gap-2"><span class="text-primary font-bold">•</span><span><b>Rileggi i problemi:</b> Nei testi delle domande, individua sempre i numeri chiave (dati) ed evidenzia bene la domanda finale.</span></li>
+<li class="flex gap-2"><span class="text-primary font-bold">•</span><span><b>Frazioni visive:</b> Quando lavori con le frazioni, prova a immaginare una torta divisa in fette. Ti aiuterà a confrontarle!</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. CHATBOT TUTOR VIEW -->
+<div class="max-w-[1024px] mx-auto px-container-padding py-stack-md hidden h-[calc(100vh-140px)] flex flex-col" id="chatbotView">
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col overflow-hidden relative shadow-sm">
+<div class="p-4 border-b border-outline-variant bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[20px]">smart_toy</span></div>
+<div>
+<h3 class="font-bold text-sm text-primary">ClearMath Tutor AI</h3>
+<p class="text-[10px] text-on-surface-variant">Spiegazioni progressive e interattive</p>
+</div>
+</div>
+<button class="text-xs text-on-surface-variant hover:text-primary flex items-center gap-1" onclick="clearChat()"><span class="material-symbols-outlined text-sm">restart_alt</span> Resetta Chat</button>
+</div>
+<div class="flex-1 overflow-y-auto p-5 space-y-4" id="chatContainer">
+<div class="chat-bubble flex gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center text-primary mt-1"><span class="material-symbols-outlined text-[16px]">smart_toy</span></div>
+<div class="bg-surface-container-low border border-outline-variant p-4 rounded-2xl rounded-tl-none max-w-[85%]">
+<p class="text-sm text-on-background mb-1">Ciao! 👋 Sono il tuo assistente di matematica.</p>
+<p class="text-xs text-on-surface-variant leading-relaxed">Per renderti tutto più chiaro, spiego un passaggio alla volta. Chiedimi pure di risolvere un'operazione, una frazione, un problema o una regola. Inizia quando vuoi!</p>
+<div class="flex gap-2 mt-3 flex-wrap">
+<button onclick="quickAsk('Come si sommano due frazioni con denominatore diverso?')" class="bg-primary/5 hover:bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs font-medium transition-colors border border-primary/20">+ Frazioni diverse</button>
+<button onclick="quickAsk('Spiegami il teorema di Pitagora')" class="bg-primary/5 hover:bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs font-medium transition-colors border border-primary/20">📐 Pitagora</button>
+<button onclick="quickAsk('Come si risolve un\'equazione di primo grado?')" class="bg-primary/5 hover:bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs font-medium transition-colors border border-primary/20">⚖️ Equazione 1°</button>
+</div>
+</div>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low border-t border-outline-variant">
+<form id="chatForm" class="flex gap-2" onsubmit="handleChatSubmit(event)">
+<input type="text" id="chatInput" placeholder="Scrivi la tua domanda o incolla un esercizio..." class="flex-1 bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all">
+<button type="submit" class="bg-primary text-on-primary rounded-xl px-5 py-2.5 hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center"><span class="material-symbols-outlined">arrow_upward</span></button>
+</form>
+</div>
+</div>
+</div>
+<footer class="max-w-[1024px] mx-auto px-container-padding py-8 border-t border-outline-variant flex flex-col sm:flex-row justify-between items-center text-on-surface-variant opacity-60 text-xs mt-12 gap-3 pb-12">
+<div class="font-semibold tracking-wide">ClearMath © 2026 · Apprendimento Efficace</div>
+<div class="italic">"La matematica è il gioco più bello del mondo!"</div>
+</footer>
+</main>
+
+<!-- SPA Logic & Mathematical Generators Script -->
+<script>
+// ── DATA STRUCTURES ──
+const TOPICS = [
+{ id: 'numeri', name: 'Numeri fino al milione', desc: 'Valore posizionale, scomposizione e arrotondamento dei numeri.', icon: 'numbers' },
+{ id: 'addizioni', name: 'Addizioni e sottrazioni', desc: 'Operazioni in colonna con calcoli, riporti e prestiti per classe 4a.', icon: 'add' },
+{ id: 'moltiplicazioni', name: 'Moltiplicazioni', desc: 'Moltiplicazioni in colonna a due cifre con algoritmo standard.', icon: 'close' },
+{ id: 'divisioni', name: 'Divisioni', desc: 'Divisioni in colonna a una e due cifre con calcolo esatto del resto.', icon: 'percent' },
+{ id: 'frazioni', name: 'Frazioni', desc: 'Frazioni proprie, improprie, apparenti e calcolo di frazioni complementari.', icon: 'pie_chart' },
+{ id: 'decimali', name: 'Numeri decimali', desc: 'Operazioni con la virgola: somme, differenze, prodotti e divisioni.', icon: 'fiber_manual_record' },
+{ id: 'geometria', name: 'Geometria piana', desc: 'Calcolo di perimetri e aree per quadrati, rettangoli e triangoli.', icon: 'square_foot' },
+{ id: 'misure', name: 'Misure e unità', desc: 'Equivalenze di lunghezza, capacità, peso e calcolo delle ore.', icon: 'straighten' },
+{ id: 'problemi', name: 'Problemi aritmetici', desc: 'Quesiti pratici a tappe con logica aritmetica e stesura del procedimento.', icon: 'psychology' },
+{ id: 'proprieta', name: 'Proprietà delle operazioni', desc: 'Esercizi guidati su proprietà commutativa, associativa e distributiva.', icon: 'rule' },
+{ id: 'logica', name: 'Logica e insiemi', desc: 'Serie numeriche, crivello di Eratostene, divisori e mcm/MCD.', icon: 'hub' },
+{ id: 'dati', name: 'Dati e probabilità', desc: 'Frequenza, media aritmetica, calcolo di moda, mediana e probabilità.', icon: 'bar_chart' }
+];
+const DIFF_LABELS = { low: 'Basso', mid: 'Medio', high: 'Avanzato' };
+const MIN_TOTAL = 20;
+const BASE_COUNT = { low: 6, mid: 5, high: 4 };
+let globalDiff = 'low';
+const topicDiffs = {};
+const selectedTopics = new Set();
+let currentSheets = {};
+let currentView = 'dashboard';
+TOPICS.forEach(t => topicDiffs[t.id] = 'low');
+
+// ── PSEUDORANDOM GENERATOR (LCG) ──
+let _s = 1;
+function sr(min, max) { _s = (_s * 1664525 + 1013904223) >>> 0; return min + (_s % (max - min + 1)); }
+function resetRand() { _s = (Date.now() * Math.random() * 99999) >>> 0 || 1; }
+
+// ── EXERCISE GENERATION LOGIC ──
+function computeCount(topicId, allSelected) {
+const diff = topicDiffs[topicId]; const base = BASE_COUNT[diff];
+if (allSelected.size === 0) return base;
+return Math.max(base, Math.ceil(MIN_TOTAL / allSelected.size));
+}
+function genNumeri(diff, count) { const ex = []; for(let i=0;i<count;i++){ let t=sr(0,3), q; if(diff==='low'){const n=sr(1000,99999);const pos=['migliaia','centinaia','decine di migliaia','decine','unità']; if(t===0)q=`Qual è il valore delle <b>${pos[sr(0,4)]}</b> in <b>${n.toLocaleString('it')}</b>?`;else if(t===1)q=`Scomponi il numero: <b>${n.toLocaleString('it')}</b> = ___ + ___ + ___ + ___ + ___`;else if(t===2){const n2=sr(1000,99999);q=`Confronta con < > =: <b>${n.toLocaleString('it')}</b> ⬜ <b>${n2.toLocaleString('it')}</b>`}else q=`Predecessore e successore di <b>${n.toLocaleString('it')}</b>: ___ , ${n.toLocaleString('it')} , ___`}else if(diff==='mid'){const n=sr(100000,999999);if(t===0)q=`Scomponi: <b>${n.toLocaleString('it')}</b> = ___ migliaia + ___ centinaia + ___ decine + ___ unità`;else if(t===1){const ns=[sr(100000,999999),sr(100000,999999),sr(100000,999999)];q=`Ordina dal minore al maggiore: ${ns.map(x=>x.toLocaleString('it')).join(' — ')}`}else if(t===2){const to=[1000,10000][sr(0,1)];q=`Arrotonda <b>${n.toLocaleString('it')}</b> al ${to.toLocaleString('it')} più vicino: ___`}else q=`Predecessore e successore: ___ , ${n.toLocaleString('it')} , ___`}else{const n=sr(500000,9999999);const pos=['milioni','centinaia di migliaia','decine di migliaia','migliaia','centinaia','decine','unità']; if(t===0)q=`Qual è il valore delle <b>${pos[sr(0,6)]}</b> in <b>${n.toLocaleString('it')}</b>? ___`;else if(t===1){const to=[1000,10000,100000][sr(0,2)];q=`Arrotonda <b>${n.toLocaleString('it')}</b> al ${to.toLocaleString('it')} più vicino: ___`}else if(t===2){const ws=['duecentocinquantamila trecentosessantuno','un milione quattrocentoventiduemila cinquantasei','trecentottomila seicentonovantanove','sette milioni ottantamila venti'];q=`Scrivi in cifre: <i>${ws[sr(0,3)]}</i> = ___`}else{const ns=[sr(1000000,9999999),sr(1000000,9999999),sr(1000000,9999999)];q=`Ordina dal maggiore al minore: ${ns.map(x=>x.toLocaleString('it')).join(' — ')}`}} ex.push({text:q}); } return ex; }
+function genAddizioni(diff, count) { const ex = []; for(let i=0;i<count;i++){let a,b,c,op,txt;const t=sr(0,2);if(diff==='low'){a=sr(100,9999);b=sr(100,9999);op=sr(0,1)?'+':'-';if(op==='-'&&b>a)[a,b]=[b,a];const res=op==='+'?a+b:a-b;txt=t===0?`${a.toLocaleString('it')} ${op} ${b.toLocaleString('it')} = ___`:t===1?`___ ${op} ${b.toLocaleString('it')} = ${res.toLocaleString('it')}`:`${a.toLocaleString('it')} ${op} ___ = ${res.toLocaleString('it')}`}else if(diff==='mid'){a=sr(10000,99999);b=sr(10000,99999);c=sr(1000,9999);op=sr(0,1)?'+':'-';if(op==='-'&&b>a)[a,b]=[b,a];const op2=sr(0,1)?'+':'-';const res=op==='+'?a+b:a-b;txt=t===0?`${a.toLocaleString('it')} ${op} ${b.toLocaleString('it')} ${op2} ${c.toLocaleString('it')} = ___`:t===1?`___ ${op} ${b.toLocaleString('it')} = ${res.toLocaleString('it')}`:`${a.toLocaleString('it')} ${op} ___ = ${res.toLocaleString('it')}`}else{a=sr(100000,999999);b=sr(100000,999999);op=sr(0,1)?'+':'-';if(op==='-'&&b>a)[a,b]=[b,a];const res=op==='+'?a+b:a-b;txt=t===0?`${a.toLocaleString('it')} ${op} ${b.toLocaleString('it')} = ___`:t===1?`___ ${op} ${b.toLocaleString('it')} = ${res.toLocaleString('it')}`:`${a.toLocaleString('it')} ${op} ___ = ${res.toLocaleString('it')}`} ex.push({text:txt}); } return ex; }
+function genMoltiplicazioni(diff, count) { const ex = []; for(let i=0;i<count;i++){let a,b,txt;const t=sr(0,2);if(diff==='low'){a=sr(11,99);b=sr(2,9)}else if(diff==='mid'){a=sr(100,999);b=sr(11,29)}else{a=sr(1000,9999);b=sr(11,49)}const res=a*b;txt=t===0?`${a.toLocaleString('it')} × ${b} = ___`:t===1?`___ × ${b} = ${res.toLocaleString('it')}`:`${a.toLocaleString('it')} × ___ = ${res.toLocaleString('it')}`; ex.push({text:txt}); } return ex; }
+function genDivisioni(diff, count) { const ex = []; for(let i=0;i<count;i++){let b,q,r,txt;const t=sr(0,1);if(diff==='low'){b=sr(2,9);q=sr(10,99);r=sr(0,b-1)}else if(diff==='mid'){b=sr(2,9);q=sr(100,999);r=sr(0,b-1)}else{b=sr(11,19);q=sr(100,999);r=sr(0,b-1)}const d=b*q+r;txt=t===0?`${d.toLocaleString('it')} ÷ ${b} = ___ r ___`:`___ ÷ ${b} = ${q} r ${r}`; ex.push({text:txt}); } return ex; }
+function genFrazioni(diff, count) { const ex = []; for(let i=0;i<count;i++){let txt;if(diff==='low'){const den=sr(2,8),num=sr(1,den);const ts=[`Scrivi la frazione: ${num} parti colorate su ${den} in totale? = ___/___`,`La frazione ${num}/${den} è propria, impropria o apparente? ___`,`Scrivi la frazione complementare di ${num}/${den}: ___`,`Confronta le frazioni con < > =: ${sr(1,den)}/${den} ⬜ ${sr(1,den)}/${den}`];txt=ts[sr(0,3)]}else if(diff==='mid'){const den=sr(3,12),n1=sr(1,den-1),n2=sr(1,den-1);const ts=[`Riduci ai minimi termini la frazione: ${sr(2,4)*den}/${sr(2,4)*den+sr(1,den)} → ___/___`,`Calcola: ${n1}/${den} + ${n2}/${den} = ___`,`Calcola: ${Math.max(n1,n2)+1}/${den} − ${Math.min(n1,n2)}/${den} = ___`,`Quale numero rappresenta la frazione ${n1}/${den} di ${sr(12,60)}? ___`];txt=ts[sr(0,3)]}else{const d1=sr(3,6),d2=sr(3,6),n1=sr(1,d1-1),n2=sr(1,d2-1);const ts=[`Riduci allo stesso denominatore e confronta: ${n1}/${d1} ⬜ ${n2}/${d2}`,`Risolvi: ${n1}/${d1} + ${n2}/${d2} = ___`,`Scrivi come frazione impropria: ${sr(2,5)} interi e ${sr(1,d1-1)}/${d1} → ___/___`,`Quale numero rappresenta la frazione ${n1}/${d1} di ${sr(24,120)}? ___`];txt=ts[sr(0,3)]} ex.push({text:txt}); } return ex; }
+function genDecimali(diff, count) { const ex = []; for(let i=0;i<count;i++){let txt;if(diff==='low'){const a=(sr(10,999)/10).toFixed(1),b=(sr(10,999)/10).toFixed(1);const ts=[`${a} + ${b} = ___`,`${Math.max(+a,+b).toFixed(1)} − ${Math.min(+a,+b).toFixed(1)} = ___`,`Ordina in modo crescente: ${(sr(10,99)/10).toFixed(1)}, ${(sr(10,99)/10).toFixed(1)}, ${(sr(10,99)/10).toFixed(1)}`,`Dividi: ${a} ÷ ${sr(2,5)} = ___`];txt=ts[sr(0,3)]}else if(diff==='mid'){const a=(sr(100,9999)/100).toFixed(2),b=(sr(100,9999)/100).toFixed(2);const ts=[`${a} + ${b} = ___`,`${Math.max(+a,+b).toFixed(2)} − ${Math.min(+a,+b).toFixed(2)} = ___`,`${a} × ${sr(2,9)} = ___`,`Arrotonda ${a} al decimo più vicino: ___`,`Dividi: ${a} ÷ ${sr(2,5)} = ___`,`Dividi: ${a} ÷ 0.${sr(1,9)} = ___`];txt=ts[sr(0,5)]}else{const a=(sr(1000,99999)/1000).toFixed(3);const ts=[`${a} × ${sr(2,9)} = ___`,`Dividi: ${a} ÷ ${sr(2,5)} ≈ ___ (ai millesimi)`,`Dividi: ${a} ÷ 0.${sr(10,99)} ≈ ___`,`Dividi: ${a} ÷ 0.${sr(2,9)} = ___`,`Converti in frazione decimale: ${a} = ___/1000`,`Quale cifra si trova nella posizione dei millesimi in ${a}? ___`];txt=ts[sr(0,5)]} ex.push({text:txt}); } return ex; }
+function genGeometria(diff, count) { const ex = []; for(let i=0;i<count;i++){let txt;if(diff==='low'){const l=sr(3,15),h=sr(2,12);const ts=[`Trova il perimetro di un quadrato con lato ${l} cm = ___`,`Trova il perimetro di un rettangolo con base=${l} cm e altezza=${h} cm = ___`,`Trova l'area di un rettangolo con base=${l} cm e altezza=${h} cm = ___ cm²`,`Quanti lati ha un ${['triangolo','quadrato','pentagono','esagono'][sr(0,3)]}? ___`];txt=ts[sr(0,3)]}else if(diff==='mid'){const b=sr(5,20),h=sr(3,15);const ts=[`Calcola l'area di un triangolo con base=${b} cm e altezza=${h} cm → (b×h)÷2 = ___`,`Calcola l'area di un quadrato con lato di ${sr(4,20)} cm = ___`,`Trova il perimetro di un triangolo equilatero con lato di ${sr(3,12)} cm = ___`,`Trova l'area di un rombo con d₁=${sr(6,20)} cm e d₂=${sr(4,16)} cm = ___`];txt=ts[sr(0,3)]}else{const r=sr(3,12);const ts=[`Se il diametro è ${r*2} cm → Raggio = ___ | Calcola la Circonferenza ≈ ___ (usa π≈3,14)`,`Trova l'area di un cerchio con raggio=${r} cm ≈ ___ cm² (usa π≈3,14)`,`Un rettangolo ha perimetro ${sr(20,60)} cm e base ${sr(5,20)} cm → Altezza = ___ ; Area = ___`,`Calcola l'area di un trapezio con B=${sr(10,20)} cm, b=${sr(4,9)} cm e h=${sr(5,14)} cm = ___`];txt=ts[sr(0,3)]} ex.push({text:txt}); } return ex; }
+function genMisure(diff, count) { const ex = []; for(let i=0;i<count;i++){let txt;if(diff==='low'){const ts=[`Esegui l'equivalenza: ${sr(1,50)} km = ___ m`,`Esegui l'equivalenza: ${sr(100,9999)} cm = ___ m`,`Esegui l'equivalenza: ${sr(1,20)} kg = ___ g`,`Esegui l'equivalenza: ${sr(1,10)} L = ___ dL`];txt=ts[sr(0,3)]}else if(diff==='mid'){const ts=[`Calcola quanti minuti sono: ${sr(1,5)} ore e ${sr(1,59)} min = ___ minuti`,`Scomponi la misura: ${sr(2000,9999)} m = ___ km e ___ m`,`Quanti grammi in totale? ${sr(1,10)} kg e ${sr(100,999)} g = ___ g`,`Esegui la catena di equivalenze: ${sr(1,20)} daL = ___ L = ___ dL`];txt=ts[sr(0,3)]}else{const ts=[`Calcola la superficie: ${sr(10,50)} dm² = ___ cm²`,`Calcola il volume: ${sr(1,10)} m³ = ___ dm³`,`Ordina dal più lungo al più corto: ${sr(1,5)} km, ${sr(3000,7000)} m, ${sr(1,10)} dam`,`Trova il totale dei giorni: ${sr(1,4)} settimane e ${sr(1,6)} giorni = ___ giorni`];txt=ts[sr(0,3)]} ex.push({text:txt}); } return ex; }
+function genProblemi(diff, count) { const T = { low: [()=>{const a=sr(12,80),b=sr(5,Math.min(40,a-1));return`Marco ha ${a} figurine nel suo album. Ne regala ${b} ai suoi amici. Quante figurine gli restano?`;},()=>{const p=sr(2,8),c=sr(5,20);return`Una confezione contiene ${c} biscotti artigianali. Quanti biscotti ci sono in tutto in ${p} confezioni?`;},()=>{const tot=sr(30,150),g=sr(2,6);return`${tot} bambini si devono dividere in ${g} squadre sportive con lo stesso numero di partecipanti. Quanti bambini ci saranno per ogni squadra?`;},()=>{const km=sr(5,25),v=sr(2,5);return`Un ciclista percorre ogni giorno ${km} km per allenarsi. Quanti km riesce a percorrere in ${v} giorni?`;},()=>{const p=sr(100,500),sp=sr(10,80);return`Un videogioco costava €${p}. Oggi è in saldo ed è scontato di €${sp}. Quanto costa il videogioco adesso?`;},()=>{const a=sr(10,50),b=sr(5,a-1);return`Luca possiede ${a} caramelle, mentre Anna ne possiede ${b}. Quante caramelle hanno in tutto? Quante caramelle in più possiede Luca rispetto ad Anna?`;}], mid: [()=>{const p=sr(5,12),c=sr(3,8),r=sr(10,40);return`Un negoziante riceve ${p} scatole che contengono ${c} matite ciascuna. Inoltre, ha ${r} matite sfuse in cassetto. Quante matite ha in totale nel negozio?`;},()=>{const tot=sr(200,600),s=sr(3,7);return`Un sacchetto di farina da ${tot} g viene suddiviso equamente in ${s} ciotole per fare dei dolci. Quanta farina contiene ogni ciotola e quanta ne avanza?`;},()=>{const d=sr(5,20),kmh=sr(40,80);return`Un'automobile viaggia a una velocità costante di ${kmh} km/h per ${d} minuti. Quanti chilometri ha percorso in questo intervallo di tempo?`;},()=>{const g=sr(3,6),q=sr(4,10),pr=sr(2,8);return`${g} compagni di classe acquistano ${q} quaderni a €${pr} ciascuno e decidono di dividere la spesa totale in parti uguali. Quanto pagherà ognuno di loro?`;},()=>{const a=sr(200,600),e=sr(50,150),v=sr(30,120);return`In una libreria ci sono ${a} libri di avventura. Ne arrivano altri ${e} da sistemare, ma nello stesso giorno ne vengono venduti ${v}. Quanti libri restano in negozio?`;}], high: [()=>{const t=sr(400,1200),fill=sr(10,20),empty=sr(3,9);return`Una grande cisterna d'acqua da ${t} litri viene riempita da un rubinetto con portata di ${fill} L/min e contemporaneamente si svuota a causa di una perdita di ${empty} L/min. In quanti minuti si riempirà completamente partendo da vuota?`;},()=>{const a=sr(8,20),b=sr(4,a-2);return`Un rettangolo ha un perimetro di ${(a+b)*2} cm e la sua base misura ${a} cm. Calcola la misura dell'altezza e l'area totale della figura.`;},()=>{const g=sr(3,7),km=sr(5,15),days=sr(3,7);return`${g} amici fanno un viaggio a piedi. Percorrono ${km} km al giorno per ${days} giorni. Quanti chilometri in totale ha percorso l'intero gruppo in tutto il viaggio?`;},()=>{const tot=sr(400,1200),r=sr(5,20);return`Un magazzino di elettronica conteneva ${tot} smartphone. Nello scorso mese è stato venduto il ${r}% del totale degli apparecchi. Quanti smartphone rimangono in magazzino?`;},()=>{const p1=sr(3,8),p2=sr(3,8);return`Lucia impiega circa ${p1} minuti per completare la lettura di una pagina di un romanzo. Se legge regolarmente ${sr(10,30)} pagine ogni giorno, in quanti giorni riuscirà a leggere un intero libro di ${sr(60,200)} pagine?`;} ] }; const ex=[];const list=T[diff];for(let i=0;i<count;i++){ex.push({text:list[sr(0,list.length-1)](),isProblem:true});} return ex; }
+function genProprieta(diff, count) { const ex = []; for(let i=0;i<count;i++){let txt;if(diff==='low'){const a=sr(10,99),b=sr(10,99),c=sr(2,15);const ts=[`Applica la prop. commutativa: ${a} + ${b} = ${b} + ___`,`Applica la prop. associativa: (${a} + ${b}) + ${c} = ${a} + (___ + ___)`,`Applica la prop. commutativa: ${a} × ${b} = ${b} × ___`,`Completa con l'elemento neutro: ${sr(100,999)} × ___ = ${sr(100,999)}`];txt=ts[sr(0,3)]}else if(diff==='mid'){const a=sr(10,50),b=sr(5,20),c=sr(2,10);const ts=[`Applica la prop. distributiva: ${a} × (${b} + ${c}) = (${a} × ___) + (${a} × ___)`,`Applica la prop. dissociativa: ${a} × ${b*c} = ${a} × ___ × ___`,`Verifica l'uguaglianza: (${a} + ${b}) × ${c} = ${a} × ${c} + ${b} × ${c} → ___ = ___`,`Calcola in modo rapido raggruppando: ${sr(10,25)} × ${sr(2,5)} × ${sr(2,5)}`];txt=ts[sr(0,3)]}else{const a=sr(20,50);const ts=[`Calcola mentalmente in modo rapido: ${a} × 99 = ${a} × (___ − ___) = ___`,`Dimostra la prop. distributiva: ${a} × (${sr(5,15)} + ${sr(3,12)}) = ___`,`Applica la proprietà dello zero: ___ ÷ ${sr(2,9)} = 0`,`Usa l'operazione inversa per verificare: ${sr(50,200)} ÷ ${sr(2,9)} = ___ × ___`];txt=ts[sr(0,3)]} ex.push({text:txt}); } return ex; }
+function genLogica(diff, count) { const ex = []; for(let i=0;i<count;i++){let txt;if(diff==='low'){const ts=[`Completa la serie numerica: 3, 6, 9, 12, ___ , ___`,`Completa la serie calante: 100, 90, 80, ___ , ___`,`Cerchia solo i multipli di ${sr(3,7)} nella seguente lista: 14, 21, 27, 35, 42, 56, 63`,`Indica tutti i divisori di ${[12,18,24,30,36][sr(0,4)]}: ___`];txt=ts[sr(0,3)]}else if(diff==='mid'){const ts=[`Scrivi i multipli comuni di 4 e 6 compresi fino a 60: ___`,`Trova il Massimo Comun Divisore (MCD) di ${[12,18,24][sr(0,2)]} e ${[6,9,12][sr(0,2)]}: ___`,`Trova il minimo comune multiplo (mcm) di ${[4,6,8][sr(0,2)]} e ${[3,5,9][sr(0,2)]}: ___`,`Verifica la divisibilità per 9 del numero ${sr(100,999)} (somma cifre = ___ , è divisibile? ___)`];txt=ts[sr(0,3)]}else{const ts=[`Trova ed elenca i numeri primi fino a ${[30,40,50][sr(0,2)]} utilizzando il crivello di Eratostene`,`Scrivi tre numeri interi che divisi per ${sr(3,8)} diano come resto ${sr(1,5)}: ___`,`Completa la serie con incremento costante: ___ , ___ , 40 , ___ , ___ , 70`,`Trova due numeri interi aventi MCD = ${[6,8,12][sr(0,2)]} e mcm = ${[24,36,60][sr(0,2)]}: ___ e ___`];txt=ts[sr(0,3)]} ex.push({text:txt}); } return ex; }
+function genDati(diff, count) { const ex = []; for(let i=0;i<count;i++){let txt;if(diff==='low'){const v=Array.from({length:5},()=>sr(2,20));const ts=[`Dati statistici raccolti: {${v.join(', ')}} → Valore massimo: ___ , Valore minimo: ___`,`Raccogli la frequenza dei dati seguenti e abbozza un grafico a barre di riepilogo.`,`Osservando un istogramma scolastico, se la barra di matematica è più alta di quella di italiano, quale materia ha ottenuto più preferenze? ___`];txt=ts[sr(0,2)]}else if(diff==='mid'){const v=Array.from({length:6},()=>sr(5,30));const ts=[`Trova la media aritmetica dell'insieme di dati: {${v.join(', ')}} → Somma: ___ ÷ N: ___ = Media: ___`,`Calcola la moda e la mediana per i seguenti voti ordinati: {${[...v].sort((a,b)=>a-b).join(', ')}}`,`Lanciando un dado regolare a 6 facce, qual è la probabilità di ottenere un numero pari? ___/___`];txt=ts[sr(0,2)]}else{const ts=[`Calcola la probabilità teorica di ottenere un numero maggiore di 4 lanciando un dado classico a 6 facce: ___/___`,`Determina media aritmetica, moda e mediana per il seguente set di dati: {${Array.from({length:8},()=>sr(10,50)).join(', ')}}`,`Se il settore "Sport" rappresenta il 25% in un grafico a torta su ${sr(40,200)} alunni, quanti alunni praticano sport? ___`,`Estraendo a caso una carta da un mazzo di 40 carte napoletane, qual è la probabilità di pescare un Re? ___`];txt=ts[sr(0,3)]} ex.push({text:txt}); } return ex; }
+
+const GENERATORS = {
+numeri: genNumeri, addizioni: genAddizioni, moltiplicazioni: genMoltiplicazioni,
+divisioni: genDivisioni, frazioni: genFrazioni, decimali: genDecimali,
+geometria: genGeometria, misure: genMisure, problemi: genProblemi,
+proprieta: genProprieta, logica: genLogica, dati: genDati
+};
+
+// ── RENDER SIDEBAR TOPICS ──
+function renderSidebar() {
+const list = document.getElementById('sidebarNavList'); list.innerHTML = '';
+TOPICS.forEach(t => {
+const isSelected = selectedTopics.has(t.id); const diff = topicDiffs[t.id];
+const item = document.createElement('div'); item.className = 'w-full px-2';
+item.innerHTML = `<div class="flex items-center justify-between rounded-lg cursor-pointer transition-all pr-3 ${isSelected?'text-primary font-bold border-l-4 border-primary bg-primary-fixed/15 pl-3 py-2.5':'text-on-surface-variant hover:bg-surface-variant/40 pl-4 py-2.5'}" onclick="toggleTopicSelection('${t.id}')">
+<div class="flex items-center gap-3"><span class="material-symbols-outlined text-[20px]" style="${isSelected?'font-variation-settings: \'FILL\' 1;':''}">${t.icon}</span><span class="text-xs tracking-tight truncate max-w-[130px] font-label-lg">${t.name}</span></div>
+${isSelected?`<span class="text-[9px] font-bold px-1.5 py-0.5 rounded-full ${diff==='low'?'bg-green-100 text-green-800':diff==='mid'?'bg-yellow-100 text-yellow-800':'bg-red-100 text-red-800'}">${DIFF_LABELS[diff].charAt(0)}</span>`:''}
+</div>`; list.appendChild(item);
+}); updateSidebarBadges();
+}
+
+function updateSidebarBadges() {
+const badge = document.getElementById('sidebarCounterBadge');
+const genBtn = document.getElementById('sidebarGenerateBtn');
+const gridBtn = document.getElementById('gridSelectionCounter');
+const topPdfBtn = document.getElementById('topPdfBtn');
+const n = selectedTopics.size;
+gridBtn.textContent = `${n} selezionat${n===1?'o':'i'}`;
+if(n===0){badge.innerHTML='<span class="text-on-surface-variant/60 italic">Nessun capitolo scelto</span>';genBtn.disabled=true;genBtn.className="w-full bg-primary/40 text-on-primary/60 font-bold py-3 rounded-lg flex items-center justify-center gap-2 text-sm cursor-not-allowed";topPdfBtn.disabled=true;}
+else{const total=Array.from(selectedTopics).reduce((acc,id)=>acc+computeCount(id,selectedTopics),0);badge.innerHTML=`<b>${n}</b> ${n===1?'capitolo':'capitoli'} · <b>${total}</b> esercizi`;genBtn.disabled=false;genBtn.className="w-full bg-primary text-on-primary font-bold py-3 rounded-lg hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2 text-sm";if(Object.keys(currentSheets).length>0)topPdfBtn.disabled=false;}
+document.getElementById('statsSelectedCount').textContent = n;
+const wsExCount = Object.keys(currentSheets).length > 0 ? Array.from(selectedTopics).reduce((acc,id)=>acc+(currentSheets[id]?currentSheets[id].exercises.length:0),0) : 0;
+document.getElementById('statsTotalExercises').textContent = wsExCount;
+}
+
+function renderBentoGrid() {
+const grid = document.getElementById('topicsBentoGrid'); grid.innerHTML = '';
+TOPICS.forEach((t,index) => {
+const isSelected = selectedTopics.has(t.id); const diff = topicDiffs[t.id];
+const isFeatured = t.id === 'problemi';
+const colSpan = isFeatured ? 'col-span-12 md:col-span-8' : 'col-span-12 md:col-span-4';
+const card = document.createElement('div');
+card.className = `${colSpan} bg-surface-container-lowest border transition-all rounded-xl p-6 flex flex-col justify-between min-h-[220px] cursor-pointer hover:border-primary/40 ${isSelected?'border-primary border-2 ring-2 ring-primary/10':'border-outline-variant'}`;
+card.setAttribute('onclick',`toggleTopicSelection('${t.id}')`);
+card.innerHTML = `<div>
+<div class="flex justify-between items-start mb-2"><div class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[24px]">${t.icon}</span></div>
+<div class="flex items-center gap-2">${isFeatured?`<span class="bg-primary-fixed text-on-primary-fixed-variant px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Consigliato</span>`:''}
+<div class="h-5 w-5 rounded-full border border-outline-variant flex items-center justify-center transition-all ${isSelected?'bg-primary border-primary text-on-primary':'bg-transparent'}">${isSelected?'<span class="material-symbols-outlined text-[12px] font-bold">check</span>':''}</div></div></div>
+<h3 class="font-headline-md text-base font-bold text-primary mb-1">${t.name}</h3>
+<p class="text-xs text-on-surface-variant opacity-80 leading-relaxed font-medium mb-3">${t.desc}</p></div>
+<div class="flex justify-between items-center gap-2 pt-3 border-t border-outline-variant/60" onclick="event.stopPropagation()">
+<div class="flex gap-1 border border-outline-variant rounded bg-background p-0.5">
+<button class="px-2 py-0.5 text-[10px] font-bold rounded transition-colors ${diff==='low'?'bg-primary text-on-primary font-bold':'text-on-surface-variant'}" onclick="setTopicDiff('${t.id}','low')">Basso</button>
+<button class="px-2 py-0.5 text-[10px] font-bold rounded transition-colors ${diff==='mid'?'bg-primary text-on-primary font-bold':'text-on-surface-variant'}" onclick="setTopicDiff('${t.id}','mid')">Medio</button>
+<button class="px-2 py-0.5 text-[10px] font-bold rounded transition-colors ${diff==='high'?'bg-primary text-on-primary font-bold':'text-on-surface-variant'}" onclick="setTopicDiff('${t.id}','high')">Avanzato</button>
+</div><span class="text-[11px] font-bold text-primary/70">${computeCount(t.id,selectedTopics)} Esercizi</span></div>`;
+grid.appendChild(card);
+});
+}
+
+// ── STATE ACTIONS ──
+window.toggleTopicSelection = function(id){ if(selectedTopics.has(id))selectedTopics.delete(id); else selectedTopics.add(id); renderSidebar(); renderBentoGrid(); };
+window.toggleSelectAll = function(){ const btn=document.getElementById('sidebarSelectAllBtn'); if(selectedTopics.size===TOPICS.length){selectedTopics.clear();btn.textContent="Seleziona tutti"}else{TOPICS.forEach(t=>selectedTopics.add(t.id));btn.textContent="Deseleziona tutti"} renderSidebar(); renderBentoGrid(); };
+window.setTopicDiff = function(tid,level){ topicDiffs[tid]=level; renderSidebar(); renderBentoGrid(); };
+window.setGlobalDiff = function(level){ globalDiff=level; ['low','mid','high'].forEach(d=>{const btn=document.getElementById(`global-diff-${d}`); if(d===level)btn.className="px-4 py-2 text-sm font-semibold border-r border-outline-variant hover:bg-surface-container-high transition-colors bg-primary text-on-primary font-bold"; else btn.className="px-4 py-2 text-sm font-semibold border-r border-outline-variant hover:bg-surface-container-high transition-colors text-on-surface-variant";}); };
+window.applyGlobalDiffToAll = function(){ TOPICS.forEach(t=>{topicDiffs[t.id]=globalDiff;}); renderSidebar(); renderBentoGrid(); };
+
+window.switchView = function(viewName){
+currentView=viewName;
+['dashboard','workspace','review','chatbot'].forEach(x=>document.getElementById(`${x}View`).classList.add('hidden'));
+document.getElementById(`${viewName}View`).classList.remove('hidden');
+['dashboard','workspace','review'].forEach(v=>{const btn=document.getElementById(`nav-${v}`); if(btn) btn.className=v===viewName?"text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg active:scale-95 transition-all":"text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-label-lg active:scale-95 transition-all";});
+if(viewName==='chatbot'){const btn=document.getElementById('nav-chatbot'); if(btn) btn.className="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg active:scale-95 transition-all";}
+if(viewName==='workspace'){document.getElementById('workspaceEmptyState').classList.toggle('hidden',Object.keys(currentSheets).length>0);document.getElementById('workspaceActiveContent').classList.toggle('hidden',Object.keys(currentSheets).length===0);}
+};
+
+function formatExerciseText(text){
+if(!text)return '';
+let result=text.replace(/___\/___/g,`<div class="inline-flex flex-col items-center justify-center align-middle mx-2"><input class="w-10 math-input-border text-center bg-transparent focus:outline-none text-base font-bold pb-0.5" placeholder="?" type="text"><div class="w-8 h-[2px] bg-primary my-0.5"></div><input class="w-10 math-input-border text-center bg-transparent focus:outline-none text-base font-bold pt-0.5" placeholder="?" type="text"></div>`);
+result=result.replace(/\b(\d+)\/(\d+)\b/g,(match,num,den)=>{return `<div class="inline-flex flex-col items-center justify-center align-middle mx-1.5 text-base font-bold"><span class="leading-none text-primary">${num}</span><div class="w-6 h-[1.5px] bg-primary/70 my-0.5"></div><span class="leading-none text-primary">${den}</span></div>`;});
+result=result.replace(/⬜/g,`<input class="w-10 h-10 mx-2 text-center border border-primary/30 bg-surface rounded-lg text-base font-bold focus:border-primary outline-none inline-block align-middle focus:ring-1 focus:ring-primary" placeholder="?" type="text">`);
+result=result.replace(/___+/g,`<input class="math-input-border text-center bg-transparent w-20 mx-1 focus:outline-none text-base font-bold" placeholder="?" type="text">`);
+return result;
+}
+
+window.generateWorksheet = function(){
+if(selectedTopics.size===0){alert('Seleziona almeno un argomento dalla barra laterale o dalle schede per iniziare!');return;}
+currentSheets={}; selectedTopics.forEach(id=>{resetRand();const diff=topicDiffs[id];const count=computeCount(id,selectedTopics);currentSheets[id]={diff:diff,exercises:GENERATORS[id](diff,count)};});
+renderWorksheetContent(); switchView('workspace'); updateSidebarBadges();
+};
+
+function renderWorksheetContent(){
+const container=document.getElementById('worksheetSectionsContainer'); container.innerHTML='';
+const totalEx=Array.from(selectedTopics).reduce((acc,id)=>acc+currentSheets[id].exercises.length,0);
+const now=new Date(); const dateStr=now.toLocaleDateString('it-IT',{year:'numeric',month:'long',day:'numeric'});
+document.getElementById('worksheetMetaSubtitle').innerHTML=`Scheda personalizzata &nbsp;·&nbsp; ${dateStr} &nbsp;·&nbsp; <b>${totalEx}</b> esercizi totali`;
+document.getElementById('worksheetDateInput').value=now.toLocaleDateString('it-IT');
+TOPICS.forEach(t=>{if(!currentSheets[t.id])return;const data=currentSheets[t.id];const diff=data.diff;const exercises=data.exercises;let exHtml='';
+if(t.id==='problemi'){exercises.forEach((ex,i)=>{exHtml+=`<div class="bg-surface border border-outline-variant p-6 rounded-lg relative group transition-all flex flex-col gap-3"><div class="flex items-start gap-3"><span class="font-bold text-primary opacity-60 text-sm leading-relaxed">${i+1}.</span><p class="font-body-md text-base text-on-background flex-grow leading-relaxed font-semibold">${ex.text}</p></div><div class="flex flex-col gap-2 mt-2 border-t border-outline-variant/60 pt-4"><div class="flex items-baseline gap-4"><span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider w-20">Svolgimento:</span><input class="flex-grow math-input-border bg-transparent text-sm py-1 px-2 focus:outline-none" placeholder="Scrivi i calcoli qui..." type="text"></div><div class="flex items-baseline gap-4"><span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider w-20">Risposta:</span><input class="flex-grow max-w-md math-input-border bg-transparent text-sm py-1 px-2 focus:outline-none font-bold text-primary" placeholder="Scrivi la risposta finale..." type="text"></div></div></div>`;});}
+else{exercises.forEach((ex,i)=>{exHtml+=`<div class="bg-surface border border-outline-variant p-5 rounded-lg transition-all flex items-center justify-between"><div class="flex items-center gap-4 flex-grow"><span class="font-bold text-primary opacity-60 text-sm">${i+1}.</span><div class="text-[15px] font-semibold text-on-background flex-grow leading-relaxed">${formatExerciseText(ex.text)}</div></div></div>`;});}
+const sectionHtml=`<section class="border-t border-outline-variant/80 pt-6" id="section-${t.id}"><div class="flex justify-between items-center mb-4"><div class="flex items-center gap-3"><h3 class="font-headline-md text-base font-bold text-primary">${t.name}</h3><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${diff==='low'?'bg-green-100 text-green-800':diff==='mid'?'bg-yellow-100 text-yellow-800':'bg-red-100 text-red-800'}">${DIFF_LABELS[diff]}</span></div><button class="flex items-center gap-1 text-xs text-on-surface-variant hover:text-primary transition-colors border border-outline-variant py-1.5 px-3 rounded bg-surface hover:bg-primary-fixed/15" onclick="regenTopic('${t.id}')"><span class="material-symbols-outlined text-[16px]">refresh</span><span class="font-bold">Rigenera</span></button></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">${exHtml}</div></section>`;
+container.innerHTML+=sectionHtml;});
+document.getElementById('worksheetProgressBar').style.width='100%';
+}
+
+window.regenTopic = function(id){
+const btn=document.querySelector(`#section-${id} button`); if(!btn)return;
+btn.innerHTML='<span class="material-symbols-outlined text-[16px] animate-spin">refresh</span><span class="font-bold">...</span>'; btn.disabled=true;
+setTimeout(()=>{resetRand();const diff=topicDiffs[id];const count=computeCount(id,selectedTopics);currentSheets[id]={diff:diff,exercises:GENERATORS[id](diff,count)};renderWorksheetContent();},300);
+};
+
+window.downloadPdf = function(){
+if(Object.keys(currentSheets).length===0)return;
+const {jsPDF}=window.jspdf; const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+const pw=210,ph=297,ml=15,mr=15,mt=15,mb=14,tw=pw-ml-mr; let y=mt; const lh=6.2;
+function chk(n=10){if(y+n>ph-mb){doc.addPage();y=mt;}}
+doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(0,77,91);doc.text('Scheda di Matematica — Quarta Elementare',ml,y);y+=7;
+doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(100);
+const now=new Date(); doc.text(now.toLocaleDateString('it-IT',{year:'numeric',month:'long',day:'numeric'}),ml,y);doc.text('Nome: ________________________',pw/2,y);y+=5;doc.text('Data: ________________________',pw/2,y);doc.setTextColor(0);y+=5;
+doc.setDrawColor(0,77,91);doc.setLineWidth(0.6);doc.line(ml,y,pw-mr,y);y+=8;
+TOPICS.forEach(t=>{if(!currentSheets[t.id])return;const{diff,exercises}=currentSheets[t.id];const name=TOPICS.find(x=>x.id===t.id).name;
+chk(20);doc.setFillColor(238,241,251);doc.rect(ml,y-4,tw,8,'F');doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(30);doc.text(`${name.toUpperCase()}  [${DIFF_LABELS[diff].toUpperCase()}  · ${exercises.length} esercizi]`,ml+3,y+1);y+=11;
+exercises.forEach((ex,i)=>{const isP=t.id==='problemi';chk(isP?28:13);doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(60);doc.text(`${i+1}.`,ml+2,y);const plain=ex.text.replace(/<[^>]*>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ');const lines=doc.splitTextToSize(plain,tw-12);doc.setFont('courier','normal');doc.setFontSize(9.5);doc.setTextColor(20);lines.forEach((line,li)=>doc.text(line,ml+10,y+li*lh));y+=lines.length*lh;if(isP){doc.setDrawColor(200);doc.setLineWidth(0.3);doc.line(ml+10,y+3,pw-mr,y+3);doc.line(ml+10,y+10,pw-mr,y+10);y+=16;}else{doc.setDrawColor(200);doc.setLineWidth(0.3);doc.line(pw-mr-40,y+2,pw-mr,y+2);y+=8;}});y+=5;});
+const pages=doc.getNumberOfPages();for(let p=1;p<=pages;p++){doc.setPage(p);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(150);doc.text(`Pagina ${p} di ${pages}`,pw/2,ph-6,{align:'center'});}
+doc.save(`scheda_matematica_${Date.now()}.pdf`);
+};
+
+// ── REVIEW CENTER ──
+const CHALLENGE_QUESTIONS = [
+{q:"25 × 4 = ?",a:"100"},{q:"125 + 75 = ?",a:"200"},{q:"360 ÷ 6 = ?",a:"60"},
+{q:"La frazione complementare di 3/5 è ?",a:"2/5"},{q:"Quanti centimetri ci sono in 2,5 metri ?",a:"250"},
+{q:"Il perimetro di un quadrato di lato 8 cm misura ?",a:"32"},{q:"1000 - 350 = ?",a:"650"},{q:"12 × 12 = ?",a:"144"}
+];
+let currentChallengeIndex=0;
+let challengeHistory=[];
+function generateNewChallenge(){
+let newIndex;
+do{newIndex=Math.floor(Math.random()*CHALLENGE_QUESTIONS.length);}while(challengeHistory.includes(newIndex)&&challengeHistory.length<CHALLENGE_QUESTIONS.length&&challengeHistory.length<1000);
+currentChallengeIndex=newIndex;
+challengeHistory.push(newIndex);
+if(challengeHistory.length>1000)challengeHistory.shift();
+const item=CHALLENGE_QUESTIONS[currentChallengeIndex];
+document.getElementById('challengeQuestion').textContent=item.q;
+const input=document.getElementById('challengeAnswerInput');input.value='';
+input.className="w-full text-center border-2 border-outline-variant rounded-lg py-2.5 text-xl font-bold focus:border-primary outline-none";
+const fb=document.getElementById('challengeFeedback');fb.classList.add('hidden');
+}
+function checkChallengeAnswer(){
+const input=document.getElementById('challengeAnswerInput');
+const val=input.value.trim().toLowerCase();
+const correctVal=CHALLENGE_QUESTIONS[currentChallengeIndex].a.toLowerCase();
+const fb=document.getElementById('challengeFeedback');fb.classList.remove('hidden');
+if(val===correctVal){input.className="w-full text-center border-2 border-green-500 bg-green-50 rounded-lg py-2.5 text-xl font-bold text-green-700 outline-none";fb.innerHTML="Corretto! Ottimo lavoro! 🎉";fb.className="text-sm font-bold mt-4 text-green-600 animate-bounce";}
+else{input.className="w-full text-center border-2 border-red-500 bg-red-50 rounded-lg py-2.5 text-xl font-bold text-red-700 outline-none";fb.innerHTML="Ops! Riprova, puoi farcela! 💪";fb.className="text-sm font-bold mt-4 text-red-600";}
+}
+
+// ── CHATBOT TUTOR LOGIC ──
+let chatState = { active: false, step: 0, data: {} };
+
+window.quickAsk = function(txt){ document.getElementById('chatInput').value = txt; handleChatSubmit(new Event('submit')); };
+
+window.handleChatSubmit = function(e){
+e.preventDefault();
+const input = document.getElementById('chatInput');
+const msg = input.value.trim();
+if(!msg) return;
+input.value = '';
+appendUserMessage(msg);
+showTyping(true);
+setTimeout(()=> processTutorLogic(msg), 600);
+};
+
+function appendUserMessage(text){
+const c = document.getElementById('chatContainer');
+const d = document.createElement('div');
+d.className = 'chat-bubble flex justify-end';
+d.innerHTML = `<div class="bg-primary text-on-primary p-3 rounded-2xl rounded-tr-none max-w-[75%] text-sm">${text}</div>`;
+c.appendChild(d);
+c.scrollTop = c.scrollHeight;
+}
+
+function appendTutorMessage(html, actions=[]){
+const c = document.getElementById('chatContainer');
+const d = document.createElement('div');
+d.className = 'chat-bubble flex gap-3';
+let actionsHtml = '';
+if(actions.length > 0){
+actionsHtml = `<div class="flex gap-2 mt-3 flex-wrap">${actions.map(a=>`<button class="chat-progress-btn text-xs" onclick="${a.onclick}">${a.label}</button>`).join('')}</div>`;
+}
+d.innerHTML = `<div class="w-8 h-8 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center text-primary mt-1"><span class="material-symbols-outlined text-[16px]">smart_toy</span></div>
+<div class="bg-surface-container-low border border-outline-variant p-4 rounded-2xl rounded-tl-none max-w-[85%]">
+<div class="text-sm text-on-background leading-relaxed">${html}</div>
+${actionsHtml}</div>`;
+c.appendChild(d);
+c.scrollTop = c.scrollHeight;
+}
+
+function showTyping(show){
+let el = document.getElementById('typing-indicator');
+if(show && !el){
+el = document.createElement('div');
+el.id = 'typing-indicator';
+el.className = 'chat-bubble flex gap-3';
+el.innerHTML = `<div class="w-8 h-8 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center text-primary mt-1"><span class="material-symbols-outlined text-[16px]">smart_toy</span></div>
+<div class="bg-surface-container-low border border-outline-variant p-4 rounded-2xl rounded-tl-none flex gap-1">
+<div class="w-2 h-2 bg-primary/40 rounded-full typing-dot"></div>
+<div class="w-2 h-2 bg-primary/40 rounded-full typing-dot"></div>
+<div class="w-2 h-2 bg-primary/40 rounded-full typing-dot"></div>
+</div>`;
+document.getElementById('chatContainer').appendChild(el);
+} else if(el && !show) {
+el.remove();
+}
+document.getElementById('chatContainer').scrollTop = document.getElementById('chatContainer').scrollHeight;
+}
+
+function processTutorLogic(msg){
+const lower = msg.toLowerCase();
+chatState.data = { msg };
+let topic = 'generic';
+if(lower.includes('frazion')) topic = 'frazioni';
+else if(lower.includes('pitagora')) topic = 'pitagora';
+else if(lower.includes('equazion')) topic = 'equazioni';
+else if(lower.includes('divisione') || lower.includes('decimale')) topic = 'decimali';
+else if(lower.includes('area') || lower.includes('perimetro')) topic = 'geometria';
+
+if(!chatState.active){
+chatState.active = true;
+chatState.step = 0;
+if(topic === 'frazioni'){
+appendTutorMessage(`<b>Ottima scelta! 🤓 Le frazioni con denominatori diversi richiedono un piccolo trucco: il denominatore comune.</b><br><br>Partiamo con un esempio pratico:<br><div class="bg-primary/5 border border-primary/20 p-3 rounded-lg my-2 text-center font-mono text-base font-bold text-primary">3/4 + 2/5</div>Primo passaggio: troviamo il minimo comune multiplo (mcm) tra 4 e 5. Siccome sono coprimi, basta moltiplicarli.<br><br><i>Vuoi che procediamo al prossimo passaggio?</i>`, [
+{label: "Mostrami il prossimo passaggio ➡️", onclick: "chatNextStep()"}
+]);
+} else if(topic === 'pitagora'){
+appendTutorMessage(`<b>Il Teorema di Pitagora è fondamentale! 📐</b><br>Lo useremo ogni volta che abbiamo un triangolo rettangolo.<br><div class="bg-primary/5 border border-primary/20 p-3 rounded-lg my-2 text-center font-mono text-lg font-bold text-primary">a² + b² = c²</div><br>Prima regola: <b>c</b> è sempre l'ipotenusa (il lato opposto all'angolo retto, il più lungo).<br><br>Vuoi un esempio con numeri concreti?`, [
+{label: "Sì, fammi un esempio ➡️", onclick: "chatNextStep()"},
+{label: "Spiegami meglio i cateti", onclick: "chatExtraInfo()"}
+]);
+} else if(topic === 'decimali'){
+appendTutorMessage(`<b>Attenzione alla virgola! 🔍</b><br>Quando dividi numeri decimali, la regola d'oro è: <b>sposta la virgola a destra in entrambi i numeri</b> finché il divisore non diventa intero.<br><br>Esempio:<div class="bg-primary/5 border border-primary/20 p-3 rounded-lg my-2 text-center font-mono text-base text-primary">4,5 ÷ 0,5 → 45 ÷ 5 = 9</div><br>Prova a dirmi: qual è il primo passaggio per risolvere <b>3,2 ÷ 0,4</b>?`, [
+{label: "Sposto la virgola di una posizione ➡️", onclick: "chatNextStep()"},
+{label: "Non ho capito, ripeti 🔄", onclick: "chatResetStep()"}
+]);
+} else {
+appendTutorMessage(`<b>Ho capito! Analizziamo insieme. 🧠</b><br>Per non farti perdere, dividerò il problema in 3 micro-passaggi.<br><br>1️⃣ Individuiamo i dati.<br>2️⃣ Scegliamo la formula.<br>3️⃣ Risolviamo.<br><br>Scrivimi pure l'esercizio completo e ti guido io!`, [
+{label: "Ok, procediamo ➡️", onclick: "chatNextStep()"}
+]);
+}
+} else {
+chatNextStep();
+}
+showTyping(false);
+}
+
+window.chatNextStep = function(){
+chatState.step++;
+if(chatState.step === 1){
+appendTutorMessage(`Perfetto! Ora trasformiamo i denominatori. Moltiplichiamo numeratore e denominatore per lo stesso numero per ottenere il 20.<br><div class="bg-primary/5 border border-primary/20 p-3 rounded-lg my-2 text-center font-mono text-base text-primary">(3×5)/(4×5) + (2×4)/(5×4)</div><br><i>Che numeri ottieni ai denominatori?</i>`, [
+{label: "Ho capito, vai avanti ➡️", onclick: "chatNextStep()"}
+]);
+} else if(chatState.step === 2){
+appendTutorMessage(`Esatto! Ora è:<br><div class="bg-primary/5 border border-primary/20 p-3 rounded-lg my-2 text-center font-mono text-base text-primary">15/20 + 8/20</div><br>Poiché i denominatori sono uguali, sommiamo SOLO i numeratori. 15 + 8 = ?<br><br><i>Scrivimi il risultato finale!</i>`, [
+{label: "23/20 ✅", onclick: "chatFinish()"}
+]);
+} else {
+appendTutorMessage(`<b>Bravissimo! 🎉 Hai ottenuto 23/20.</b><br>È una frazione impropria (maggiore di 1), ed è perfettamente corretta. Se vuoi, possiamo trasformarla in numero misto (1 + 3/20).<br><br><i>Vuoi un altro esercizio simile per allenarti?</i>`, [
+{label: "Sì, fanne un altro ➡️", onclick: "clearChat(); setTimeout(()=>quickAsk('Fammi un esercizio simile sulle frazioni'), 300);"},
+{label: "No, grazie! 👋", onclick: "clearChat()"}
+]);
+}
+};
+
+window.chatExtraInfo = function(){
+appendTutorMessage(`<b>Certo! I cateti sono i due lati corti</b> che formano l'angolo retto (quello a 90°). L'ipotenusa è il lato "obliquo" opposto.<br><br><i>Torniamo al teorema principale?</i>`, [
+{label: "Torna indietro ➡️", onclick: "chatResetStep()"}
+]);
+};
+
+window.chatResetStep = function(){
+chatState.step = 0;
+processTutorLogic(chatState.data.msg);
+};
+
+window.chatFinish = function(){
+appendTutorMessage(`Esatto! Il risultato è 23/20. 🌟<br>Hai capito perfettamente il meccanismo dei denominatori comuni.<br><br><i>Vuoi passare ad un altro argomento o fare un altro esercizio?</i>`, [
+{label: "Altro argomento 🔄", onclick: "clearChat()"},
+{label: "Un altro esercizio ➡️", onclick: "clearChat(); setTimeout(()=>quickAsk('Fammi un esercizio'), 300);"}
+]);
+};
+
+window.clearChat = function(){
+document.getElementById('chatContainer').innerHTML = `<div class="chat-bubble flex gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center text-primary mt-1"><span class="material-symbols-outlined text-[16px]">smart_toy</span></div>
+<div class="bg-surface-container-low border border-outline-variant p-4 rounded-2xl rounded-tl-none max-w-[85%]">
+<p class="text-sm text-on-background mb-1">Chat resettata. 💫</p>
+<p class="text-xs text-on-surface-variant leading-relaxed">Sono pronto per un nuovo argomento. Cosa vuoi calcolare oggi?</p>
+<div class="flex gap-2 mt-3 flex-wrap">
+<button onclick="quickAsk('Come si sommano due frazioni con denominatore diverso?')" class="bg-primary/5 hover:bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs font-medium transition-colors border border-primary/20">+ Frazioni diverse</button>
+<button onclick="quickAsk('Spiegami il teorema di Pitagora')" class="bg-primary/5 hover:bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs font-medium transition-colors border border-primary/20">📐 Pitagora</button>
+<button onclick="quickAsk('Come si risolve un\'equazione di primo grado?')" class="bg-primary/5 hover:bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs font-medium transition-colors border border-primary/20">⚖️ Equazione 1°</button>
+</div></div></div>`;
+chatState = { active: false, step: 0, data: {} };
+};
+
+// ── INITIALIZATION ──
+renderSidebar();
+renderBentoGrid();
+generateNewChallenge();
+</script>
+</body>
+</html>
+
