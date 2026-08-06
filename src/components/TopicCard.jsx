@@ -81,7 +81,7 @@ export default function TopicCard({ topic, onClick, isSelected }) {
 
         {/* Descrizione */}
         <Card.Text 
-          className="flex-grow-1 mb-0"
+          className="grow mb-0"
           style={{
             fontFamily: FONTS.BODY,
             fontSize: '13px',

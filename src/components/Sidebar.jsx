@@ -149,7 +149,7 @@ export default function Sidebar() {
                 </span>
                 
                 {/* Testo */}
-                <div className="flex-grow-1">
+                <div className="grow">
                   <div 
                     className="fw-semibold"
                     style={{

@@ -104,7 +104,7 @@ export default function DashboardPage() {
           <span className="material-symbols-outlined me-2" style={{ fontSize: '20px' }}>
             copyright
           </span>
-          <strong>Proprietà Intellettuale:</strong> Questo progetto è di esclusiva proprietà di Eugen.
+          <strong>Proprietà Intellettuale:</strong> Questo progetto è di esclusiva proprietà di Mindras Eugen Traian.
           Tutti i diritti sono riservati. Vietata la riproduzione non autorizzata.
         </Alert>
       </section>

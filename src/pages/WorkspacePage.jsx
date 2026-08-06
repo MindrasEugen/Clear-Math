@@ -153,7 +153,7 @@ export default function WorkspacePage() {
             </p>
           </div>
 
-          <div className="flex-grow-1" style={{ minWidth: '250px' }}>
+          <div className="grow" style={{ minWidth: '250px' }}>
             {/* Studente */}
             <div className="d-flex align-items-center gap-2 mb-2">
               <span 
@@ -276,7 +276,7 @@ export default function WorkspacePage() {
 
                         {/* Domanda */}
                         <div 
-                          className="flex-grow-1"
+                          className="grow"
                           style={{
                             fontFamily: FONTS.BODY,
                             fontSize: '15px',

@@ -189,7 +189,7 @@ export default function ReviewPage() {
               </p>
 
               {/* Challenge Box */}
-              <div className="bg-light rounded-3 p-4 flex-grow-1 d-flex flex-column justify-content-center mb-4">
+              <div className="bg-light rounded-3 p-4 grow d-flex flex-column justify-content-center mb-4">
                 <div className="text-center mb-4">
                   <div 
                     className="text-primary mb-3"
@@ -355,7 +355,7 @@ export default function ReviewPage() {
             </Card>
 
             {/* Tips Widget */}
-            <Card className="border-secondary flex-grow-1">
+            <Card className="border-secondary grow">
               <Card.Body className="d-flex flex-column h-100">
                 <Card.Title className="d-flex align-items-center gap-2 mb-3">
                   <span className="material-symbols-outlined text-primary" style={{ fontSize: '20px' }}>
@@ -374,7 +374,7 @@ export default function ReviewPage() {
                   </span>
                 </Card.Title>
                 
-                <ListGroup variant="flush" className="flex-grow-1 overflow-y-auto">
+                <ListGroup variant="flush" className="grow overflow-y-auto">
                   {studyTips.map((tip, index) => (
                     <ListGroup.Item 
                       key={index}

@@ -24,7 +24,7 @@ export default function Footer() {
         </div>
         <div className="text-center text-md-end small">
           <strong>Tutti i diritti riservati.</strong> 
-          Proprietà esclusiva di Eugen. 
+          Proprietà esclusiva di Mindras Eugen Traian. 
           Vietata la riproduzione non autorizzata.
         </div>
       </Container>
