@@ -4,20 +4,50 @@
  * Basato sulle Indicazioni Nazionali MIM e Quadri INVALSI
  */
 
-// Grado 1
+// Importa tutto da ogni grado
+import * as grade1Exports from './grade1/index.js';
+import * as grade2Exports from './grade2/index.js';
+import * as grade3Exports from './grade3/index.js';
+import * as grade4Exports from './grade4/index.js';
+import * as grade5Exports from './grade5/index.js';
+
+// Re-export di tutto per retrocompatibilit√†
 export * from './grade1/index.js';
-
-// Grado 2
 export * from './grade2/index.js';
-
-// Grado 3
 export * from './grade3/index.js';
-
-// Grado 4
 export * from './grade4/index.js';
-
-// Grado 5
 export * from './grade5/index.js';
+
+// Estrai i nomi necessari per allGrades
+const grade1Info = grade1Exports.grade1Info;
+const grade1Topics = grade1Exports.grade1Topics;
+const grade1Curriculum = grade1Exports.grade1Curriculum;
+const grade1Stats = grade1Exports.grade1Stats;
+const grade1TopicMap = grade1Exports.grade1TopicMap;
+
+const grade2Info = grade2Exports.grade2Info;
+const grade2Topics = grade2Exports.grade2Topics;
+const grade2Curriculum = grade2Exports.grade2Curriculum;
+const grade2Stats = grade2Exports.grade2Stats;
+const grade2TopicMap = grade2Exports.grade2TopicMap;
+
+const grade3Info = grade3Exports.grade3Info;
+const grade3Topics = grade3Exports.grade3Topics;
+const grade3Curriculum = grade3Exports.grade3Curriculum;
+const grade3Stats = grade3Exports.grade3Stats;
+const grade3TopicMap = grade3Exports.grade3TopicMap;
+
+const grade4Info = grade4Exports.grade4Info;
+const grade4Topics = grade4Exports.grade4Topics;
+const grade4Curriculum = grade4Exports.grade4Curriculum;
+const grade4Stats = grade4Exports.grade4Stats;
+const grade4TopicMap = grade4Exports.grade4TopicMap;
+
+const grade5Info = grade5Exports.grade5Info;
+const grade5Topics = grade5Exports.grade5Topics;
+const grade5Curriculum = grade5Exports.grade5Curriculum;
+const grade5Stats = grade5Exports.grade5Stats;
+const grade5TopicMap = grade5Exports.grade5TopicMap;
 
 /**
  * Mappa di tutti i gradi disponibili
@@ -27,31 +57,36 @@ export const allGrades = {
     info: grade1Info,
     topics: grade1Topics,
     curriculum: grade1Curriculum,
-    stats: grade1Stats
+    stats: grade1Stats,
+    topicMap: grade1TopicMap
   },
   2: {
     info: grade2Info,
     topics: grade2Topics,
     curriculum: grade2Curriculum,
-    stats: grade2Stats
+    stats: grade2Stats,
+    topicMap: grade2TopicMap
   },
   3: {
     info: grade3Info,
     topics: grade3Topics,
     curriculum: grade3Curriculum,
-    stats: grade3Stats
+    stats: grade3Stats,
+    topicMap: grade3TopicMap
   },
   4: {
     info: grade4Info,
     topics: grade4Topics,
     curriculum: grade4Curriculum,
-    stats: grade4Stats
+    stats: grade4Stats,
+    topicMap: grade4TopicMap
   },
   5: {
     info: grade5Info,
     topics: grade5Topics,
     curriculum: grade5Curriculum,
-    stats: grade5Stats
+    stats: grade5Stats,
+    topicMap: grade5TopicMap
   }
 };
 
