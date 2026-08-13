@@ -11,7 +11,7 @@
  * - Calcolo mentale
  */
 
-import { randomInt, randomChoice, randomShuffle } from '../../random.js';
+import { randomInt, randomChoice } from '../../random.js';
 import { DIFFICULTY } from '../../../data/constants.js';
 
 // ============================================================================
@@ -664,16 +664,6 @@ export function generateGrade1NumeriExercises(topicId, difficulty = DIFFICULTY.L
   console.warn(`Nessun generatore trovato per l'argomento: ${topicId}`);
   return generateConteggioExercises(topicId, difficulty, count);
 }
-
-// Esportazione di tutti i generatori
-export {
-  generateConteggioExercises,
-  generateQuantitaExercises,
-  generateConfrontoExercises,
-  generateAddizioneSottrazioneExercises,
-  generateValorePosizionaleExercises,
-  generateCalcoloMentaleExercises
-};
 
 // Funzione helper per generare SVG di oggetti
 function generateObjectSvg(count, objectType) {

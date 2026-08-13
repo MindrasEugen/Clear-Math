@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { grade1Topics, getGrade1TopicById } from '../data/curriculum/grade1/index';
 import { DIFFICULTY, DIFF_LABELS, SIDEBAR_WIDTH, HEADER_HEIGHT, COLORS, FONTS } from '../data/constants';
-import { generateTopicExercises, computeExerciseCount } from '../utils/exerciseGenerators';
+import { generateGrade1Exercises } from '../utils/exerciseGenerators/grade1/index';
 
 /**
  * Componente Sidebar
@@ -38,11 +38,11 @@ export default function Sidebar() {
     // Clear esercizi precedenti
     clearExercises();
     
-    // Genera esercizi per tutti gli argomenti selezionati
+    // Genera esercizi per tutti gli argomenti selezionati (Grado 1)
     selectedTopics.forEach(topicId => {
-      const count = computeExerciseCount(topicId, selectedTopics, topicDiffs);
-      const diff = topicDiffs[topicId] || globalDiff;
-      const exercises = generateTopicExercises(topicId, diff, count);
+      const diff = topicDiffs[topicId] || globalDiff || DIFFICULTY.LOW;
+      const count = 6; // Numero fisso di esercizi per argomento
+      const exercises = generateGrade1Exercises(topicId, diff, count);
       setTopicExercises(topicId, exercises);
     });
     

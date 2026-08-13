@@ -6,7 +6,8 @@ import { grade1Topics } from '../data/curriculum/grade1/index';
 import { COLORS, FONTS } from '../data/constants';
 import DifficultySelector from '../components/DifficultySelector';
 import TopicCard from '../components/TopicCard';
-import { generateTopicExercises, computeExerciseCount } from '../utils/exerciseGenerators';
+import { generateGrade1Exercises } from '../utils/exerciseGenerators/grade1/index';
+import { DIFFICULTY } from '../data/constants';
 
 /**
  * Pagina Dashboard
@@ -33,17 +34,12 @@ export default function DashboardPage() {
   const handleGenerateWorksheet = () => {
     if (selectedCount === 0) return;
     
-    // TODO: Generare esercizi reali
-    // Per ora placeholder
+    // Genera esercizi reali usando il generatore per Grado 1
     selectedTopics.forEach(topicId => {
-      const count = 6;
-      const exercises = Array.from({ length: count }, (_, i) => ({
-        id: `${topicId}-${i}`,
-        topicId,
-        question: `Esercizio di ${topicId} (da implementare)`,
-        answer: 'Risposta',
-        difficulty: 'low'
-      }));
+      const topic = grade1Topics.find(t => t.id === topicId);
+      const diff = topicDiffs[topicId] || globalDiff || DIFFICULTY.LOW;
+      const count = 6; // Numero fisso di esercizi per argomento
+      const exercises = generateGrade1Exercises(topicId, diff, count);
       setTopicExercises(topicId, exercises);
     });
     
