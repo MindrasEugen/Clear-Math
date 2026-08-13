@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Badge, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
@@ -36,6 +36,23 @@ export default function DashboardPage() {
     topicDiffs,
     setSelectedGrade
   } = useAppContext();
+
+  // Stato per il banner copyright (mostrato solo una volta)
+  const [showCopyrightAlert, setShowCopyrightAlert] = useState(() => {
+    const alreadyShown = localStorage.getItem('copyrightAlertShown');
+    return !alreadyShown;
+  });
+
+  // Nascondi il banner dopo 3 secondi e salva che e stato mostrato
+  useEffect(() => {
+    if (showCopyrightAlert) {
+      const timer = setTimeout(() => {
+        setShowCopyrightAlert(false);
+        localStorage.setItem('copyrightAlertShown', 'true');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showCopyrightAlert]);
 
   // Gestione click su TopicCard
   const handleTopicClick = (topicId) => {
@@ -102,18 +119,24 @@ export default function DashboardPage() {
           Scegli gli argomenti che preferisci e personalizza la tua esercitazione.
         </p>
         
-        <Alert 
-          variant="warning" 
-          dismissible 
-          className="mt-3 mx-auto"
-          style={{ maxWidth: '600px' }}
-        >
-          <span className="material-symbols-outlined me-2" style={{ fontSize: '20px' }}>
-            copyright
-          </span>
-          <strong>Propriet√† Intellettuale:</strong> Questo progetto √® di esclusiva propriet√† di Mindras Eugen Traian.
-          Tutti i diritti sono riservati. Vietata la riproduzione non autorizzata.
-        </Alert>
+        {showCopyrightAlert && (
+          <Alert 
+            variant="warning" 
+            dismissible 
+            className="mt-3 mx-auto"
+            style={{ maxWidth: '600px' }}
+            onClose={() => {
+              setShowCopyrightAlert(false);
+              localStorage.setItem('copyrightAlertShown', 'true');
+            }}
+          >
+            <span className="material-symbols-outlined me-2" style={{ fontSize: '18px' }}>
+              copyright
+            </span>
+            <strong>Propriet√† Intellettuale:</strong> Questo progetto √® di esclusiva propriet√† di Mindras Eugen Traian.
+            Tutti i diritti sono riservati. Vietata la riproduzione non autorizzata.
+          </Alert>
+        )}
       </section>
 
       {/* Grade Selector */}
