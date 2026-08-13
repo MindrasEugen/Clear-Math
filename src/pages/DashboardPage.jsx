@@ -37,9 +37,9 @@ export default function DashboardPage() {
     setSelectedGrade
   } = useAppContext();
 
-  // Stato per il banner copyright (mostrato solo una volta)
+  // Stato per il banner copyright (mostrato una volta per sessione)
   const [showCopyrightAlert, setShowCopyrightAlert] = useState(() => {
-    const alreadyShown = localStorage.getItem('copyrightAlertShown');
+    const alreadyShown = sessionStorage.getItem('copyrightAlertShown');
     return !alreadyShown;
   });
 
@@ -48,7 +48,7 @@ export default function DashboardPage() {
     if (showCopyrightAlert) {
       const timer = setTimeout(() => {
         setShowCopyrightAlert(false);
-        localStorage.setItem('copyrightAlertShown', 'true');
+        sessionStorage.setItem('copyrightAlertShown', 'true');
       }, 3000);
       return () => clearTimeout(timer);
     }
@@ -127,7 +127,7 @@ export default function DashboardPage() {
             style={{ maxWidth: '600px' }}
             onClose={() => {
               setShowCopyrightAlert(false);
-              localStorage.setItem('copyrightAlertShown', 'true');
+              sessionStorage.setItem('copyrightAlertShown', 'true');
             }}
           >
             <span className="material-symbols-outlined me-2" style={{ fontSize: '18px' }}>
