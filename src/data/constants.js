@@ -2,7 +2,7 @@
  * Costanti e configurazioni del progetto ClearMath
  */
 
-// Livelli di difficolt√†
+// Livelli di difficoltà
 export const DIFFICULTY = {
   LOW: 'low',
   MID: 'mid',

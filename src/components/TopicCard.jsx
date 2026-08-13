@@ -28,7 +28,7 @@ export default function TopicCard({ topic, onClick, isSelected }) {
       onClick={onClick}
     >
       <Card.Body className="d-flex flex-column p-3">
-        {/* Icona e Badge difficolt√° */}
+        {/* Icona e Badge difficoltà */}
         <div className="d-flex justify-content-between align-items-start mb-2">
           <span 
             className="material-symbols-outlined"
@@ -69,7 +69,7 @@ export default function TopicCard({ topic, onClick, isSelected }) {
           {topic.name}
         </Card.Title>
 
-        {/* Selettore difficolt√† per argomento */}
+        {/* Selettore difficoltà per argomento */}
         <div className="mb-2">
           <TopicDifficultySelector 
             topicId={topic.id} 

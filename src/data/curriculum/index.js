@@ -11,7 +11,7 @@ import * as grade3Exports from './grade3/index.js';
 import * as grade4Exports from './grade4/index.js';
 import * as grade5Exports from './grade5/index.js';
 
-// Re-export di tutto per retrocompatibilit√†
+// Re-export di tutto per retrocompatibilità
 export * from './grade1/index.js';
 export * from './grade2/index.js';
 export * from './grade3/index.js';

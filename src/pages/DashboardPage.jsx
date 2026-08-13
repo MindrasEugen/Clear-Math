@@ -20,7 +20,7 @@ const gradeLabels = {
 
 /**
  * Pagina Dashboard
- * Mostra la griglia degli argomenti e il selettore difficolt√†
+ * Mostra la griglia degli argomenti e il selettore difficoltà
  */
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -133,7 +133,7 @@ export default function DashboardPage() {
             <span className="material-symbols-outlined me-2" style={{ fontSize: '18px' }}>
               copyright
             </span>
-            <strong>Propriet√† Intellettuale:</strong> Questo progetto √® di esclusiva propriet√† di Mindras Eugen Traian.
+            <strong>Proprietà Intellettuale:</strong> Questo progetto è di esclusiva proprietà di Mindras Eugen Traian.
             Tutti i diritti sono riservati. Vietata la riproduzione non autorizzata.
           </Alert>
         )}
@@ -178,7 +178,7 @@ export default function DashboardPage() {
               fontWeight: '600'
             }}
           >
-            {selectedCount} selezionato{selectedCount !== 1 ? 'i' : ''}
+            {selectedCount} argoment{selectedCount === 1 ? 'o selezionato' : 'i selezionati'}
           </Badge>
         </div>
 

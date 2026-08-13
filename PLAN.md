@@ -57,7 +57,7 @@ Creare una piattaforma interattiva che:
 
 ## 🏗️ Architettura del Progetto
 
-### Struttura Attuale (da repository)
+### Struttura Attuale (da repository, aggiornata 13 Agosto 2026)
 ```
 Clear-math/
 ├── index.html
@@ -68,12 +68,23 @@ Clear-math/
 │   ├── App.jsx
 │   ├── main.jsx
 │   ├── components/
-│   │   ├── DifficultySelector.jsx
+│   │   ├── GradeSelector.jsx
 │   │   ├── Header.jsx
 │   │   ├── Layout.jsx
 │   │   ├── Sidebar.jsx
+│   │   ├── Footer.jsx
 │   │   ├── TopicCard.jsx
-│   │   └── TopicDifficultySelector.jsx
+│   │   ├── DifficultySelector.jsx
+│   │   ├── TopicDifficultySelector.jsx
+│   │   ├── common/
+│   │   │   ├── Button.jsx
+│   │   │   ├── Card.jsx
+│   │   │   └── Modal.jsx
+│   │   ├── exercise/
+│   │   │   ├── ExerciseCard.jsx
+│   │   │   └── ExerciseGeneratorDemo.jsx
+│   │   └── navigation/
+│   │       └── Breadcrumb.jsx
 │   ├── pages/
 │   │   ├── DashboardPage.jsx
 │   │   ├── ReviewPage.jsx
@@ -82,13 +93,30 @@ Clear-math/
 │   │   └── AppContext.jsx
 │   ├── data/
 │   │   ├── constants.js
-│   │   └── topics.js
+│   │   ├── topics.js
+│   │   ├── schemas.js
+│   │   └── curriculum/
+│   │       ├── grade1/ ... grade5/   # numeri, spazio_e_figure, relazioni_e_funzioni, dati_e_previsioni, index.js (dati completi)
+│   │       └── index.js
+│   ├── types/
+│   │   └── index.d.ts
 │   ├── styles/
 │   │   └── index.css
 │   └── utils/
-│       ├── exerciseGenerators.js
-│       └── random.js
+│       ├── random.js
+│       ├── exerciseGenerators.js  # legacy
+│       ├── exerciseGenerators/
+│       │   ├── index.js
+│       │   ├── grade1/   # completo (4 nuclei)
+│       │   ├── grade2/   # in completamento
+│       │   ├── grade3/   # vuoto
+│       │   ├── grade4/   # vuoto
+│       │   └── grade5/   # vuoto
+│       └── validators/
+│           └── grade1/
 ```
+
+**Nota**: i dati di curriculum (`src/data/curriculum/`) sono completi per i gradi 1-5. I generatori di esercizi (`src/utils/exerciseGenerators/`) coprono per intero solo il Grado 1; il Grado 2 è in completamento (vedi task LOGIC-02→07); i Gradi 3-5 sono ancora da iniziare (vedi task LOGIC-08+).
 
 ### Struttura Proposta
 
@@ -623,6 +651,202 @@ Ogni grado dipende dal completamento del precedente nello stesso nucleo tematico
 - **Assigned**: 2026-08-06
 - **Completed**: 2026-08-06
 
+#### LOGIC-02: Implementare generatori per Grado 2 - Nucleo Numeri
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: -
+- **Acceptance**:
+  - File `src/utils/exerciseGenerators/grade2/numeri.js` creato
+  - Funzioni generatrici per tutti i 7 topic del nucleo Numeri (sistema decimale, conteggio 100, addizione/sottrazione in colonna, moltiplicazione, tabelline, divisione)
+  - Ogni funzione usa `randomInt`, `randomChoice`, `DIFFICULTY`
+  - Ogni esercizio ha struttura coerente (id, topicId, type, question, answer, difficulty, points, hints, solution, metadata)
+  - Funzione `generateGrade2NumeriExercises` che mappa topicId a generatore specifico
+- **Files**: `src/utils/exerciseGenerators/grade2/numeri.js`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+
+#### LOGIC-03: Implementare generatori per Grado 2 - Nucleo Spazio e Figure
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: -
+- **Acceptance**:
+  - File `src/utils/exerciseGenerators/grade2/spazio_e_figure.js` creato
+  - Funzioni generatrici per tutti i 4 topic (linee, confine/regione, figure piane, simmetria)
+  - Ogni funzione usa `randomInt`, `randomChoice`, `DIFFICULTY`
+  - Ogni esercizio ha struttura coerente (id, topicId, type, question, answer, difficulty, points, hints, solution, metadata)
+  - Funzione `generateGrade2SpazioEFigureExercises` che mappa topicId a generatore specifico
+- **Files**: `src/utils/exerciseGenerators/grade2/spazio_e_figure.js`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+
+#### LOGIC-04: Implementare generatori per Grado 2 - Nucleo Relazioni e Funzioni
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: -
+- **Acceptance**:
+  - File `src/utils/exerciseGenerators/grade2/relazioni_e_funzioni.js` creato
+  - Funzioni generatrici per tutti i 4 topic (equivalenza, ordine, tabelle doppia entrata, problemi aritmetici)
+  - Funzione `generateGrade2RelazioniEFunzioniExercises` che mappa topicId a generatore specifico
+- **Files**: `src/utils/exerciseGenerators/grade2/relazioni_e_funzioni.js`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+
+#### LOGIC-05: Implementare generatori per Grado 2 - Nucleo Dati e Previsioni
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: -
+- **Acceptance**:
+  - File `src/utils/exerciseGenerators/grade2/dati_e_previsioni.js` creato
+  - Funzioni generatrici per tutti i 3 topic (tabelle frequenza, istogrammi/aerogrammi, probabilita semplice)
+  - Funzione `generateGrade2DatiEPrevisoniExercises` che mappa topicId a generatore specifico
+- **Files**: `src/utils/exerciseGenerators/grade2/dati_e_previsioni.js`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+
+#### LOGIC-06: Creare entry point unificato per Grado 2
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: LOGIC-02, LOGIC-03, LOGIC-04, LOGIC-05
+- **Acceptance**:
+  - File `src/utils/exerciseGenerators/grade2/index.js` creato
+  - Importa tutti i generatori dei 4 nuclei
+  - Esporta `generateGrade2Exercises(topicId, difficulty, count)`
+  - Mappa correttamente topicId a nucleo a generatore specifico
+- **Files**: `src/utils/exerciseGenerators/grade2/index.js`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+
+#### LOGIC-07: Integrare Grado 2 nell'entry point globale
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: LOGIC-06
+- **Acceptance**:
+  - Aggiorna `src/utils/exerciseGenerators/index.js`
+  - Importa `generateGrade2Exercises` da `./grade2/index.js`
+  - Rimuovi fallback per Grado 2 in `generateExercises`
+  - Aggiungi `case 2: return generateGrade2Exercises(topicId, difficulty, count)`
+  - Aggiorna `getGeneratorsStatus()` per Grado 2: `{ implemented: true, message: 'Generatori completi per tutti i nuclei' }`
+- **Files**: `src/utils/exerciseGenerators/index.js`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+
+---
+
+## 🎯 Generatori Gradi 3-5 (Completato)
+
+Il curriculum dati (`src/data/curriculum/grade3|4|5/`) e i generatori di esercizi (`src/utils/exerciseGenerators/grade3|4|5/`) sono ora completi per tutti e 4 i nuclei, sul modello di LOGIC-02→07. Con questo, **tutta la Scuola Primaria (Gradi 1-5) ha generatori di esercizi completi e funzionanti**, verificato con build di produzione e smoke test su tutte le 252 combinazioni argomento/difficolta.
+
+#### LOGIC-08: Implementare generatori per Grado 3 (tutti i nuclei) ed entry point
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: -
+- **Acceptance**:
+  - File `src/utils/exerciseGenerators/grade3/{numeri,spazio_e_figure,relazioni_e_funzioni,dati_e_previsioni}.js` creati, con generatori per ogni topic definito in `src/data/curriculum/grade3/`
+  - File `src/utils/exerciseGenerators/grade3/index.js` con `generateGrade3Exercises(topicId, difficulty, count)`
+  - Struttura esercizio coerente con i generatori di Grado 1-2
+- **Files**: `src/utils/exerciseGenerators/grade3/`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+
+#### LOGIC-09: Integrare Grado 3 nell'entry point globale
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: LOGIC-08
+- **Acceptance**:
+  - Aggiorna `src/utils/exerciseGenerators/index.js`: rimuovi fallback per Grado 3, aggiungi `case 3`, aggiorna `getGeneratorsStatus()`
+- **Files**: `src/utils/exerciseGenerators/index.js`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+
+#### LOGIC-10: Implementare generatori per Grado 4 (tutti i nuclei) ed entry point
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: -
+- **Acceptance**:
+  - File `src/utils/exerciseGenerators/grade4/{numeri,spazio_e_figure,relazioni_e_funzioni,dati_e_previsioni}.js` creati, con generatori per ogni topic definito in `src/data/curriculum/grade4/`
+  - File `src/utils/exerciseGenerators/grade4/index.js` con `generateGrade4Exercises(topicId, difficulty, count)`
+- **Files**: `src/utils/exerciseGenerators/grade4/`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+
+#### LOGIC-11: Integrare Grado 4 nell'entry point globale
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: LOGIC-10
+- **Acceptance**:
+  - Aggiorna `src/utils/exerciseGenerators/index.js`: rimuovi fallback per Grado 4, aggiungi `case 4`, aggiorna `getGeneratorsStatus()`
+- **Files**: `src/utils/exerciseGenerators/index.js`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+
+#### LOGIC-12: Implementare generatori per Grado 5 (tutti i nuclei) ed entry point
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: -
+- **Acceptance**:
+  - File `src/utils/exerciseGenerators/grade5/{numeri,spazio_e_figure,relazioni_e_funzioni,dati_e_previsioni}.js` creati, con generatori per ogni topic definito in `src/data/curriculum/grade5/`
+  - File `src/utils/exerciseGenerators/grade5/index.js` con `generateGrade5Exercises(topicId, difficulty, count)`
+- **Files**: `src/utils/exerciseGenerators/grade5/`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+
+#### LOGIC-13: Integrare Grado 5 nell'entry point globale
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: LOGIC-12
+- **Acceptance**:
+  - Aggiorna `src/utils/exerciseGenerators/index.js`: rimuovi fallback per Grado 5, aggiungi `case 5`, aggiorna `getGeneratorsStatus()`
+  - A questo punto `generateFallbackExercises` non e piu referenziato da nessun grado supportato ed e stato rimosso
+- **Files**: `src/utils/exerciseGenerators/index.js`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+- **Notes**: Trovato e corretto anche un bug pre-esistente in `grade1/index.js`: la mappatura topicId->nucleo usava `split('_')[1]`, che non funzionava per i nuclei con nome composto (spazio_e_figure, relazioni_e_funzioni, dati_e_previsioni), facendo generare esercizi del nucleo sbagliato (numeri) per 12 dei 16 argomenti di Grado 1. Corretto con lo stesso pattern a prefisso usato nei Gradi 2-5.
+
+---
+
+## 🐛 Bug di Navigazione Corretti (13 Agosto 2026)
+
+Durante il test manuale dell'app (`npm run dev` + browser) sono stati trovati e corretti due bug bloccanti non legati ai generatori:
+
+- **Area di Lavoro in crash per Gradi 2-5**: `WorkspacePage.jsx` usava `getGrade1TopicById` (hardcoded al Grado 1) per recuperare i metadati dell'argomento, causando `TypeError: Cannot read properties of undefined (reading 'icon')` per qualsiasi grado diverso da 1. Corretto con `getAnyTopicById` (grado-agnostico, gia presente in `curriculum/index.js`).
+- **"Centro Ripasso" irraggiungibile dalla nav bar**: `Header.jsx` passava `item.id` (es. `"review"`) invece di `item.path` (es. `"/review"`) a `navigate()`, causando una risoluzione di path relativa (es. `/workspace/review`) che finiva sempre sulla route di fallback (Dashboard). Corretto passando `item.path`. Anche l'evidenziazione del tab attivo (`currentView`) era rotta perche nessuno chiamava mai `switchView` dal context; ora deriva da `useLocation().pathname` in `Header.jsx`.
+
+---
+
+## 🎯 Esportazione PDF e Salvataggio Progressi (Completato)
+
+Le due funzionalita "Alta Priorita" indicate in README come prossimi passi sono state implementate.
+
+#### FEAT-01: Esportazione PDF reale della scheda
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: -
+- **Acceptance**:
+  - Nuovo servizio `src/services/pdfService.js` con `generateWorksheetPdf()` e `downloadWorksheetPdf()`, basato su jsPDF (gia dipendenza del progetto)
+  - Genera un PDF multi-pagina con titolo, dati studente, sezioni per argomento, domande numerate (HTML delle domande in colonna convertito in testo semplice) e risposte (scelte multiple elencate A/B/C/D, oppure riga vuota o risposta inserita dallo studente)
+  - Collegato sia al pulsante "Scarica PDF" nell'header sia a "Finalizza e Scarica PDF" in Area di Lavoro (prima erano entrambi placeholder `console.log`)
+- **Files**: `src/services/pdfService.js`, `src/components/Header.jsx`, `src/pages/WorkspacePage.jsx`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+- **Notes**: Verificato generando un PDF reale via script Node (header `%PDF-`, multi-pagina, ~13KB per 4 argomenti/22 esercizi). Non verificato il click di download nel browser stesso per non innescare un download non richiesto durante il testing automatico.
+
+#### FEAT-02: Salvataggio progressi (risposte e statistiche)
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: -
+- **Acceptance**:
+  - Input risposta in Area di Lavoro ora e controllato (prima era un `<input>` scollegato, nessuna risposta veniva mai salvata)
+  - Nuovo `src/utils/answerValidator.js` per il confronto normalizzato risposta studente / risposta attesa
+  - Nuovo pulsante "Verifica Risposte" che marca ogni esercizio con feedback visivo (bordo verde/rosso, icona) e registra i risultati
+  - `AppContext` esteso con `studentAnswers`, `progressStats` (totali e giornalieri, reset automatico al cambio data), persistiti in `localStorage`; un esercizio viene conteggiato una sola volta anche se verificato piu volte
+  - Barra di progresso in Area di Lavoro ora riflette la percentuale reale di esercizi con risposta inserita (prima era fissa al 50%)
+  - "I Tuoi Progressi" nel Centro Ripasso mostra ora "Risolti Oggi" e "Risposte Corrette" reali (prima erano hardcoded a 0)
+- **Files**: `src/context/AppContext.jsx`, `src/utils/answerValidator.js`, `src/pages/WorkspacePage.jsx`, `src/pages/ReviewPage.jsx`
+- **Assigned**: 2026-08-13
+- **Completed**: 2026-08-13
+- **Notes**: Verificato nel browser: risposta corretta/sbagliata segnalate correttamente, statistiche persistite correttamente anche dopo un refresh completo della pagina (non solo navigazione client-side). Il confronto risposta e "best effort" (normalizzato ma esatto) coerente con il formato di `exercise.answer.value` gia usato dai generatori; non gestisce equivalenze semantiche (es. "1/2" vs "0.5").
+- **Non incluso in questa iterazione**: nome della classe corretto in `WorkspacePage.jsx` (era hardcoded "Classe Quarta Elementare", ora usa `getGradeInfo(selectedGrade)`); la "Sfida Rapida" nel Centro Ripasso resta un mini-gioco a se, non ancora integrata nelle statistiche di progresso persistite.
+
 ---
 
 ## 📚 Appendice: Programma Ministeriale Dettagliato
@@ -1140,6 +1364,6 @@ Questa appendice contiene il programma completo di matematica per tutti i 13 gra
 
 ---
 
-**Ultimo Aggiornamento:** 06 Agosto 2026  
+**Ultimo Aggiornamento:** 13 Agosto 2026  
 **Responsabile:** Gino (con l'aiuto di Cat-Butler)  
-**Stato:** Integrazione Programma Ministeriale Completata - Struttura Dati Grado 1 Completata - UI Base Completata - Primo Generatore Completato - Da Revisionare con Team
+**Stato:** Integrazione Programma Ministeriale Completata - Struttura Dati Gradi 1-5 Completata - UI Base Completata - Generatori Esercizi Gradi 1-5 (Scuola Primaria) Completi - Esportazione PDF Completata - Salvataggio Progressi Completato - Prossimo: da definire con Gino (possibile integrazione AI, da confermare)

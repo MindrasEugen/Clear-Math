@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Row, Col, Badge, Form, ListGroup } from 'react-bootstrap';
 import { useAppContext } from '../context/AppContext';
-import { grade1Topics } from '../data/curriculum/grade1/index';
 import { COLORS, FONTS } from '../data/constants';
 import { randomInt, randomChoice } from '../utils/random';
 
@@ -10,7 +9,7 @@ import { randomInt, randomChoice } from '../utils/random';
  * Contiene sfida quotidiana, statistiche e consigli di studio
  */
 export default function ReviewPage() {
-  const { selectedCount, totalExercises } = useAppContext();
+  const { selectedCount, totalExercises, progressStats } = useAppContext();
   
   // Stato locale per la sfida
   const [challenge, setChallenge] = useState({
@@ -87,8 +86,8 @@ export default function ReviewPage() {
   const stats = {
     selectedTopics: selectedCount,
     totalExercises: totalExercises,
-    completedToday: 0, // TODO: Implementare tracking
-    correctAnswers: 0 // TODO: Implementare tracking
+    completedToday: progressStats.completedToday,
+    correctAnswers: progressStats.totalCorrect
   };
 
   // Consigli di studio
@@ -346,6 +345,62 @@ export default function ReviewPage() {
                           }}
                         >
                           Esercizi Generati
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                  <Col xs={6}>
+                    <Card className="border-0 bg-light">
+                      <Card.Body className="text-center p-3">
+                        <div
+                          className="text-primary"
+                          style={{
+                            fontFamily: FONTS.HEADLINE,
+                            fontSize: '28px',
+                            fontWeight: '700'
+                          }}
+                        >
+                          {stats.completedToday}
+                        </div>
+                        <div
+                          className="text-secondary small"
+                          style={{
+                            fontFamily: FONTS.BODY,
+                            fontSize: '11px',
+                            fontWeight: '600',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px'
+                          }}
+                        >
+                          Risolti Oggi
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                  <Col xs={6}>
+                    <Card className="border-0 bg-light">
+                      <Card.Body className="text-center p-3">
+                        <div
+                          className="text-primary"
+                          style={{
+                            fontFamily: FONTS.HEADLINE,
+                            fontSize: '28px',
+                            fontWeight: '700'
+                          }}
+                        >
+                          {stats.correctAnswers}
+                        </div>
+                        <div
+                          className="text-secondary small"
+                          style={{
+                            fontFamily: FONTS.BODY,
+                            fontSize: '11px',
+                            fontWeight: '600',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px'
+                          }}
+                        >
+                          Risposte Corrette
                         </div>
                       </Card.Body>
                     </Card>

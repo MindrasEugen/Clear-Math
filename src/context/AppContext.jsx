@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { grade1Topics, getGrade1TopicById } from '../data/curriculum/grade1/index.js';
 import { getGradeTopics } from '../data/curriculum/index.js';
 import { DIFFICULTY, VIEWS } from '../data/constants.js';
 
@@ -8,7 +7,7 @@ import { DIFFICULTY, VIEWS } from '../data/constants.js';
  * Gestisce:
  * - Vista corrente
  * - Argomenti selezionati
- * - Difficolt√† globale e per argomento
+ * - Difficoltà globale e per argomento
  * - Schede esercizi generate
  */
 
@@ -38,13 +37,13 @@ export function AppProvider({ children }) {
   
 
   
-  // Difficolt√† globale
+  // Difficoltà globale
   const [globalDiff, setGlobalDiff] = useState(() => {
     const saved = localStorage.getItem('globalDiff');
     return saved || DIFFICULTY.LOW;
   });
   
-  // Difficolt√† per ogni argomento
+  // Difficoltà per ogni argomento
   const [topicDiffs, setTopicDiffs] = useState(() => {
     const saved = localStorage.getItem('topicDiffs');
     if (saved) {
@@ -67,7 +66,34 @@ export function AppProvider({ children }) {
     date: new Date().toLocaleDateString('it-IT'),
     grade: ''
   });
-  
+
+  // Risposte inserite dallo studente per ogni esercizio (chiave: exercise.id)
+  const [studentAnswers, setStudentAnswers] = useState(() => {
+    const saved = localStorage.getItem('studentAnswers');
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  // ID degli esercizi gia conteggiati nelle statistiche di progresso
+  // (evita di contare piu volte lo stesso esercizio se l'utente verifica di nuovo)
+  const [recordedExerciseIds, setRecordedExerciseIds] = useState(() => {
+    const saved = localStorage.getItem('recordedExerciseIds');
+    return saved ? new Set(JSON.parse(saved)) : new Set();
+  });
+
+  // Statistiche di progresso cumulative e giornaliere
+  const [progressStats, setProgressStats] = useState(() => {
+    const today = new Date().toLocaleDateString('it-IT');
+    const saved = localStorage.getItem('progressStats');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.lastActiveDate !== today) {
+        return { ...parsed, completedToday: 0, correctToday: 0, lastActiveDate: today };
+      }
+      return parsed;
+    }
+    return { totalCompleted: 0, totalCorrect: 0, completedToday: 0, correctToday: 0, lastActiveDate: today };
+  });
+
   // Salva stato in localStorage
   useEffect(() => {
     localStorage.setItem('selectedTopics', JSON.stringify(Array.from(selectedTopics)));
@@ -86,6 +112,21 @@ export function AppProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('selectedGrade', selectedGrade.toString());
   }, [selectedGrade]);
+
+  // Salva risposte studente in localStorage
+  useEffect(() => {
+    localStorage.setItem('studentAnswers', JSON.stringify(studentAnswers));
+  }, [studentAnswers]);
+
+  // Salva ID esercizi conteggiati in localStorage
+  useEffect(() => {
+    localStorage.setItem('recordedExerciseIds', JSON.stringify(Array.from(recordedExerciseIds)));
+  }, [recordedExerciseIds]);
+
+  // Salva statistiche di progresso in localStorage
+  useEffect(() => {
+    localStorage.setItem('progressStats', JSON.stringify(progressStats));
+  }, [progressStats]);
   
   // Numero totale di esercizi
   const totalExercises = Object.values(exercises).reduce(
@@ -122,7 +163,7 @@ export function AppProvider({ children }) {
     setSelectedTopics(new Set());
   };
   
-  // Imposta difficolt√† globale
+  // Imposta difficoltà globale
   const setGlobalDifficulty = (diff) => {
     setGlobalDiff(diff);
     // Applica anche a tutti gli argomenti
@@ -133,7 +174,7 @@ export function AppProvider({ children }) {
     setTopicDiffs(newDiffs);
   };
   
-  // Imposta difficolt√† per un singolo argomento
+  // Imposta difficoltà per un singolo argomento
   const setTopicDifficulty = (topicId, diff) => {
     setTopicDiffs(prev => ({
       ...prev,
@@ -141,7 +182,7 @@ export function AppProvider({ children }) {
     }));
   };
   
-  // Applica difficolt√† globale a tutti gli argomenti SELEZIONATI
+  // Applica difficoltà globale a tutti gli argomenti SELEZIONATI
   const applyGlobalDiffToAll = () => {
     const newDiffs = { ...topicDiffs };
     selectedTopics.forEach(topicId => {
@@ -189,6 +230,45 @@ export function AppProvider({ children }) {
       [field]: value
     }));
   };
+
+  // Imposta la risposta data dallo studente per un esercizio
+  const setAnswer = (exerciseId, value) => {
+    setStudentAnswers(prev => ({
+      ...prev,
+      [exerciseId]: value
+    }));
+  };
+
+  // Registra i risultati di una verifica (solo esercizi non ancora conteggiati)
+  // results: Array<{ exerciseId: string, correct: boolean }>
+  const recordAnswerResults = (results) => {
+    const today = new Date().toLocaleDateString('it-IT');
+    const newIds = new Set(recordedExerciseIds);
+    let newCompleted = 0;
+    let newCorrect = 0;
+
+    results.forEach(({ exerciseId, correct }) => {
+      if (!newIds.has(exerciseId)) {
+        newIds.add(exerciseId);
+        newCompleted++;
+        if (correct) newCorrect++;
+      }
+    });
+
+    if (newCompleted === 0) return;
+
+    setRecordedExerciseIds(newIds);
+    setProgressStats(prev => {
+      const resetToday = prev.lastActiveDate !== today;
+      return {
+        totalCompleted: prev.totalCompleted + newCompleted,
+        totalCorrect: prev.totalCorrect + newCorrect,
+        completedToday: (resetToday ? 0 : prev.completedToday) + newCompleted,
+        correctToday: (resetToday ? 0 : prev.correctToday) + newCorrect,
+        lastActiveDate: today
+      };
+    });
+  };
   
   // Verifica se ci sono esercizi generati
   const hasExercises = Object.keys(exercises).length > 0;
@@ -209,13 +289,15 @@ export function AppProvider({ children }) {
     topicDiffs,
     exercises,
     studentData,
-    
+    studentAnswers,
+    progressStats,
+
     // Dati derivati
     totalExercises,
     selectedCount,
     hasExercises,
     exercisesByTopic,
-    
+
     // Funzioni
     switchView,
     toggleTopic,
@@ -227,7 +309,9 @@ export function AppProvider({ children }) {
     setTopicExercises,
     clearExercises,
     updateStudentData,
-    setSelectedGrade
+    setSelectedGrade,
+    setAnswer,
+    recordAnswerResults
   };
   
   return (

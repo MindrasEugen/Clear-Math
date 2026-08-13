@@ -51,7 +51,7 @@ export default function Sidebar() {
     navigate('/workspace');
   };
 
-  // Cambia difficolt√† argomento
+  // Cambia difficoltà argomento
   const handleDifficultyChange = (topicId, event) => {
     setTopicDifficulty(topicId, event.target.value);
   };
@@ -88,7 +88,7 @@ export default function Sidebar() {
         </p>
       </div>
 
-      {/* Seleziona tutti e Applica difficolt√† */}
+      {/* Seleziona tutti e Applica difficoltà */}
       <div className="px-4 py-2 d-flex gap-2">
         <Button
           variant="link"
@@ -105,7 +105,7 @@ export default function Sidebar() {
           {selectedCount === currentGradeTopics.length ? 'Deseleziona tutti' : 'Seleziona tutti'}
         </Button>
         
-        {/* Pulsante Applica difficolt√† globale a argomenti selezionati */}
+        {/* Pulsante Applica difficoltà globale a argomenti selezionati */}
         {selectedCount > 0 && (
           <Button
             variant="outline-primary"
@@ -117,7 +117,7 @@ export default function Sidebar() {
               fontWeight: '600'
             }}
             onClick={applyGlobalDiffToAll}
-            title="Applica difficolt√† globale a tutti gli argomenti selezionati"
+            title="Applica difficoltà globale a tutti gli argomenti selezionati"
           >
             <span className="material-symbols-outlined me-1" style={{ fontSize: '14px' }}>
               sync_alt
@@ -172,7 +172,7 @@ export default function Sidebar() {
                   </div>
                 </div>
                 
-                {/* Selettore difficolt√† */}
+                {/* Selettore difficoltà */}
                 {isSelected && (
                   <Form.Select
                     size="sm"

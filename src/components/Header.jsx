@@ -1,8 +1,10 @@
 import React from 'react';
 import { Navbar, Nav, Button, Container } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import { getGradeInfo } from '../data/curriculum/index.js';
 import { COLORS, HEADER_HEIGHT, FONTS } from '../data/constants';
+import { downloadWorksheetPdf } from '../services/pdfService.js';
 
 /**
  * Componente Header (TopAppBar)
@@ -10,11 +12,24 @@ import { COLORS, HEADER_HEIGHT, FONTS } from '../data/constants';
  */
 export default function Header() {
   const navigate = useNavigate();
-  const { 
-    currentView,
+  const location = useLocation();
+  const {
     hasExercises,
-    clearExercises
+    clearExercises,
+    selectedTopics,
+    selectedGrade,
+    exercises,
+    studentData,
+    studentAnswers
   } = useAppContext();
+
+  // Vista corrente derivata dal path effettivo, cosi l'evidenziazione del tab
+  // resta corretta indipendentemente dallo stato del context
+  const currentView = location.pathname.startsWith('/workspace')
+    ? 'workspace'
+    : location.pathname.startsWith('/review')
+      ? 'review'
+      : 'dashboard';
 
   // Nav items
   const navItems = [
@@ -30,10 +45,14 @@ export default function Header() {
 
   // Handler per download PDF
   const handleDownloadPdf = () => {
-    if (hasExercises) {
-      // TODO: Implementare download PDF
-      console.log('Download PDF - Da implementare');
-    }
+    if (!hasExercises) return;
+    downloadWorksheetPdf({
+      studentData,
+      gradeLabel: getGradeInfo(selectedGrade)?.info?.className || '',
+      selectedTopicIds: Array.from(selectedTopics),
+      exercises,
+      studentAnswers
+    });
   };
 
   // Handler per generare nuova scheda
@@ -95,7 +114,7 @@ export default function Header() {
                 fontSize: '14px',
                 cursor: 'pointer'
               }}
-              onClick={() => handleNavClick(item.id)}
+              onClick={() => handleNavClick(item.path)}
             >
               {item.label}
             </Nav.Link>

@@ -4,8 +4,8 @@ import { useAppContext } from '../context/AppContext';
 import { DIFFICULTY, DIFF_LABELS, COLORS, FONTS } from '../data/constants';
 
 /**
- * Componente Selettore Difficolt√† Globale
- * Permette di selezionare la difficolt√† globale predefinita
+ * Componente Selettore Difficoltà Globale
+ * Permette di selezionare la difficoltà globale predefinita
  */
 export default function DifficultySelector() {
   const {
@@ -23,7 +23,7 @@ export default function DifficultySelector() {
     border: '1px solid #dee2e6'
   });
 
-  // Handler cambio difficolt√†
+  // Handler cambio difficoltà
   const handleDifficultyChange = (diff) => {
     setGlobalDifficulty(diff);
   };
@@ -47,7 +47,7 @@ export default function DifficultySelector() {
               color: COLORS.PRIMARY
             }}
           >
-            Difficolt√† globale predefinita
+            Difficoltà globale predefinita
           </h3>
           <p 
             className="mb-0 text-secondary small"
@@ -57,9 +57,9 @@ export default function DifficultySelector() {
           </p>
         </div>
 
-        {/* Pulsanti difficolt√† */}
+        {/* Pulsanti difficoltà */}
         <div className="d-flex align-items-center gap-2">
-          <ButtonGroup aria-label="Selettore difficolt√°">
+          <ButtonGroup aria-label="Selettore difficoltà">
             <Button
               variant={globalDiff === DIFFICULTY.LOW ? 'primary' : 'outline-secondary'}
               active={globalDiff === DIFFICULTY.LOW}

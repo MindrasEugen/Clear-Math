@@ -24,26 +24,21 @@ import { generateGrade1DatiEPrevisoniExercises } from './dati_e_previsioni.js';
  * @returns {Array} Array di esercizi generati
  */
 export function generateGrade1Exercises(topicId, difficulty = 'low', count = 10) {
-  // Mappa dei generatori per nucleo
-  const nucleusGenerators = {
-    'numeri': generateGrade1NumeriExercises,
-    'spazio_e_figure': generateGrade1SpazioEFigureExercises,
-    'relazioni_e_funzioni': generateGrade1RelazioniEFunzioniExercises,
-    'dati_e_previsioni': generateGrade1DatiEPrevisoniExercises
-  };
-  
-  // Estrai il nucleo dall'ID del topic
-  const topicParts = topicId.split('_');
-  if (topicParts.length >= 2) {
-    const nucleo = topicParts[1];
-    const generator = nucleusGenerators[nucleo];
-    
-    if (generator) {
-      return generator(topicId, difficulty, count);
-    }
+  // Mappa dei prefissi di topicId verso il generatore del nucleo corrispondente
+  const nucleusPrefixGenerators = [
+    { prefix: 'grado1_numeri_', generator: generateGrade1NumeriExercises },
+    { prefix: 'grado1_spazio_', generator: generateGrade1SpazioEFigureExercises },
+    { prefix: 'grado1_relazioni_', generator: generateGrade1RelazioniEFunzioniExercises },
+    { prefix: 'grado1_dati_', generator: generateGrade1DatiEPrevisoniExercises }
+  ];
+
+  const match = nucleusPrefixGenerators.find(({ prefix }) => topicId.startsWith(prefix));
+
+  if (match) {
+    return match.generator(topicId, difficulty, count);
   }
-  
-  // Se non trovato, usa il generatore generico per numeri
+
+  console.warn(`Nessun generatore trovato per l'argomento: ${topicId}`);
   return generateGrade1NumeriExercises(topicId, difficulty, count);
 }
 

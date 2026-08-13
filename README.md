@@ -11,22 +11,23 @@ L'applicazione permette di generare **schede di esercizi personalizzate** basate
 ## 🎯 Funzionalità
 
 ### ✅ Implementato
-- ✅ Selezione multipla argomenti per grado scolastico
+- ✅ Selezione multipla argomenti per grado scolastico (Gradi 1-5)
 - ✅ 3 livelli di difficoltà (Basso, Medio, Avanzato)
 - ✅ Generazione schede personalizzate con esercizi casuali
+- ✅ Generatori di esercizi completi per tutti e 4 i nuclei, Gradi 1-5 (Scuola Primaria)
 - ✅ Interfaccia responsive con Bootstrap 5
 - ✅ Navigazione tra Dashboard, Workspace e Review Center
 - ✅ Sistema di Breadcrumbs per navigazione gerarchica
 - ✅ Componenti UI modulari (Card, Button, Modal)
-- ✅ Generatori di esercizi per il primo grado (Numeri)
-- ✅ Validatori per la correttezza delle risposte
+- ✅ Validatori per la correttezza delle risposte, con feedback visivo immediato
+- ✅ Esportazione PDF della scheda con jsPDF (domande, scelte multiple, risposte)
+- ✅ Salvataggio progressi e statistiche (risposte, esercizi risolti, risposte corrette) in localStorage
 - ✅ Gestione stato globale con Context API
 
 ### 🚧 In Sviluppo
-- 🚧 Generazione esercizi automatica per tutti i gradi e nuclei
-- 🚧 Esportazione PDF con jsPDF
-- 🚧 Salvataggio progressi e statistiche
+- 🚧 Estensione a Scuola Secondaria (Gradi 6-13)
 - 🚧 Spiegazioni teoriche interattive
+- 🚧 Autenticazione e sincronizzazione cloud dei progressi
 
 ## 🛠 Tecnologie
 
@@ -83,57 +84,58 @@ clear-math/
     ├── App.jsx             # Router principale
     │
     ├── /context/           # Context API
-    │   └── AppContext.jsx   # Stato globale
+    │   └── AppContext.jsx   # Stato globale (argomenti, esercizi, risposte, progressi)
     │
     ├── /data/              # Dati statici
     │   ├── constants.js     # Costanti (difficoltà, colori, ecc.)
-    │   ├── topics.js        # Argomenti di matematica
+    │   ├── topics.js        # Argomenti di matematica (legacy)
     │   ├── schemas.js       # Schemi TypeScript
-    │   └── /curriculum/     # Programma scolastico
-    │       └── /grade1/     # Primo grado
-    │           ├── numeri.js
-    │           ├── spazio_e_figure.js
-    │           ├── relazioni_e_funzioni.js
-    │           ├── dati_e_previsioni.js
-    │           └── index.js
+    │   └── /curriculum/     # Programma scolastico, Gradi 1-5 (dati completi)
+    │       ├── /grade1/ ... /grade5/
+    │       │   ├── numeri.js
+    │       │   ├── spazio_e_figure.js
+    │       │   ├── relazioni_e_funzioni.js
+    │       │   ├── dati_e_previsioni.js
+    │       │   └── index.js
+    │       └── index.js     # Entry point unificato (getGradeTopics, getAnyTopicById, ...)
     │
     ├── /components/        # Componenti React
     │   ├── Layout.jsx       # Layout principale
-    │   ├── Header.jsx       # Header con navigazione
+    │   ├── Header.jsx       # Header con navigazione, esportazione PDF
     │   ├── Sidebar.jsx      # Sidebar con argomenti
     │   ├── Footer.jsx       # Footer
+    │   ├── GradeSelector.jsx # Selettore grado scolastico (1-5)
     │   ├── TopicCard.jsx    # Card argomento
     │   ├── TopicDifficultySelector.jsx
     │   ├── DifficultySelector.jsx
-    │   └── /common/         # Componenti generici
-    │       ├── Button.jsx
-    │       ├── Card.jsx
-    │       └── Modal.jsx
-    │   └── /exercise/       # Componenti esercizi
-    │       ├── ExerciseCard.jsx
-    │       └── ExerciseGeneratorDemo.jsx
+    │   ├── /common/         # Componenti generici
+    │   │   ├── Button.jsx
+    │   │   ├── Card.jsx
+    │   │   └── Modal.jsx
+    │   ├── /exercise/       # Componenti esercizi
+    │   │   ├── ExerciseCard.jsx
+    │   │   └── ExerciseGeneratorDemo.jsx
     │   └── /navigation/     # Componenti navigazione
     │       └── Breadcrumb.jsx
     │
     ├── /pages/             # Pagine
     │   ├── DashboardPage.jsx
-    │   ├── WorkspacePage.jsx
-    │   └── ReviewPage.jsx
+    │   ├── WorkspacePage.jsx # Scheda esercizi, verifica risposte, download PDF
+    │   └── ReviewPage.jsx    # Sfida quotidiana, statistiche di progresso
+    │
+    ├── /services/          # Servizi applicativi
+    │   └── pdfService.js    # Generazione ed esportazione PDF della scheda (jsPDF)
     │
     ├── /types/             # TypeScript
     │   └── index.d.ts       # Definizioni tipi
     │
     ├── /utils/             # Utility functions
-    │   ├── random.js        # Generatore random (LCG)
-    │   ├── exerciseGenerators.js
+    │   ├── random.js         # Generatore random (LCG)
+    │   ├── answerValidator.js # Confronto risposta studente / risposta attesa
+    │   ├── exerciseGenerators.js # legacy
     │   └── /exerciseGenerators/
-    │       └── /grade1/     # Generatori primo grado
-    │           ├── index.js
-    │           └── numeri.js
-    │   └── /validators/     # Validatori
-    │       └── /grade1/
-    │           ├── index.js
-    │           └── numeriValidator.js
+    │       ├── index.js      # Entry point unificato (generateExercises(grade, ...))
+    │       ├── /grade1/ ... /grade5/  # Generatori completi per tutti i nuclei
     │
     └── /styles/            # Stili
         └── index.css       # Custom styles + CSS variables
@@ -153,29 +155,29 @@ clear-math/
 4. Genera la scheda di esercizi personalizzata
 5. Risolvi gli esercizi nel Workspace
 6. Verifica le risposte con il sistema di validazione
-7. Esporta o salva i progressi (in sviluppo)
+7. Verifica le risposte e consulta i progressi nel Centro Ripasso
+8. Esporta la scheda in PDF
 
 ## 📝 Componenti Principali
 
 ### 🏗 Architettura
-- **AppContext**: Gestione stato globale (argomenti, difficoltà, esercizi, progressi)
+- **AppContext**: Gestione stato globale (grado, argomenti, difficoltà, esercizi, risposte, statistiche di progresso)
 - **Router**: Navigazione tra Dashboard, Workspace, Review
 - **Layout**: Struttura responsiva con Sidebar e Header
 
 ### 📊 Dati & Curriculum
-- **topics.js**: 12 argomenti di matematica per la quarta elementare (legacy)
+- **topics.js**: argomenti legacy (pre multi-grado)
 - **constants.js**: Costanti, livelli di difficoltà, colori, font
 - **schemas.js**: Definizioni TypeScript per tipizzazione dati
 - **/curriculum/**: Programma scolastico organizzato per grado e nucleo tematico
-  - `grade1/`: Primo grado con 4 nuclei fondanti
-  - Ogni nucleo contiene esercizi e contenuti specifici
+  - `grade1/` ... `grade5/`: Scuola Primaria completa, ognuno con i 4 nuclei fondanti
+  - `getGradeTopics(grade)`, `getAnyTopicById(id)`: lookup grado-agnostici
 
 ### ⚙️ Utility & Logica
 - **random.js**: Generatore LCG per numeri casuali ripetibili (seed-based)
-- **exerciseGenerators/**: Generatori di esercizi per grado e nucleo
-  - `grade1/numeri.js`: Esercizi di aritmetica per il primo grado
-- **validators/**: Sistemi di validazione delle risposte
-  - `grade1/numeriValidator.js`: Validazione esercizi di numeri
+- **answerValidator.js**: Confronto normalizzato tra risposta studente e risposta attesa
+- **exerciseGenerators/**: Generatori di esercizi completi per grado (1-5) e nucleo
+- **pdfService.js**: Generazione ed esportazione PDF della scheda con jsPDF
 
 ### 🎨 Componenti UI
 - **Layout**: Struttura principale con Header, Sidebar, Footer
@@ -225,39 +227,38 @@ clear-math/
 - Context API per stato globale
 - Sistema di build e development
 
-#### 🎨 Interfaccia Utente (90%)
+#### 🎨 Interfaccia Utente (95%)
 - Componenti Layout (Header, Sidebar, Footer)
 - Componenti di navigazione (Breadcrumb)
 - Componenti UI riutilizzabili (Button, Card, Modal)
+- Selettore grado scolastico (Gradi 1-5)
 - Dashboard con griglia argomenti
-- Workspace con visualizzazione schede
-- Review Center con sfida quotidiana
+- Workspace con visualizzazione schede, verifica risposte e barra di progresso reale
+- Review Center con sfida quotidiana e statistiche di progresso reali
 - Selezione multipla argomenti
 - Gestione difficoltà per argomento
 
-#### 📊 Curriculum & Dati (30%)
-- Struttura dati curriculum per grado 1
-- 4 nuclei fondanti implementati
-- Generatori esercizi per Numeri (grado 1)
-- Validatori per Numeri (grado 1)
+#### 📊 Curriculum & Dati (100% per Scuola Primaria)
+- Struttura dati curriculum completa per i Gradi 1-5
+- 4 nuclei fondanti implementati per ogni grado
+- Generatori di esercizi completi per tutti i nuclei, Gradi 1-5
+- Validatori per la correttezza delle risposte, con statistiche persistite
+- Esportazione PDF della scheda (jsPDF)
 - Schemi TypeScript per tipizzazione
 
 ### 🚧 Prossimi Passi
 
 #### Alta Priorità
-- Completare generatori esercizi per tutti i nuclei del grado 1
-- Estendere curriculum ai gradi 2-5 (scuola primaria)
-- Implementare sistema di validazione completo
-- Integrazione jsPDF per esportazione schede
+- Estendere curriculum e generatori alla Scuola Secondaria di I Grado (gradi 6-8)
+- Implementare spiegazioni teoriche interattive
 
 #### Media Priorità
-- Salvataggio progressi (localStorage -> backend)
-- Sistema di autenticazione
-- Statistiche e analisi progressi
+- Sistema di autenticazione e sincronizzazione cloud dei progressi (oltre localStorage)
 - Responsive design improvements
+- Code-splitting del bundle (jsPDF/html2canvas superano i 500kB dopo il minify)
 
 #### Bassa Priorità
-- Estendere a scuola secondaria (gradi 6-13)
+- Estendere a Scuola Secondaria di II Grado (gradi 9-13)
 - Integrazione con LMS esterni
 - Localizzazione multilingua
 - Test automatizzati e CI/CD
