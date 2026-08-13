@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Row, Col, Badge, Form, ListGroup } from 'react-bootstrap';
 import { useAppContext } from '../context/AppContext';
-import { TOPICS } from '../data/topics';
+import { grade1Topics } from '../data/curriculum/grade1/index';
 import { COLORS, FONTS } from '../data/constants';
 import { randomInt, randomChoice } from '../utils/random';
 

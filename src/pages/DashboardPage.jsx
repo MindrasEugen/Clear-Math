@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Badge, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { TOPICS } from '../data/topics';
+import { grade1Topics } from '../data/curriculum/grade1/index';
 import { COLORS, FONTS } from '../data/constants';
 import DifficultySelector from '../components/DifficultySelector';
 import TopicCard from '../components/TopicCard';
@@ -55,7 +55,7 @@ export default function DashboardPage() {
   // Layout: 2 argomenti grandi (6 colonne) + 2 piccoli (3 colonne) per riga
   const getGridLayout = () => {
     const selectedIds = Array.from(selectedTopics);
-    const allIds = TOPICS.map(t => t.id);
+    const allIds = grade1Topics.map(t => t.id);
     
     // Per ora semplice: 3 colonne per desktop, 2 per tablet, 1 per mobile
     return {
@@ -143,7 +143,7 @@ export default function DashboardPage() {
         </div>
 
         <Row className="g-3">
-          {TOPICS.map((topic) => (
+          {grade1Topics.map((topic) => (
             <Col 
               key={topic.id}
               xs={12} sm={6} md={4} lg={3}

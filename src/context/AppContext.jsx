@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { TOPICS } from '../data/topics.js';
+import { grade1Topics, getGrade1TopicById } from '../data/curriculum/grade1/index.js';
 import { DIFFICULTY, VIEWS } from '../data/constants.js';
 
 /**
@@ -40,7 +40,7 @@ export function AppProvider({ children }) {
     }
     // Inizializza tutti a Basso
     const initial = {};
-    TOPICS.forEach(topic => {
+    grade1Topics.forEach(topic => {
       initial[topic.id] = DIFFICULTY.LOW;
     });
     return initial;
@@ -95,7 +95,7 @@ export function AppProvider({ children }) {
   
   // Seleziona tutti gli argomenti
   const selectAllTopics = () => {
-    const all = new Set(TOPICS.map(t => t.id));
+    const all = new Set(grade1Topics.map(t => t.id));
     setSelectedTopics(all);
   };
   
@@ -109,7 +109,7 @@ export function AppProvider({ children }) {
     setGlobalDiff(diff);
     // Applica anche a tutti gli argomenti
     const newDiffs = {};
-    TOPICS.forEach(topic => {
+    grade1Topics.forEach(topic => {
       newDiffs[topic.id] = diff;
     });
     setTopicDiffs(newDiffs);
@@ -157,7 +157,7 @@ export function AppProvider({ children }) {
   const hasExercises = Object.keys(exercises).length > 0;
   
   // Conta esercizi per argomento
-  const exercisesByTopic = TOPICS.map(topic => ({
+  const exercisesByTopic = grade1Topics.map(topic => ({
     topicId: topic.id,
     count: exercises[topic.id] ? exercises[topic.id].length : 0
   }));

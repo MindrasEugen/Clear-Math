@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, Badge } from 'react-bootstrap';
 import { useAppContext } from '../context/AppContext';
-import { getTopicIcon } from '../data/topics';
 import { COLORS, FONTS, DIFF_LABELS } from '../data/constants';
 import TopicDifficultySelector from './TopicDifficultySelector';
 
@@ -38,7 +37,7 @@ export default function TopicCard({ topic, onClick, isSelected }) {
               color: COLORS.PRIMARY
             }}
           >
-            {getTopicIcon(topic.id)}
+            {topic.icon || 'help_outline'}
           </span>
           
           <Badge 
@@ -89,7 +88,7 @@ export default function TopicCard({ topic, onClick, isSelected }) {
             lineHeight: '1.5'
           }}
         >
-          {topic.desc}
+          {topic.description}
         </Card.Text>
       </Card.Body>
     </Card>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Badge, ListGroup, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { TOPICS, getTopicIcon } from '../data/topics';
+import { grade1Topics, getGrade1TopicById } from '../data/curriculum/grade1/index';
 import { DIFFICULTY, DIFF_LABELS, SIDEBAR_WIDTH, HEADER_HEIGHT, COLORS, FONTS } from '../data/constants';
 import { generateTopicExercises, computeExerciseCount } from '../utils/exerciseGenerators';
 
@@ -28,7 +28,7 @@ export default function Sidebar() {
 
   // Applica a tutti gli argomenti
   const handleSelectAll = () => {
-    selectedCount === TOPICS.length ? deselectAllTopics() : selectAllTopics();
+    selectedCount === grade1Topics.length ? deselectAllTopics() : selectAllTopics();
   };
 
   // Genera scheda
@@ -101,7 +101,7 @@ export default function Sidebar() {
           }}
           onClick={handleSelectAll}
         >
-          {selectedCount === TOPICS.length ? 'Deseleziona tutti' : 'Seleziona tutti'}
+          {selectedCount === grade1Topics.length ? 'Deseleziona tutti' : 'Seleziona tutti'}
         </Button>
         
         {/* Pulsante Applica difficolt√† globale a argomenti selezionati */}
@@ -128,7 +128,7 @@ export default function Sidebar() {
 
       {/* Lista argomenti */}
       <ListGroup variant="flush" className="border-0">
-        {TOPICS.map((topic) => {
+        {grade1Topics.map((topic) => {
           const isSelected = selectedTopics.has(topic.id);
           const currentDiff = topicDiffs[topic.id] || globalDiff;
           
@@ -145,7 +145,7 @@ export default function Sidebar() {
                   className="material-symbols-outlined text-secondary"
                   style={{ fontSize: '20px' }}
                 >
-                  {getTopicIcon(topic.id)}
+                  {topic.icon || 'help_outline'}
                 </span>
                 
                 {/* Testo */}
@@ -167,7 +167,7 @@ export default function Sidebar() {
                       fontSize: '11px'
                     }}
                   >
-                    {topic.desc.substring(0, 40)}...
+                    {topic.description?.substring(0, 40) + '...'}
                   </div>
                 </div>
                 

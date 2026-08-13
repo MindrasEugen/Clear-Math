@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card, Form, ProgressBar, ListGroup, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { TOPICS, getTopicById } from '../data/topics';
+import { getGrade1TopicById } from '../data/curriculum/grade1/index';
 import { COLORS, FONTS, SIDEBAR_WIDTH } from '../data/constants';
 
 /**
@@ -225,7 +225,7 @@ export default function WorkspacePage() {
         {/* Exercises Sections */}
         <div className="space-y-4" id="exercises-container">
           {Array.from(selectedTopics).map((topicId) => {
-            const topic = getTopicById(topicId);
+            const topic = getGrade1TopicById(topicId);
             const topicExercises = exercises[topicId] || [];
             
             return (
