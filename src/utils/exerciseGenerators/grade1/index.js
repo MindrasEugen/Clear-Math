@@ -4,6 +4,9 @@
  */
 
 export * from './numeri.js';
+export * from './spazio_e_figure.js';
+export * from './relazioni_e_funzioni.js';
+export * from './dati_e_previsioni.js';
 
 /**
  * Genera esercizi per qualsiasi argomento del Grado 1
@@ -16,13 +19,16 @@ export * from './numeri.js';
 export function generateGrade1Exercises(topicId, difficulty = 'low', count = 10) {
   // Importa tutti i generatori disponibili per Grado 1
   const { generateGrade1NumeriExercises } = require('./numeri.js');
+  const { generateGrade1SpazioEFigureExercises } = require('./spazio_e_figure.js');
+  const { generateGrade1RelazioniEFunzioniExercises } = require('./relazioni_e_funzioni.js');
+  const { generateGrade1DatiEPrevisoniExercises } = require('./dati_e_previsioni.js');
   
   // Mappa dei generatori per nucleo
   const nucleusGenerators = {
     'numeri': generateGrade1NumeriExercises,
-    'spazio_e_figure': null, // TODO: implementare
-    'relazioni_e_funzioni': null, // TODO: implementare
-    'dati_e_previsioni': null // TODO: implementare
+    'spazio_e_figure': generateGrade1SpazioEFigureExercises,
+    'relazioni_e_funzioni': generateGrade1RelazioniEFunzioniExercises,
+    'dati_e_previsioni': generateGrade1DatiEPrevisoniExercises
   };
   
   // Estrai il nucleo dall'ID del topic
