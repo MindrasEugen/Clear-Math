@@ -6,7 +6,7 @@ import { COLORS, FONTS } from '../data/constants';
 import DifficultySelector from '../components/DifficultySelector';
 import GradeSelector from '../components/GradeSelector';
 import TopicCard from '../components/TopicCard';
-import { generateExercises } from '../utils/exerciseGenerators/index';
+import { generateExercises } from '../utils/exerciseGenerators/index.js';
 import { DIFFICULTY } from '../data/constants';
 
 // Mappa dei label per i gradi

@@ -3,10 +3,17 @@
  * Esportazione unificata di tutti i generatori per il primo grado scolastico
  */
 
+// Importa tutti i generatori dei nuclei
 export * from './numeri.js';
 export * from './spazio_e_figure.js';
 export * from './relazioni_e_funzioni.js';
 export * from './dati_e_previsioni.js';
+
+// Importa i generatori specifici per nucleo
+import { generateGrade1NumeriExercises } from './numeri.js';
+import { generateGrade1SpazioEFigureExercises } from './spazio_e_figure.js';
+import { generateGrade1RelazioniEFunzioniExercises } from './relazioni_e_funzioni.js';
+import { generateGrade1DatiEPrevisoniExercises } from './dati_e_previsioni.js';
 
 /**
  * Genera esercizi per qualsiasi argomento del Grado 1
@@ -17,12 +24,6 @@ export * from './dati_e_previsioni.js';
  * @returns {Array} Array di esercizi generati
  */
 export function generateGrade1Exercises(topicId, difficulty = 'low', count = 10) {
-  // Importa tutti i generatori disponibili per Grado 1
-  const { generateGrade1NumeriExercises } = require('./numeri.js');
-  const { generateGrade1SpazioEFigureExercises } = require('./spazio_e_figure.js');
-  const { generateGrade1RelazioniEFunzioniExercises } = require('./relazioni_e_funzioni.js');
-  const { generateGrade1DatiEPrevisoniExercises } = require('./dati_e_previsioni.js');
-  
   // Mappa dei generatori per nucleo
   const nucleusGenerators = {
     'numeri': generateGrade1NumeriExercises,

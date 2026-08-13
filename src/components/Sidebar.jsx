@@ -3,7 +3,7 @@ import { Button, Badge, ListGroup, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { DIFFICULTY, DIFF_LABELS, SIDEBAR_WIDTH, HEADER_HEIGHT, COLORS, FONTS } from '../data/constants';
-import { generateExercises } from '../utils/exerciseGenerators/index';
+import { generateExercises } from '../utils/exerciseGenerators/index.js';
 
 /**
  * Componente Sidebar
