@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { grade1Topics, getGrade1TopicById } from '../data/curriculum/grade1/index.js';
+import { getGradeTopics } from '../data/curriculum/index.js';
 import { DIFFICULTY, VIEWS } from '../data/constants.js';
 
 /**
@@ -26,6 +27,17 @@ export function AppProvider({ children }) {
     return saved ? new Set(JSON.parse(saved)) : new Set();
   });
   
+  // Grado selezionato (1-5)
+  const [selectedGrade, setSelectedGradeState] = useState(() => {
+    const saved = localStorage.getItem('selectedGrade');
+    return saved ? parseInt(saved, 10) : 1;
+  });
+
+  // Topics del grado corrente
+  const currentGradeTopics = getGradeTopics(selectedGrade);
+  
+
+  
   // Difficolt√† globale
   const [globalDiff, setGlobalDiff] = useState(() => {
     const saved = localStorage.getItem('globalDiff');
@@ -40,7 +52,7 @@ export function AppProvider({ children }) {
     }
     // Inizializza tutti a Basso
     const initial = {};
-    grade1Topics.forEach(topic => {
+    currentGradeTopics.forEach(topic => {
       initial[topic.id] = DIFFICULTY.LOW;
     });
     return initial;
@@ -68,6 +80,12 @@ export function AppProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('topicDiffs', JSON.stringify(topicDiffs));
   }, [topicDiffs]);
+
+
+  // Salva selectedGrade in localStorage
+  useEffect(() => {
+    localStorage.setItem('selectedGrade', selectedGrade.toString());
+  }, [selectedGrade]);
   
   // Numero totale di esercizi
   const totalExercises = Object.values(exercises).reduce(
@@ -95,7 +113,7 @@ export function AppProvider({ children }) {
   
   // Seleziona tutti gli argomenti
   const selectAllTopics = () => {
-    const all = new Set(grade1Topics.map(t => t.id));
+    const all = new Set(currentGradeTopics.map(t => t.id));
     setSelectedTopics(all);
   };
   
@@ -109,7 +127,7 @@ export function AppProvider({ children }) {
     setGlobalDiff(diff);
     // Applica anche a tutti gli argomenti
     const newDiffs = {};
-    grade1Topics.forEach(topic => {
+    currentGradeTopics.forEach(topic => {
       newDiffs[topic.id] = diff;
     });
     setTopicDiffs(newDiffs);
@@ -144,6 +162,25 @@ export function AppProvider({ children }) {
   const clearExercises = () => {
     setExercises({});
   };
+
+  // Cambia grado (con reset stato correlato)
+  const setSelectedGrade = (gradeNumber) => {
+    const gradeNum = parseInt(gradeNumber, 10);
+    if (gradeNum < 1 || gradeNum > 5 || isNaN(gradeNum)) return;
+
+    // Reset esercizi
+    setExercises({});
+    
+    // Reset argomenti selezionati
+    setSelectedTopics(new Set());
+    
+    // Reset difficolta per argomento
+    setTopicDiffs({});
+    
+    // Imposta nuovo grado
+    setSelectedGradeState(gradeNum);
+  };
+
   
   // Aggiorna dati studente
   const updateStudentData = (field, value) => {
@@ -157,7 +194,7 @@ export function AppProvider({ children }) {
   const hasExercises = Object.keys(exercises).length > 0;
   
   // Conta esercizi per argomento
-  const exercisesByTopic = grade1Topics.map(topic => ({
+  const exercisesByTopic = currentGradeTopics.map(topic => ({
     topicId: topic.id,
     count: exercises[topic.id] ? exercises[topic.id].length : 0
   }));
@@ -166,6 +203,8 @@ export function AppProvider({ children }) {
     // Stato
     currentView,
     selectedTopics,
+    selectedGrade,
+    currentGradeTopics,
     globalDiff,
     topicDiffs,
     exercises,
@@ -187,7 +226,8 @@ export function AppProvider({ children }) {
     applyGlobalDiffToAll,
     setTopicExercises,
     clearExercises,
-    updateStudentData
+    updateStudentData,
+    setSelectedGrade
   };
   
   return (

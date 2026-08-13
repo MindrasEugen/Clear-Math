@@ -1,28 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Container, Row, Col, Button, Badge, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { grade1Topics } from '../data/curriculum/grade1/index';
 import { COLORS, FONTS } from '../data/constants';
 import DifficultySelector from '../components/DifficultySelector';
+import GradeSelector from '../components/GradeSelector';
 import TopicCard from '../components/TopicCard';
-import { generateGrade1Exercises } from '../utils/exerciseGenerators/grade1/index';
+import { generateExercises } from '../utils/exerciseGenerators/index';
 import { DIFFICULTY } from '../data/constants';
+
+// Mappa dei label per i gradi
+const gradeLabels = {
+  1: 'Prima',
+  2: 'Seconda',
+  3: 'Terza',
+  4: 'Quarta',
+  5: 'Quinta'
+};
 
 /**
  * Pagina Dashboard
- * Mostra la griglia degli argomenti e il selettore difficolt√°
+ * Mostra la griglia degli argomenti e il selettore difficolt√†
  */
 export default function DashboardPage() {
   const navigate = useNavigate();
   const {
+    selectedGrade,
+    currentGradeTopics,
     selectedTopics,
     selectedCount,
     toggleTopic,
     setTopicExercises,
     clearExercises,
     globalDiff,
-    topicDiffs
+    topicDiffs,
+    setSelectedGrade
   } = useAppContext();
 
   // Gestione click su TopicCard
@@ -34,12 +46,11 @@ export default function DashboardPage() {
   const handleGenerateWorksheet = () => {
     if (selectedCount === 0) return;
     
-    // Genera esercizi reali usando il generatore per Grado 1
+    // Genera esercizi reali usando il generatore unificato
     selectedTopics.forEach(topicId => {
-      const topic = grade1Topics.find(t => t.id === topicId);
       const diff = topicDiffs[topicId] || globalDiff || DIFFICULTY.LOW;
       const count = 6; // Numero fisso di esercizi per argomento
-      const exercises = generateGrade1Exercises(topicId, diff, count);
+      const exercises = generateExercises(selectedGrade, topicId, diff, count);
       setTopicExercises(topicId, exercises);
     });
     
@@ -51,7 +62,7 @@ export default function DashboardPage() {
   // Layout: 2 argomenti grandi (6 colonne) + 2 piccoli (3 colonne) per riga
   const getGridLayout = () => {
     const selectedIds = Array.from(selectedTopics);
-    const allIds = grade1Topics.map(t => t.id);
+    const allIds = currentGradeTopics.map(t => t.id);
     
     // Per ora semplice: 3 colonne per desktop, 2 per tablet, 1 per mobile
     return {
@@ -100,9 +111,19 @@ export default function DashboardPage() {
           <span className="material-symbols-outlined me-2" style={{ fontSize: '20px' }}>
             copyright
           </span>
-          <strong>Proprietà Intellettuale:</strong> Questo progetto è di esclusiva proprietà di Mindras Eugen Traian.
+          <strong>Propriet√† Intellettuale:</strong> Questo progetto √® di esclusiva propriet√† di Mindras Eugen Traian.
           Tutti i diritti sono riservati. Vietata la riproduzione non autorizzata.
         </Alert>
+      </section>
+
+      {/* Grade Selector */}
+      <section className="mb-4">
+        <div className="d-flex justify-content-center">
+          <GradeSelector
+            selectedGrade={selectedGrade}
+            onGradeChange={setSelectedGrade}
+          />
+        </div>
       </section>
 
       {/* Difficulty Selector */}
@@ -122,7 +143,7 @@ export default function DashboardPage() {
               color: COLORS.PRIMARY
             }}
           >
-            Tutti i Capitoli di Studio
+            Argomenti - Classe {gradeLabels[selectedGrade] || selectedGrade}
           </h2>
           
           <Badge 
@@ -139,7 +160,7 @@ export default function DashboardPage() {
         </div>
 
         <Row className="g-3">
-          {grade1Topics.map((topic) => (
+          {currentGradeTopics.map((topic) => (
             <Col 
               key={topic.id}
               xs={12} sm={6} md={4} lg={3}

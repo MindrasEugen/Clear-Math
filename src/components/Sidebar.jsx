@@ -2,9 +2,8 @@ import React from 'react';
 import { Button, Badge, ListGroup, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { grade1Topics, getGrade1TopicById } from '../data/curriculum/grade1/index';
 import { DIFFICULTY, DIFF_LABELS, SIDEBAR_WIDTH, HEADER_HEIGHT, COLORS, FONTS } from '../data/constants';
-import { generateGrade1Exercises } from '../utils/exerciseGenerators/grade1/index';
+import { generateExercises } from '../utils/exerciseGenerators/index';
 
 /**
  * Componente Sidebar
@@ -13,6 +12,8 @@ import { generateGrade1Exercises } from '../utils/exerciseGenerators/grade1/inde
 export default function Sidebar() {
   const navigate = useNavigate();
   const {
+    selectedGrade,
+    currentGradeTopics,
     selectedTopics,
     globalDiff,
     topicDiffs,
@@ -28,7 +29,7 @@ export default function Sidebar() {
 
   // Applica a tutti gli argomenti
   const handleSelectAll = () => {
-    selectedCount === grade1Topics.length ? deselectAllTopics() : selectAllTopics();
+    selectedCount === currentGradeTopics.length ? deselectAllTopics() : selectAllTopics();
   };
 
   // Genera scheda
@@ -38,11 +39,11 @@ export default function Sidebar() {
     // Clear esercizi precedenti
     clearExercises();
     
-    // Genera esercizi per tutti gli argomenti selezionati (Grado 1)
+    // Genera esercizi per tutti gli argomenti selezionati
     selectedTopics.forEach(topicId => {
       const diff = topicDiffs[topicId] || globalDiff || DIFFICULTY.LOW;
       const count = 6; // Numero fisso di esercizi per argomento
-      const exercises = generateGrade1Exercises(topicId, diff, count);
+      const exercises = generateExercises(selectedGrade, topicId, diff, count);
       setTopicExercises(topicId, exercises);
     });
     
@@ -87,7 +88,7 @@ export default function Sidebar() {
         </p>
       </div>
 
-      {/* Seleziona tutti e Applica difficoltà */}
+      {/* Seleziona tutti e Applica difficolt√† */}
       <div className="px-4 py-2 d-flex gap-2">
         <Button
           variant="link"
@@ -101,7 +102,7 @@ export default function Sidebar() {
           }}
           onClick={handleSelectAll}
         >
-          {selectedCount === grade1Topics.length ? 'Deseleziona tutti' : 'Seleziona tutti'}
+          {selectedCount === currentGradeTopics.length ? 'Deseleziona tutti' : 'Seleziona tutti'}
         </Button>
         
         {/* Pulsante Applica difficolt√† globale a argomenti selezionati */}
@@ -128,7 +129,7 @@ export default function Sidebar() {
 
       {/* Lista argomenti */}
       <ListGroup variant="flush" className="border-0">
-        {grade1Topics.map((topic) => {
+        {currentGradeTopics.map((topic) => {
           const isSelected = selectedTopics.has(topic.id);
           const currentDiff = topicDiffs[topic.id] || globalDiff;
           

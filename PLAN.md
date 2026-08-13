@@ -555,6 +555,74 @@ Ogni grado dipende dal completamento del precedente nello stesso nucleo tematico
 - Implementare sistema di progressi base
 - Aggiungere primi contenuti teorici
 
+### Task Correnti - Selettore Grado (Priorità Assoluta)
+
+#### ARCH-01: Aggiornare AppContext per supporto multi-grado
+- **Owner**: React Architect
+- **Status**: IMPLEMENTED
+- **DependsOn**: -
+- **Acceptance**:
+  - `selectedGrade` state aggiunto (default: 1, localStorage)
+  - Funzioni `setSelectedGrade`, `currentGradeTopics` esposte
+  - `topicDiffs` e `selectedTopics` resettati quando cambia grado
+  - `exercisesByTopic` usa topics del grado corrente
+- **Files**: `src/context/AppContext.jsx`
+- **Notes**: Importare `getGradeTopics` da `../data/curriculum/index.js`
+- **Assigned**: 2026-08-06
+- **Completed**: 2026-08-06
+
+#### LOGIC-01: Creare generatore unificato per tutti i gradi
+- **Owner**: React Engine
+- **Status**: IMPLEMENTED
+- **DependsOn**: ARCH-01
+- **Acceptance**:
+  - Nuovo file `src/utils/exerciseGenerators/index.js`
+  - Funzione `generateExercises(grade, topicId, difficulty, count)`
+  - Delegazione a generatori specifici per grado
+  - Fallback gracefull per gradi senza generatori
+- **Files**: `src/utils/exerciseGenerators/index.js`
+- **Assigned**: 2026-08-06
+- **Completed**: 2026-08-06
+
+#### UI-01: Creare componente GradeSelector
+- **Owner**: React Interface
+- **Status**: IMPLEMENTED
+- **DependsOn**: ARCH-01
+- **Acceptance**:
+  - Componente `GradeSelector.jsx` in `src/components/`
+  - Props: `selectedGrade`, `onGradeChange`, `disabled`
+  - Mostra gradi 1-5 con label "Classe Prima/Seconda/..."
+  - Stile Bootstrap 5 + tema Clear-Math
+  - Accessibilità completa
+- **Files**: `src/components/GradeSelector.jsx`
+- **Assigned**: 2026-08-06
+- **Completed**: 2026-08-06
+
+#### UI-02: Aggiornare DashboardPage per grado selezionato
+- **Owner**: React Interface
+- **Status**: IMPLEMENTED
+- **DependsOn**: ARCH-01, UI-01, LOGIC-01
+- **Acceptance**:
+  - Usa `currentGradeTopics` invece di `grade1Topics`
+  - Mostra `GradeSelector` nell'header
+  - `handleGenerateWorksheet` usa `generateExercises(selectedGrade, ...)`
+  - Testo aggiornato per grado corrente
+- **Files**: `src/pages/DashboardPage.jsx`
+- **Assigned**: 2026-08-06
+- **Completed**: 2026-08-06
+
+#### UI-03: Aggiornare Sidebar per grado selezionato
+- **Owner**: React Interface
+- **Status**: IMPLEMENTED
+- **DependsOn**: ARCH-01, UI-01, LOGIC-01
+- **Acceptance**:
+  - Usa `currentGradeTopics` invece di `grade1Topics`
+  - `handleSelectAll` usa `currentGradeTopics.length`
+  - `handleGenerateWorksheet` usa `generateExercises(selectedGrade, ...)`
+- **Files**: `src/components/Sidebar.jsx`
+- **Assigned**: 2026-08-06
+- **Completed**: 2026-08-06
+
 ---
 
 ## 📚 Appendice: Programma Ministeriale Dettagliato
